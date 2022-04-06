@@ -1,0 +1,207 @@
+import styled from "styled-components";
+import { useState, useRef, useContext } from "react";
+import { useHistory, NavLink } from "react-router-dom";
+
+const SignUp = () => {
+  const history = useHistory();
+  const [disabled, setDisabled] = useState(true);
+  const [valid, setValid] = useState(false);
+
+  // create a reference for each input to store the values
+  const firstName = useRef();
+  const lastName = useRef();
+  const email = useRef();
+  const password = useRef();
+  const confirmPassword = useRef();
+
+  const handleChange = (ev) => {
+    if (password.current.value !== confirmPassword.current.value) {
+      setValid(false);
+      setDisabled(true);
+      return;
+    }
+    if (
+      firstName.current.value.length > 0 &&
+      lastName.current.value.length > 0 &&
+      email.current.value.length > 0 &&
+      password.current.value.length > 0 &&
+      confirmPassword.current.value.length > 0
+    ) {
+      setDisabled(false);
+    }
+    // if all inputs are valid, setValid(true)
+    setValid(true);
+  };
+
+  const handleSubmit = (ev) => {
+    ev.preventDefault();
+    if (valid) {
+      const formData = {
+        firstName: firstName.current.value,
+        lastName: lastName.current.value,
+        email: email.current.value,
+        password: password.current.value,
+      };
+      console.log(formData);
+      //   loadingUser();
+      fetch(`/signup`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(formData),
+      })
+        .then((res) => res.json())
+        .then((data) => {
+          console.log(data);
+          // Go to homepage
+        })
+        .catch((err) => {
+          console.error(err);
+        });
+    }
+    history.push("/");
+  };
+
+  return (
+    <Wrapper>
+      {/* <StyledLogo> */}
+      {/* </StyledLogo> */}
+      <Title>Sign up to Movie Mood</Title>
+      <SignUpForm>
+        <FirstName
+          type="text"
+          name="first-name"
+          required
+          placeholder="First Name"
+          ref={firstName}
+          onChange={handleChange}
+        ></FirstName>
+        <LastName
+          type="text"
+          name="last-name"
+          required
+          placeholder="Last Name"
+          ref={lastName}
+          onChange={handleChange}
+        ></LastName>
+
+        <Email
+          type="email"
+          name="email"
+          required
+          placeholder="E-mail"
+          ref={email}
+          onChange={handleChange}
+        ></Email>
+
+        <Password
+          type="password"
+          name="password"
+          required
+          placeholder="Password"
+          ref={password}
+          onChange={handleChange}
+        ></Password>
+        {/* Show/hide eye icon */}
+        <ConfirmPassword
+          type="password"
+          name="confirm-password"
+          required
+          placeholder="Confirm Password"
+          ref={confirmPassword}
+          onChange={handleChange}
+        ></ConfirmPassword>
+
+        <SignUpBtn
+          type="submit"
+          onClick={(ev) => handleSubmit(ev)}
+          disabled={disabled}
+        >
+          Sign Up
+          {/* {status === "loading-user" ? <Loading size="18" /> : "Sign Up"} */}
+        </SignUpBtn>
+      </SignUpForm>
+
+      <StyledInfo>
+        Already have an account? <LoginLink to="/SignIn">Login</LoginLink>
+      </StyledInfo>
+    </Wrapper>
+  );
+};
+
+const Wrapper = styled.div`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  min-height: calc(100vh - 150px);
+  padding: 16px;
+`;
+
+const StyledLogo = styled.div`
+  font-size: 48px;
+  margin-bottom: 16px;
+`;
+
+const Title = styled.h1`
+  font-size: 18px;
+  margin-bottom: 24px;
+  color: darkblue;
+`;
+
+const SignUpForm = styled.form`
+  display: flex;
+  flex-direction: column;
+  background-color: lightpink;
+  border: 1px solid grey;
+  padding: 16px;
+  border-radius: 4px;
+  width: 336px;
+`;
+
+const StyledInfo = styled.div`
+  text-align: center;
+  font-size: 14px;
+  margin-top: 16px;
+  width: 262px;
+  background-color: lightpink;
+  border: 1px solid grey;
+  padding: 16px;
+  border-radius: 4px;
+  width: 336px;
+`;
+
+const StyledInput = styled.input`
+  border: 1px solid grey;
+  margin-bottom: 12px;
+`;
+
+const FirstName = styled(StyledInput)``;
+const LastName = styled(StyledInput)``;
+const Email = styled(StyledInput)``;
+const Password = styled(StyledInput)``;
+const ConfirmPassword = styled(StyledInput)``;
+
+const SignUpBtn = styled.button`
+  border: none;
+  background-color: purple;
+  color: lightpink;
+  font-size: 16px;
+  padding: 8px 12px;
+  border-radius: 4px;
+  margin-bottom: 12px;
+
+  ${({ disabled }) =>
+    disabled
+      ? `
+      cursor: not-allowed;
+      opacity: 0.5;
+      `
+      : `
+      cursor: pointer;
+  `};
+`;
+
+const LoginLink = styled(NavLink)``;
+
+export default SignUp;

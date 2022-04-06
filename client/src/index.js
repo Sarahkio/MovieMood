@@ -1,10 +1,13 @@
 import React from "react";
 import ReactDOM from "react-dom";
-import App from "./App";
+import App from "./components/App";
+import { GenreProvider } from "./components/GenreContext";
 
 ReactDOM.render(
   <React.StrictMode>
-    <App />
+    <GenreProvider>
+      <App />
+    </GenreProvider>
   </React.StrictMode>,
   document.getElementById("root")
 );
