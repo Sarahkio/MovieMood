@@ -41,7 +41,7 @@ const Home = () => {
               </div>
             );
           })}
-          <Link to={`/movies/genre/${SelectedGenresString}`}>
+          <Link to={`/movies/genre/${SelectedGenresString}?page=1`}>
             <div>See Movies</div>
           </Link>
         </CategoriesWrapper>

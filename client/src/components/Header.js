@@ -1,12 +1,12 @@
 import styled from "styled-components";
 import { Link } from "react-router-dom";
-import { useHistory } from "react-router-dom";
+// import { useHistory } from "react-router-dom";
 import Search from "./Search";
 import { useContext } from "react";
 import { CurrentUserContext } from "./CurrentUserContext";
 
 const Header = () => {
-  let history = useHistory();
+  // let history = useHistory();
   const { currentUser, setCurrentUser } = useContext(CurrentUserContext);
   let userObj = JSON.parse(localStorage.getItem("user"));
   const handleLogout = () => {
@@ -33,10 +33,10 @@ const Header = () => {
             {userObj.firstName} {userObj.lastName}
           </div>
         )}
-        <Form id="form">
+        <Div>
           <Search />
           {/* <Input type="text" placeholder="search"></Input> */}
-        </Form>
+        </Div>
       </Wrapper>
     </MainWrapper>
   );
@@ -101,6 +101,6 @@ const Input = styled.input`
   }
 `;
 
-const Form = styled.form``;
+const Div = styled.div``;
 
 export default Header;

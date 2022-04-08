@@ -1,16 +1,16 @@
 import { useState, useEffect, useRef } from "react";
-import { useParams } from "react-router-dom";
+import { Link, useParams } from "react-router-dom";
 import styled from "styled-components";
 import { useHistory } from "react-router-dom";
 
 const Search = () => {
-  const [page, setPage] = useState(1);
+  //   const [page, setPage] = useState(1);
   const [searchText, setSearchText] = useState("");
   const [content, setContent] = useState();
   const [numOfPages, setNumOfPages] = useState();
 
   let history = useHistory();
-
+  const search = useRef();
   const fetchSearch = () => {
     // movies of the specific genre
     // fetch(`/search/${searchText}?page=${page}`)
@@ -19,7 +19,10 @@ const Search = () => {
     //     setContent(data.data);
     //     // console.log(data.data);
     //     setNumOfPages(data.total_pages);
-    history.push(`/movies/title/${searchText}`);
+    // (`/movies/title/${searchText}?page=1`);
+    // search.current.value();
+    history.push(`/movies/title/${searchText}?page=1`);
+    // history.push(`/movies/title/${searchText}${history.location.search}`);
     //   });
   };
 
@@ -33,7 +36,9 @@ const Search = () => {
           e.key === "Enter" && fetchSearch();
         }}
       ></Input>
-      {/* <button onClick={fetchSearch}>Go</button> */}
+      <Link ref={search} to={`/movies/title/${searchText}?page=1`}>
+        Go
+      </Link>
     </>
   );
 };

@@ -80,6 +80,7 @@ const getGenre = async (req, res) => {
 const getMovie = async (req, res) => {
   const client = new MongoClient(MONGO_URI, options);
   const id = req.params.id;
+
   try {
     // console.log("starting connection");
     await client.connect();
