@@ -1,11 +1,14 @@
 import styled from "styled-components";
 import { useState, useRef, useContext } from "react";
 import { useHistory, NavLink } from "react-router-dom";
+import { CurrentUserContext } from "./CurrentUserContext";
 
 const SignUp = () => {
   const history = useHistory();
   const [disabled, setDisabled] = useState(true);
   const [valid, setValid] = useState(false);
+  const [loginError, setLoginError] = useState(null);
+  const { currentUser, setCurrentUser } = useContext(CurrentUserContext);
 
   // create a reference for each input to store the values
   const firstName = useRef();
@@ -43,24 +46,31 @@ const SignUp = () => {
         password: password.current.value,
       };
       console.log(formData);
-      //   loadingUser();
-      fetch(`/signup`, {
+
+      const requestOptions = {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
         },
         body: JSON.stringify(formData),
-      })
+      };
+      fetch(`/signup`, requestOptions)
         .then((res) => res.json())
         .then((data) => {
-          console.log(data);
-          // Go to homepage
+          console.log(data, "data");
+          if (data.data) {
+            window.localStorage.setItem("user", JSON.stringify(data.data));
+            history.push("/");
+            setCurrentUser(data.data);
+          } else {
+            setLoginError("error");
+          }
         })
         .catch((err) => {
           console.error(err);
         });
     }
-    history.push("/");
+    // history.push("/");
   };
 
   return (
@@ -119,7 +129,7 @@ const SignUp = () => {
           disabled={disabled}
         >
           Sign Up
-          {/* {status === "loading-user" ? <Loading size="18" /> : "Sign Up"} */}
+          {loginError === "error" && <Message>user does not exist</Message>}
         </SignUpBtn>
       </SignUpForm>
 
@@ -129,6 +139,11 @@ const SignUp = () => {
     </Wrapper>
   );
 };
+
+const Message = styled.div`
+  color: red;
+  font-weight: bold;
+`;
 
 const Wrapper = styled.div`
   display: flex;

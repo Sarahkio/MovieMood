@@ -44,7 +44,14 @@ const MovieDetails = () => {
               <ElementVote>{movieDetails.vote_average}</ElementVote>
               <div>{movieDetails.status}</div>
               <div>{movieDetails.tagline}</div>
-              <button onClick={() => history.goBack()}>Previous Page</button>
+              <button
+                onClick={(e) => {
+                  e.preventDefault();
+                  history.goBack();
+                }}
+              >
+                Previous Page
+              </button>
             </CategoryWrapper>
           </div>
         </CategoriesWrapper>

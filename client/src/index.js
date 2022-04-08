@@ -2,12 +2,16 @@ import React from "react";
 import ReactDOM from "react-dom";
 import App from "./components/App";
 import { GenreProvider } from "./components/GenreContext";
+import { CurrentUserProvider } from "./components/CurrentUserContext";
+// import {MovieProvider} from "./components/MovieContext"
 
 ReactDOM.render(
   <React.StrictMode>
-    <GenreProvider>
-      <App />
-    </GenreProvider>
+    <CurrentUserProvider>
+      <GenreProvider>
+        <App />
+      </GenreProvider>
+    </CurrentUserProvider>
   </React.StrictMode>,
   document.getElementById("root")
 );

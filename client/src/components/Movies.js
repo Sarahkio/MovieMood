@@ -1,35 +1,56 @@
-import { useContext } from "react";
+// import { useContext } from "react";
 import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import { NavLink } from "react-router-dom";
 import styled from "styled-components";
-import { GenreContext } from "./GenreContext";
+// import { GenreContext } from "./GenreContext";
 import { useHistory } from "react-router-dom";
 
 const Home = () => {
   const [movies, setMovies] = useState(null);
   const [message, setMessage] = useState("");
   const [totalPages, setTotalPages] = useState(null);
-  const { names } = useParams();
+  const { searchType, searchParams } = useParams();
   const IMG_URI = "https://image.tmdb.org/t/p/w500";
   const BASE_URI = "https://api.themoviedb.org/3";
-  // const [page, setPage] = useState(1);
-  const { page, setPage } = useContext(GenreContext);
+  const [page, setPage] = useState(1);
+  //   const {
+  //     error,
+  //     setError,
+  //     // movies,
+  //     // setMovies,
+  //     // message,
+  //     // setMessage,
+  //     // totalPages,
+  //     // setTotalPages,
+  //   } = useContext(GenreContext);
 
   let history = useHistory();
-
+  //   console.log(searchType);
   useEffect(() => {
     // movies of the specific genre
-    fetch(`/movies/genre/${names}?page=${page}`)
-      .then((res) => res.json())
-      .then((data) => {
-        if (data.data.length !== 0) {
+    if (searchType === "genre") {
+      fetch(`/movies/genre/${searchParams}?page=${page}`)
+        .then((res) => res.json())
+        .then((data) => {
+          if (data.data.length !== 0) {
+            setMovies(data.data);
+            setTotalPages(data.total_pages);
+          } else {
+            setMessage("No Results");
+          }
+        });
+    } else if (searchType === "title") {
+      console.log("title search");
+      fetch(`/search/${searchParams}?page=${page}`)
+        .then((res) => res.json())
+        .then((data) => {
           setMovies(data.data);
+          // console.log(data.data);
           setTotalPages(data.total_pages);
-        } else {
-          setMessage("No Results");
-        }
-      });
+          // history.push()
+        });
+    }
   }, [page]);
 
   if (!movies) {
@@ -61,7 +82,14 @@ const Home = () => {
                       {element.poster_path ? (
                         <Element src={IMG_URI + element.poster_path}></Element>
                       ) : (
-                        <ElementNot>Picture not found</ElementNot>
+                        <>
+                          <Element
+                            style={{ display: "none" }}
+                            src={IMG_URI + element.poster_path}
+                          ></Element>
+
+                          <ElementNot>Picture not found</ElementNot>
+                        </>
                       )}
                     </ElementWrap>
                     <InfoWrapper>
@@ -93,7 +121,7 @@ const Home = () => {
             <Prev onClick={prevHandle}>Previous Page</Prev>
           )}
           <Page>{page}</Page>
-          {page !== totalPages ? (
+          {page < totalPages ? (
             <Next onClick={nextHandle}>Next Page</Next>
           ) : (
             <>
@@ -141,6 +169,10 @@ const Next = styled.button`
   border: none;
   background-color: transparent;
   color: white;
+
+  &:disabled {
+    color: gray;
+  }
 `;
 
 const Page = styled.div`

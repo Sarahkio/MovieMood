@@ -7,6 +7,7 @@ import Header from "./Header";
 import MovieDetails from "./MovieDetails";
 import SignIn from "./SignIn";
 import SignUp from "./SignUp";
+import Search from "./Search";
 
 const App = () => {
   return (
@@ -18,11 +19,14 @@ const App = () => {
           <Route exact path="/">
             <Home />
           </Route>
-          <Route exact path="/movies/genre/:names">
+          <Route exact path="/movies/:searchType/:searchParams">
             <Movies />
           </Route>
           <Route exact path="/movie/:id">
             <MovieDetails />
+          </Route>
+          <Route exact path="/search/movie">
+            <Search />
           </Route>
           <Route exact path="/signUp">
             <SignUp />

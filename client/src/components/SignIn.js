@@ -2,7 +2,7 @@ import styled from "styled-components";
 import { useState, useRef, useContext } from "react";
 import { useHistory, NavLink } from "react-router-dom";
 
-const SignUp = () => {
+const SignIn = () => {
   const history = useHistory();
   const [disabled, setDisabled] = useState(true);
   const [valid, setValid] = useState(false);
@@ -28,13 +28,16 @@ const SignUp = () => {
         password: password.current.value,
       };
       console.log(formData);
-      fetch(`signin`, {
+
+      const requestOptions = {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
         },
         body: JSON.stringify(formData),
-      })
+      };
+
+      fetch(`signin`, requestOptions)
         .then((res) => res.json())
         .then((json) => {
           console.log(json);
@@ -156,4 +159,4 @@ const LoginBtn = styled.button`
 
 const LoginLink = styled(NavLink)``;
 
-export default SignUp;
+export default SignIn;

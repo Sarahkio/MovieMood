@@ -1,9 +1,18 @@
 import styled from "styled-components";
 import { Link } from "react-router-dom";
 import { useHistory } from "react-router-dom";
+import Search from "./Search";
+import { useContext } from "react";
+import { CurrentUserContext } from "./CurrentUserContext";
 
 const Header = () => {
   let history = useHistory();
+  const { currentUser, setCurrentUser } = useContext(CurrentUserContext);
+  let userObj = JSON.parse(localStorage.getItem("user"));
+  const handleLogout = () => {
+    setCurrentUser(null);
+    // sessionStorage.removeItem("user");  I dont need this
+  };
 
   return (
     <MainWrapper>
@@ -13,10 +22,20 @@ const Header = () => {
         </Link>
       </TitleWrap>
       <Wrapper>
-        <SignUp onClick={() => history.push("./SignUp")}>Sign Up</SignUp>
-        <SignIn>Sign In</SignIn>
+        {!currentUser && (
+          <>
+            <SignUp to="/signUp">Sign Up</SignUp>
+            <SignIn to="/signIn">Sign In</SignIn>
+          </>
+        )}
+        {currentUser && (
+          <div>
+            {userObj.firstName} {userObj.lastName}
+          </div>
+        )}
         <Form id="form">
-          <Input type="text" placeholder="search"></Input>
+          <Search />
+          {/* <Input type="text" placeholder="search"></Input> */}
         </Form>
       </Wrapper>
     </MainWrapper>
@@ -47,7 +66,7 @@ const Wrapper = styled.div`
   background-color: #373b69;
 `;
 
-const SignIn = styled.button`
+const SignIn = styled(Link)`
   display: flex;
   color: white;
   align-items: center;
@@ -55,7 +74,7 @@ const SignIn = styled.button`
   border: none;
 `;
 
-const SignUp = styled.button`
+const SignUp = styled(Link)`
   display: flex;
   color: white;
   align-items: center;
