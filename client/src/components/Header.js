@@ -8,10 +8,10 @@ import { CurrentUserContext } from "./CurrentUserContext";
 const Header = () => {
   // let history = useHistory();
   const { currentUser, setCurrentUser } = useContext(CurrentUserContext);
-  let userObj = JSON.parse(localStorage.getItem("user"));
+  // let userObj = JSON.parse(localStorage.getItem("user"));
   const handleLogout = () => {
     setCurrentUser(null);
-    // sessionStorage.removeItem("user");  I dont need this
+    localStorage.removeItem("user");
   };
 
   return (
@@ -25,13 +25,24 @@ const Header = () => {
         {!currentUser && (
           <>
             <SignUp to="/signUp">Sign Up</SignUp>
+            {/* <SignIn
+              onClick={(ev) => {
+                ev.stopPropagation();
+              }}
+              to={"/signIn"}
+            >
+              Sign In
+            </SignIn> */}
             <SignIn to="/signIn">Sign In</SignIn>
           </>
         )}
         {currentUser && (
-          <div>
-            {userObj.firstName} {userObj.lastName}
-          </div>
+          <>
+            <div>
+              {currentUser.firstName} {currentUser.lastName}
+            </div>
+            <SignUp onClick={handleLogout}>Sign Out</SignUp>
+          </>
         )}
         <Div>
           <Search />

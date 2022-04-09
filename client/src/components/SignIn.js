@@ -1,11 +1,14 @@
 import styled from "styled-components";
 import { useState, useRef, useContext } from "react";
 import { useHistory, NavLink } from "react-router-dom";
+import { CurrentUserContext } from "./CurrentUserContext";
 
 const SignIn = () => {
   const history = useHistory();
   const [disabled, setDisabled] = useState(true);
   const [valid, setValid] = useState(false);
+  const [loginError, setLoginError] = useState(null);
+  const { current, setCurrentUser } = useContext(CurrentUserContext);
 
   // create a reference for each input to store the values
   const email = useRef();
@@ -13,7 +16,7 @@ const SignIn = () => {
 
   // check if all inputs are filled--if true, enable Sign Up button
   const handleChange = (ev) => {
-    if (email.current.value.length > 3 && password.current.value.length > 3) {
+    if (email.current.value.length >= 3 && password.current.value.length >= 3) {
       setDisabled(false);
     }
     // if all inputs are valid, setValid(true)
@@ -37,12 +40,25 @@ const SignIn = () => {
         body: JSON.stringify(formData),
       };
 
-      fetch(`signin`, requestOptions)
+      fetch(`/signin`, requestOptions)
         .then((res) => res.json())
-        .then((json) => {
-          console.log(json);
-          // Go to homepage
-          history.push("/");
+        .then((data) => {
+          console.log(data, "data");
+
+          if (data.data) {
+            window.localStorage.setItem(
+              "user",
+              JSON.stringify(data.data.userName)
+            );
+            setCurrentUser(data.data);
+            history.push("/");
+          } else {
+            setLoginError("error");
+          }
+          //   console.log(data);
+          //   // Go to homepage
+          //   setCurrentUser(data.data);
+          //   history.push("/");
         })
         .catch((err) => {
           console(err);

@@ -16,12 +16,12 @@ export const CurrentUserProvider = ({ children }) => {
       setCurrentUser(userObj);
     }
 
-    fetch("/users")
+    fetch(`/user/${userObj}`)
       .then((res) => res.json())
       .then((data) => {
         setStatus(data.status);
-        setUsers(data.data);
-        // setCurrentUser(data.data);
+        // setUsers(data.data);
+        setCurrentUser(data.data);
       })
       .catch((err) => {
         setError(err);

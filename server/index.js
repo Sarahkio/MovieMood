@@ -16,6 +16,8 @@ const {
   signIn,
   searchByName,
   getUsers,
+  getUser,
+  addFriends,
 } = require("./handlers");
 
 app.use("/assets", express.static(path.join(__dirname, "assets")));
@@ -25,7 +27,10 @@ app.get("/movies/genre/:names", getGenre); // movies of the specific genre
 app.get("/movie/:id", getMovie); // movie details
 app.post("/signup", signUp);
 app.post("/signin", signIn);
-app.get("/users", getUsers);
+app.get("/users", getUsers); // get users
+app.get("/user/:userName", getUser); // get user by id
+app.patch("/user/add-friends/:friendsUserName", addFriends); // add friends
+
 app.get("/search/:movie", searchByName); // get/search movie
 
 app.listen(PORT, () => console.info(`Listening on port ${PORT}`));

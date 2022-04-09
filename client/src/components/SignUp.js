@@ -16,6 +16,7 @@ const SignUp = () => {
   const email = useRef();
   const password = useRef();
   const confirmPassword = useRef();
+  const userName = useRef();
 
   const handleChange = (ev) => {
     if (password.current.value !== confirmPassword.current.value) {
@@ -28,7 +29,8 @@ const SignUp = () => {
       lastName.current.value.length > 0 &&
       email.current.value.length > 0 &&
       password.current.value.length > 0 &&
-      confirmPassword.current.value.length > 0
+      confirmPassword.current.value.length > 0 &&
+      userName.current.value.length > 0
     ) {
       setDisabled(false);
     }
@@ -42,6 +44,7 @@ const SignUp = () => {
       const formData = {
         firstName: firstName.current.value,
         lastName: lastName.current.value,
+        userName: userName.current.value,
         email: email.current.value,
         password: password.current.value,
       };
@@ -59,9 +62,12 @@ const SignUp = () => {
         .then((data) => {
           console.log(data, "data");
           if (data.data) {
-            window.localStorage.setItem("user", JSON.stringify(data.data));
-            history.push("/");
+            window.localStorage.setItem(
+              "user",
+              JSON.stringify(data.data.userName)
+            );
             setCurrentUser(data.data);
+            history.push("/");
           } else {
             setLoginError("error");
           }
@@ -95,6 +101,14 @@ const SignUp = () => {
           ref={lastName}
           onChange={handleChange}
         ></LastName>
+        <UserName
+          type="text"
+          name="last-name"
+          required
+          placeholder="Last Name"
+          ref={userName}
+          onChange={handleChange}
+        ></UserName>
 
         <Email
           type="email"
@@ -193,6 +207,8 @@ const StyledInput = styled.input`
 
 const FirstName = styled(StyledInput)``;
 const LastName = styled(StyledInput)``;
+const UserName = styled(StyledInput)``;
+
 const Email = styled(StyledInput)``;
 const Password = styled(StyledInput)``;
 const ConfirmPassword = styled(StyledInput)``;

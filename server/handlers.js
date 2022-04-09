@@ -113,7 +113,10 @@ const signUp = async (req, res) => {
     _id: req.body._id,
     firstName: req.body.firstName,
     lastName: req.body.lastName,
+    // userName: req.body.userName,
+    userName: req.body.userName,
     email: req.body.email,
+    friends: [],
     // password: req.body.password,
   };
 
@@ -121,7 +124,10 @@ const signUp = async (req, res) => {
   try {
     await client.connect();
     const query = { email: req.body.email };
-    const user = await db.collection("users").findOne(query);
+    const queryUserName = { userName: req.body.userName };
+    const user = await db
+      .collection("users")
+      .findOne({ $or: [query, queryUserName] });
     let salt = await bcrypt.genSalt(10);
     let hashPassword = await bcrypt.hash(req.body.password, salt);
     if (user) {
@@ -157,11 +163,28 @@ const signIn = async (req, res) => {
   try {
     await client.connect();
     const query = { email: req.body.email };
+    // const query2 = {
+    //   firstName: req.body.firstName,
+    //   lastName: req.body.lastName,
+    // };
     const user = await db.collection("users").findOne(query);
     // let salt = await bcrypt.genSalt(10);
     let hashPassword = await bcrypt.compare(req.body.password, user.password);
     if (hashPassword) {
-      res.status(200).json({ status: 200, message: "valid password" });
+      //   let users = await db
+      //     .collection("users")
+      //     .insertOne({ ...body, password: hashPassword });
+      res.status(200).json({
+        status: 200,
+        data: {
+          firstName: user.firstName,
+          lastName: user.lastName,
+          userName: user.userName,
+          email: user.email,
+          friends: user.friends,
+        },
+        message: "valid password",
+      });
     } else {
       //   let users = await db
       //     .collection("users")
@@ -220,6 +243,85 @@ const getUsers = async (req, res) => {
   }
 };
 
+const getUser = async (req, res) => {
+  const client = new MongoClient(MONGO_URI, options);
+  // const userId = req.params.id;
+  // const query = findUser(res.locals.users, userId);
+  try {
+    await client.connect();
+    const db = client.db("movies");
+    const query = {
+      userName: req.params.userName,
+    };
+    const username = await db.collection("users").findOne(query);
+    if (username) {
+      res.status(200).json({ status: 200, data: username });
+    } else {
+      res.status(400).json({ status: 400, message: "err getting username" });
+    }
+  } catch (err) {
+    res.status(500).json({ status: 500, message: "unknown error" });
+  } finally {
+    client.close();
+  }
+};
+
+const addFriends = async (req, res) => {
+  const client = new MongoClient(MONGO_URI, options);
+  // const userId = req.params.id;
+  //   const userName = req.params.userName;
+  // const query = findUser(res.locals.users, userId);
+  try {
+    await client.connect();
+    const db = client.db("movies");
+    const query = {
+      userName: req.body.userName,
+    };
+    console.log("queryuser", query);
+    const query2 = {
+      friends: req.params.friendsUserName,
+    };
+    console.log("query2frriends", query2);
+    // const user = await db
+    //   .collection("users")
+    //   .findOne({ $or: [query, queryUserName] });
+    const user = await db.collection("users").findOne(query);
+    const friends = await db.collection("users").findOne(query2);
+    console.log("username", user);
+    // console.log("friends", friends);
+    const update = {
+      $push: {
+        friends: req.params.friendsUserName,
+      },
+    };
+    console.log("friends", update);
+    const update2 = {
+      $push: {
+        userName: req.body.userName,
+      },
+    };
+    console.log("username", update2);
+    const updateMyFriends = await db
+      .collection("users")
+      .updateOne(query, update);
+    const updateFriends = await db
+      .collection("users")
+      .updateOne(query2, update2);
+    console.log(updateFriends);
+    console.log(updateFriends);
+    if (updateFriends.modifiedCount && updateMyFriends.modifiedCount) {
+      res.status(200).json({ status: 200, friends, user });
+    } else {
+      res.status(400).json({ status: 400, message: "err getting friends" });
+    }
+  } catch (err) {
+    console.log(err.stack);
+    res.status(500).json({ status: 500, message: "unknown error" });
+  } finally {
+    client.close();
+  }
+};
+
 module.exports = {
   getGenres,
   getGenre,
@@ -228,4 +330,6 @@ module.exports = {
   signIn,
   searchByName,
   getUsers,
+  getUser,
+  addFriends,
 };
