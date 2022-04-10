@@ -318,16 +318,14 @@ const addFriends = async (req, res) => {
     //   { username: req.body.username },
     //   { $push: { friends: YOU } }
     // );
-
     // xxxx.updateOne(
     //   { username: req.body.username },
     //   { $push: { friends: currentUser } }
     // );
     // const friends = await db.collection("users").findOne(query2);
-
     // do i need an include functioin?
     // // filter out duplicates, use set instead to filter method
-    // const set = new Set(friendsArray);
+    // const set = new Set(user);
     // // set is showing the object, we want set to show the array
     // console.log(set);
     // console.log("username", user);

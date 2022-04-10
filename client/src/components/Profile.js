@@ -11,28 +11,40 @@ import SearchUser from "./SearchUser";
 const Profile = () => {
   const { currentUser, setError, setCurrentUser } =
     useContext(CurrentUserContext);
-  const { userName } = useParams();
+  const { userName: friendUserName } = useParams();
   const [currentProfile, setCurrentProfile] = useState({});
+  const [reload, setReload] = useState(false);
   //   const [currentFeed, setCurrentFeed] = useState(null);
   const [status, setStatus] = useState("loading");
-  console.log(userName);
-  const [addStatus, setAddStatus] = useState(false);
+  // setStatus("loading");
+  console.log(friendUserName);
+  // const [addStatus, setAddStatus] = useState(false);
 
   // add friends *****
   const handleFollow = () => {
     const requestOptions = {
-      method: "PUT",
+      method: "PATCH",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({ userName: currentUser.userName }),
     };
 
-    fetch(`/user/add-friends/${userName}`, requestOptions).then((response) => {
-      response.json();
+    fetch(`/user/add-friends/${friendUserName}`, requestOptions).then(
+      (response) => {
+        response.json();
+        setCurrentUser({
+          ...currentUser,
+          friends: [...currentUser.friends, friendUserName],
+        });
 
-      setAddStatus(true);
-    });
+        // setAddStatus(true);
+      }
+    );
   };
 
   useEffect(() => {
-    fetch(`/user/${userName}`)
+    fetch(`/user/${friendUserName}`)
       .then((res) => res.json())
       .then((data) => {
         setCurrentProfile(data.data);
@@ -42,17 +54,20 @@ const Profile = () => {
       .catch((err) => {
         setError(err);
       });
-  }, [userName]);
+  }, [friendUserName]);
 
-  console.log(currentProfile);
-
-  // const friend = currentProfile.friends.finds((friend) => {
-  //   return friend === friend.id;
-  // });
-
-  // const FriendAdded = currentProfile.friends.includes((friend) => {
+  // console.log(currentProfile.friends.includes(currentUser));
+  // const FriendAdded = currentProfile.friends.find((friend) => {
   //   return friend;
   // });
+
+  // console.log(FriendAdded);
+
+  // const friendArray = currentProfile.friends.filter(
+  //   (item) => !currentUser.includes(item)
+  // );
+
+  // console.log(friendArray);
 
   // comments useEffect *****
 
@@ -65,18 +80,26 @@ const Profile = () => {
   return (
     <>
       {status === "loading" && <div>Loading...</div>}
-      {status === "loaded" && currentUser && (
+      {status === "loaded" && currentProfile && currentUser && (
         <ProfileWrapper>
           <SearchUser />
           <FirstName>{currentProfile.firstName}</FirstName>
           <LastName>{currentProfile.lastName}</LastName>
           <UserName>{currentProfile.userName}</UserName>
           {currentProfile?.userName !== currentUser?.userName && (
-            <AddButton onClick={handleFollow}>
-              {currentUser.friends.includes(currentProfile.friends)
-                ? "Friend"
-                : "Add Friend"}
-            </AddButton>
+            <>
+              {currentUser.friends.includes(friendUserName) ? (
+                <>
+                  <Friend>Friend</Friend>
+                  <Delete>delete friend</Delete>
+                </>
+              ) : (
+                <AddButton onClick={handleFollow}>Add Friend</AddButton>
+              )}
+              {/* <AddButton onClick={handleFollow}>
+                {FriendAdded ? "Friend" : "Add Friend"}
+              </AddButton> */}
+            </>
           )}
           <FriendsWrapperr>
             <FriendsWrapperTitle>
@@ -87,7 +110,7 @@ const Profile = () => {
             </FriendsWrapperTitle>
             <FriendsWrapperImages>
               {currentProfile &&
-                currentProfile.friends.map((id) => {
+                currentProfile?.friends.map((id) => {
                   return <FriendsProfile id={id} />;
                 })}
             </FriendsWrapperImages>
@@ -116,6 +139,8 @@ const FriendsWrapperImages = styled.div`
   display: flex;
 `;
 const AddButton = styled.button``;
+const Friend = styled.div``;
+const Delete = styled.button``;
 
 const FriendsWrapperr = styled.div`
   margin-top: 120px;

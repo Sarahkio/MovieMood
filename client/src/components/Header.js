@@ -41,12 +41,8 @@ const Header = () => {
             <div>
               {currentUser.firstName} {currentUser.lastName}
             </div>
-            <Profile
-              onClick={() => history.push(`/users/${currentUser.userName}`)}
-            >
-              Profile
-            </Profile>
-            <SignUp onClick={handleLogout}>Sign Out</SignUp>
+            <Profile to={`/user/${currentUser.userName}`}>Profile</Profile>
+            <SignOut onClick={handleLogout}>Sign Out</SignOut>
           </>
         )}
         <Div>
@@ -91,6 +87,14 @@ const SignIn = styled(Link)`
 `;
 
 const SignUp = styled(Link)`
+  display: flex;
+  color: white;
+  align-items: center;
+  background-color: transparent;
+  border: none;
+`;
+
+const SignOut = styled.button`
   display: flex;
   color: white;
   align-items: center;

@@ -19,6 +19,8 @@ const {
   getUser,
   addFriends,
   searchByFriendsUserName,
+  getComments,
+  getComment,
 } = require("./handlers");
 
 app.use("/assets", express.static(path.join(__dirname, "assets")));
@@ -31,6 +33,10 @@ app.post("/signin", signIn);
 app.get("/users", getUsers); // get users
 app.get("/user/:userName", getUser); // get user by id
 app.patch("/user/add-friends/:friendsUserName", addFriends); // add friends
+// delete friend
+// app.post("/comments", getComments); // post comments
+// app.get("/comment/:id", getComment); // get specific comment ?
+// delete comments
 
 app.get("/search/:movie", searchByName); // get/search movie
 app.get("/search/user/:friendsUserName", searchByFriendsUserName); // search friend username

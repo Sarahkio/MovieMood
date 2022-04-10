@@ -9,7 +9,7 @@ const Search = () => {
   let history = useHistory();
   const search = useRef();
   const fetchSearch = () => {
-    history.push(`/users/${searchText}`);
+    history.push(`/user/${searchText}`);
   };
 
   return (
@@ -22,7 +22,7 @@ const Search = () => {
           e.key === "Enter" && fetchSearch();
         }}
       ></Input>
-      <Link ref={search} to={`/users/${searchText}`}>
+      <Link ref={search} to={`/user/${searchText}`}>
         Go
       </Link>
     </>
