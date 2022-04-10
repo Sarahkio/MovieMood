@@ -344,18 +344,52 @@ const addFriends = async (req, res) => {
     // console.log("username", update2);
     const updateMyFriends = await db
       .collection("users")
-      .updateOne(query, update);
+      .findOneAndUpdate(query, update, { returnDocument: "after" });
     // const updateFriends = await db
     //   .collection("users")
     //   .updateOne(query2, update2);
     if (updateMyFriends) {
-      res.status(200).json({ status: 200, user });
+      res.status(200).json({ status: 200, data: updateMyFriends.value });
     } else {
       res.status(400).json({ status: 400, message: "err getting friends" });
     }
   } catch (err) {
     console.log(err.stack);
     res.status(500).json({ status: 500, message: "unknown error" });
+  } finally {
+    client.close();
+  }
+};
+
+const removeFriends = async (req, res) => {
+  const client = new MongoClient(MONGO_URI, options);
+  try {
+    await client.connect();
+    const db = client.db("movies");
+    const query = {
+      userName: req.body.userName,
+    };
+    const friend = await db.collection("users").findOne(query);
+
+    const update = {
+      $pull: {
+        friends: req.params.friendsUserName,
+      },
+    };
+    const removeFriend = await db
+      .collection("users")
+      .findOneAndUpdate(query, update, { returnDocument: "after" });
+    if (removeFriend) {
+      res.status(200).json({ status: 200, data: removeFriend.value });
+    } else {
+      res.status(400).json({
+        status: 400,
+        message: "no friends to remove",
+      });
+    }
+  } catch (err) {
+    console.log(err);
+    res.status(500).json({ status: 500, message: "Unknown error" });
   } finally {
     client.close();
   }
@@ -372,4 +406,5 @@ module.exports = {
   getUser,
   addFriends,
   searchByFriendsUserName,
+  removeFriends,
 };

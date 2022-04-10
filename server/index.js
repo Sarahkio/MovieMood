@@ -19,8 +19,7 @@ const {
   getUser,
   addFriends,
   searchByFriendsUserName,
-  getComments,
-  getComment,
+  removeFriends,
 } = require("./handlers");
 
 app.use("/assets", express.static(path.join(__dirname, "assets")));
@@ -32,8 +31,8 @@ app.post("/signup", signUp);
 app.post("/signin", signIn);
 app.get("/users", getUsers); // get users
 app.get("/user/:userName", getUser); // get user by id
-app.patch("/user/add-friends/:friendsUserName", addFriends); // add friends
-// delete friend
+app.patch("/user/add-friends/:friendsUserName", addFriends); // add friends to friends array
+app.patch("/user/remove-friends/:friendsUserName", removeFriends); // remove friends froom frriends array
 // app.post("/comments", getComments); // post comments
 // app.get("/comment/:id", getComment); // get specific comment ?
 // delete comments

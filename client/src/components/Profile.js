@@ -16,6 +16,8 @@ const Profile = () => {
   const [reload, setReload] = useState(false);
   //   const [currentFeed, setCurrentFeed] = useState(null);
   const [status, setStatus] = useState("loading");
+  // const [message, setMessage] = useState("");
+
   // setStatus("loading");
   console.log(friendUserName);
   // const [addStatus, setAddStatus] = useState(false);
@@ -30,17 +32,44 @@ const Profile = () => {
       body: JSON.stringify({ userName: currentUser.userName }),
     };
 
-    fetch(`/user/add-friends/${friendUserName}`, requestOptions).then(
-      (response) => {
-        response.json();
-        setCurrentUser({
-          ...currentUser,
-          friends: [...currentUser.friends, friendUserName],
-        });
+    fetch(`/user/add-friends/${friendUserName}`, requestOptions)
+      .then((response) => {
+        return response.json();
+        // setCurrentUser({
+        //   ...currentUser,
+        //   friends: [...currentUser.friends, friendUserName],
+        // });
 
         // setAddStatus(true);
-      }
-    );
+      })
+      .then((data) => {
+        setCurrentUser(data.data);
+      });
+  };
+
+  // remove friends ******
+  const handleUnFollow = () => {
+    const requestOptions = {
+      method: "PATCH",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({ userName: currentUser.userName }),
+    };
+
+    fetch(`/user/remove-friends/${friendUserName}`, requestOptions)
+      .then((response) => {
+        return response.json();
+        // console.log(response.data);
+        // setCurrentUser(response.data);
+        // setCurrentUser({
+        //   ...currentUser,
+        //   friends: [...currentUser.friends, friendUserName],
+        // });
+      })
+      .then((data) => {
+        setCurrentUser(data.data);
+      });
   };
 
   useEffect(() => {
@@ -50,6 +79,11 @@ const Profile = () => {
         setCurrentProfile(data.data);
         setStatus("loaded");
         console.log(data.data);
+        // setCurrentUser(data.data);
+
+        // if (friendUserName !== data.data.userName) {
+        //   setMessage("no results");
+        // }
       })
       .catch((err) => {
         setError(err);
@@ -91,11 +125,21 @@ const Profile = () => {
               {currentUser.friends.includes(friendUserName) ? (
                 <>
                   <Friend>Friend</Friend>
-                  <Delete>delete friend</Delete>
+                  <Delete onClick={handleUnFollow}>remove friend</Delete>
                 </>
               ) : (
                 <AddButton onClick={handleFollow}>Add Friend</AddButton>
               )}
+              {/* {currentUser.friends.includes(!friendUserName) ? (
+                <>
+                  <AddButton onClick={handleFollow}>Add Friend</AddButton>
+                </>
+              ) : (
+                <>
+                  <Friend>Friend</Friend>
+                  <Delete onClick={handleUnFollow}>remove friend</Delete>
+                </>
+              )} */}
               {/* <AddButton onClick={handleFollow}>
                 {FriendAdded ? "Friend" : "Add Friend"}
               </AddButton> */}
