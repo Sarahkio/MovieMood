@@ -225,6 +225,33 @@ const searchByName = async (req, res) => {
   }
 };
 
+const searchByFriendsUserName = async (req, res) => {
+  const client = new MongoClient(MONGO_URI, options);
+
+  try {
+    // console.log("starting connection");
+    await client.connect();
+    const db = client.db("movies");
+    const query = {
+      friendsUserName: req.params.userName,
+    };
+    const friendsUsername = await db.collection("users").findOne(query);
+    console.log(friendsUsername);
+    if (friendsUsername) {
+      res.status(200).json({ status: 200, data: friendsUsername });
+    } else {
+      res
+        .status(400)
+        .json({ status: 400, message: "friend username not founds" });
+    }
+  } catch (err) {
+    // console.log(err);
+    res.status(500).json({ status: 500, message: "unknown error" });
+  } finally {
+    client.close();
+  }
+};
+
 const getUsers = async (req, res) => {
   const client = new MongoClient(MONGO_URI, options);
   try {
@@ -260,6 +287,7 @@ const getUser = async (req, res) => {
       res.status(400).json({ status: 400, message: "err getting username" });
     }
   } catch (err) {
+    console.log(err.stack);
     res.status(500).json({ status: 500, message: "unknown error" });
   } finally {
     client.close();
@@ -274,20 +302,35 @@ const addFriends = async (req, res) => {
   try {
     await client.connect();
     const db = client.db("movies");
+
     const query = {
       userName: req.body.userName,
     };
-    console.log("queryuser", query);
-    const query2 = {
-      friends: req.params.friendsUserName,
-    };
-    console.log("query2frriends", query2);
-    // const user = await db
-    //   .collection("users")
-    //   .findOne({ $or: [query, queryUserName] });
+    // console.log("queryuser", query);
+    // const query2 = {
+    //   userName: req.body.userName,
+    // };
+    // console.log("query2frriends", query2);
+
     const user = await db.collection("users").findOne(query);
-    const friends = await db.collection("users").findOne(query2);
-    console.log("username", user);
+
+    // xxxx.updateOne(
+    //   { username: req.body.username },
+    //   { $push: { friends: YOU } }
+    // );
+
+    // xxxx.updateOne(
+    //   { username: req.body.username },
+    //   { $push: { friends: currentUser } }
+    // );
+    // const friends = await db.collection("users").findOne(query2);
+
+    // do i need an include functioin?
+    // // filter out duplicates, use set instead to filter method
+    // const set = new Set(friendsArray);
+    // // set is showing the object, we want set to show the array
+    // console.log(set);
+    // console.log("username", user);
     // console.log("friends", friends);
     const update = {
       $push: {
@@ -295,22 +338,20 @@ const addFriends = async (req, res) => {
       },
     };
     console.log("friends", update);
-    const update2 = {
-      $push: {
-        userName: req.body.userName,
-      },
-    };
-    console.log("username", update2);
+    // const update2 = {
+    //   $push: {
+    //     friends: req.body.friendsUserName,
+    //   },
+    // };
+    // console.log("username", update2);
     const updateMyFriends = await db
       .collection("users")
       .updateOne(query, update);
-    const updateFriends = await db
-      .collection("users")
-      .updateOne(query2, update2);
-    console.log(updateFriends);
-    console.log(updateFriends);
-    if (updateFriends.modifiedCount && updateMyFriends.modifiedCount) {
-      res.status(200).json({ status: 200, friends, user });
+    // const updateFriends = await db
+    //   .collection("users")
+    //   .updateOne(query2, update2);
+    if (updateMyFriends) {
+      res.status(200).json({ status: 200, user });
     } else {
       res.status(400).json({ status: 400, message: "err getting friends" });
     }
@@ -332,4 +373,5 @@ module.exports = {
   getUsers,
   getUser,
   addFriends,
+  searchByFriendsUserName,
 };

@@ -1,12 +1,12 @@
 import styled from "styled-components";
 import { Link } from "react-router-dom";
-// import { useHistory } from "react-router-dom";
+import { useHistory } from "react-router-dom";
 import Search from "./Search";
 import { useContext } from "react";
 import { CurrentUserContext } from "./CurrentUserContext";
 
 const Header = () => {
-  // let history = useHistory();
+  let history = useHistory();
   const { currentUser, setCurrentUser } = useContext(CurrentUserContext);
   // let userObj = JSON.parse(localStorage.getItem("user"));
   const handleLogout = () => {
@@ -41,6 +41,11 @@ const Header = () => {
             <div>
               {currentUser.firstName} {currentUser.lastName}
             </div>
+            <Profile
+              onClick={() => history.push(`/users/${currentUser.userName}`)}
+            >
+              Profile
+            </Profile>
             <SignUp onClick={handleLogout}>Sign Out</SignUp>
           </>
         )}
@@ -92,6 +97,8 @@ const SignUp = styled(Link)`
   background-color: transparent;
   border: none;
 `;
+
+const Profile = styled(Link)``;
 
 const Input = styled.input`
   background-color: transparent;

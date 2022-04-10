@@ -8,6 +8,7 @@ import MovieDetails from "./MovieDetails";
 import SignIn from "./SignIn";
 import SignUp from "./SignUp";
 import Search from "./Search";
+import Profile from "./Profile";
 
 const App = () => {
   return (
@@ -18,6 +19,9 @@ const App = () => {
         <Switch>
           <Route exact path="/">
             <Home />
+          </Route>
+          <Route path="/users/:userName">
+            <Profile />
           </Route>
           <Route exact path="/movies/:searchType/:searchParams">
             <Movies />
