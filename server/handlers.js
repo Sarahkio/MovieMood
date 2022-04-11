@@ -117,6 +117,7 @@ const signUp = async (req, res) => {
     userName: req.body.userName,
     email: req.body.email,
     friends: [],
+    comments: [],
     // password: req.body.password,
   };
 
@@ -182,6 +183,7 @@ const signIn = async (req, res) => {
           userName: user.userName,
           email: user.email,
           friends: user.friends,
+          comments: user.comments,
         },
         message: "valid password",
       });
@@ -395,6 +397,128 @@ const removeFriends = async (req, res) => {
   }
 };
 
+const postComments = async (req, res) => {
+  const client = new MongoClient(MONGO_URI, options);
+  const _id = uuidv4();
+  const db = client.db("movies");
+
+  try {
+    await client.connect();
+    // comments mongodb
+    let body = {
+      _id: _id, // comment id that we created
+      userName: req.body.userName,
+      comments: req.body.comments,
+      movietitle: req.body.title,
+      movieid: req.body.id,
+    };
+
+    let comments = await db.collection("comments").insertOne(body);
+    // let users = await db.collection("users").updateOne({ comments: _id });
+
+    const query = {
+      userName: req.body.userName,
+    };
+
+    const update = {
+      $push: {
+        comments: _id,
+      },
+    };
+
+    const updateComments = await db
+      .collection("users")
+      .updateOne(query, update);
+
+    if (updateComments) {
+      res.status(200).json({
+        status: 200,
+        data: updateComments,
+        comments,
+      });
+    } else {
+      res.status(400).json({ status: 400, message: "err getting comments" });
+    }
+  } catch (err) {
+    console.log(err.stack);
+    res.status(500).json({ status: 500, message: "unknown error" });
+  } finally {
+    client.close();
+  }
+};
+
+const getCommentByUserName = async (req, res) => {
+  const client = new MongoClient(MONGO_URI, options);
+  // const userId = req.params.id;
+  // const query = findUser(res.locals.users, userId);
+  try {
+    await client.connect();
+    const db = client.db("movies");
+    const query = {
+      userName: req.params.userName,
+    };
+    // const comments = await db.collection("comments").findOne(query);
+    // let comments = [];
+    const users = await db.collection("users").findOne(query);
+    let obj_ids = users.comments.map(function (id) {
+      return ObjectID(id);
+    });
+    console.log("this is usercoomments", users.comments);
+    const comments = await db
+      .collection("comments")
+      .find({ _id: { $in: obj_ids } });
+    // await users.comments.forEach(async (commentid) => {
+    //   const comment = await db
+    //     .collection("comments")
+    //     .findOne({ _id: commentid });
+    //   console.log("this is comment", comment);
+    //   comments.push(comment);
+    // });
+    console.log(comments);
+    // console.log("this is user", commentsUser);
+
+    // const users = await db.collection("users").findOne(query);
+
+    if (comments) {
+      res.status(200).json({ status: 200, data: comments });
+    } else {
+      res.status(400).json({ status: 400, message: "err getting comments" });
+    }
+  } catch (err) {
+    console.log(err.stack);
+    res.status(500).json({ status: 500, message: "unknown error" });
+  } finally {
+    // client.close();
+  }
+};
+
+const getCommentByMovieId = async (req, res) => {
+  const client = new MongoClient(MONGO_URI, options);
+  // const userId = req.params.id;
+  // const query = findUser(res.locals.users, userId);
+  try {
+    await client.connect();
+    const db = client.db("movies");
+    const query = {
+      movieid: req.params.movieid,
+    };
+    // const users = await db.collection("users").findOne(query2);
+
+    const comments = await db.collection("comments").findOne(query);
+
+    if (comments) {
+      res.status(200).json({ status: 200, data: comments });
+    } else {
+      res.status(400).json({ status: 400, message: "err getting comments" });
+    }
+  } catch (err) {
+    console.log(err.stack);
+    res.status(500).json({ status: 500, message: "unknown error" });
+  } finally {
+    client.close();
+  }
+};
+
 module.exports = {
   getGenres,
   getGenre,
@@ -407,4 +531,7 @@ module.exports = {
   addFriends,
   searchByFriendsUserName,
   removeFriends,
+  postComments,
+  getCommentByUserName,
+  getCommentByMovieId,
 };
