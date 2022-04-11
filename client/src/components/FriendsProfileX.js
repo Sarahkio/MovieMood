@@ -30,9 +30,10 @@ const FriendsProfile = ({ id }) => {
     friends && (
       <FriendsWrapper
         onClick={() => {
-          history.push(`/users/${friends.userName}`);
+          history.push(`/users/${friends.id}`);
         }}
       >
+        <FriendsImages src={friends.avatarUrl}></FriendsImages>
         <FriendsName>{friends.name}</FriendsName>
       </FriendsWrapper>
     )

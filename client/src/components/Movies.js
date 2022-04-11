@@ -42,6 +42,7 @@ const Home = () => {
           if (data.data.length !== 0) {
             setMovies(data.data);
             setTotalPages(data.total_pages);
+            // setTotalPages(20);
           } else {
             setMessage("No Results");
           }
@@ -54,6 +55,7 @@ const Home = () => {
           setMovies(data.data);
           // console.log(data.data);
           setTotalPages(data.total_pages);
+          // setTotalPages(20);
           // history.push()
         });
     }
