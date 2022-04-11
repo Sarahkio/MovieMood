@@ -16,7 +16,7 @@ const Profile = () => {
   const [reload, setReload] = useState(false);
   //   const [currentFeed, setCurrentFeed] = useState(null);
   const [status, setStatus] = useState("loading");
-  // const [message, setMessage] = useState("");
+  const [message, setMessage] = useState("");
 
   // setStatus("loading");
   console.log(friendUserName);
@@ -78,10 +78,9 @@ const Profile = () => {
       .then((data) => {
         setCurrentProfile(data.data);
         setStatus("loaded");
-        console.log(data.data);
         // setCurrentUser(data.data);
 
-        // if (friendUserName !== data.data.userName) {
+        // if (friendUserName !== "user") {
         //   setMessage("no results");
         // }
       })

@@ -8,6 +8,7 @@ import MovieDetails from "./MovieDetails";
 import SignIn from "./SignIn";
 import SignUp from "./SignUp";
 import Search from "./Search";
+import SearchUser from "./SearchUser";
 import Profile from "./Profile";
 
 const App = () => {

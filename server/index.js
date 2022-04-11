@@ -34,7 +34,7 @@ app.get("/user/:userName", getUser); // get user by id
 app.patch("/user/add-friends/:friendsUserName", addFriends); // add friends to friends array
 app.patch("/user/remove-friends/:friendsUserName", removeFriends); // remove friends froom frriends array
 // app.post("/comments", getComments); // post comments
-// app.get("/comment/:id", getComment); // get specific comment ?
+// app.get("/comment/:id", getComment); // get specific comment
 // delete comments
 
 app.get("/search/:movie", searchByName); // get/search movie
