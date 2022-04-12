@@ -1,11 +1,12 @@
-import { useCallback, useContext, useState } from "react";
+import { useCallback, useContext, useState, useEffect } from "react";
 import { CurrentUserContext } from "./CurrentUserContext";
 import styled from "styled-components";
 
-const Commentbox = ({ rows, cols, value, limit, id, title }) => {
+const Commentbox = ({ rows, cols, id, title }) => {
   const { setUpdate, update, currentUser } = useContext(CurrentUserContext);
   //   const [content, setContent] = useState(value.slice(0, limit));
   const [content, setContent] = useState(null);
+  const [movieComment, setMovieComment] = useState(null);
 
   //   console.log(id);
 
@@ -33,6 +34,17 @@ const Commentbox = ({ rows, cols, value, limit, id, title }) => {
     setContent("");
     setUpdate(!update);
   };
+
+  useEffect(() => {
+    // movie comments
+    // console.log(id);
+    fetch(`/movie-comment/${id}`)
+      .then((res) => res.json())
+      .then((data) => {
+        setMovieComment(data.data);
+        console.log(data.data);
+      });
+  }, []);
 
   //   let limitContent = 280 - content.length;
 
@@ -76,16 +88,14 @@ const NumButtonWrapper = styled.div`
 
 const Textarea = styled.input`
   position: relative;
-  width: 750px;
-  height: 50px;
+  width: 500px;
+  height: 70px;
   /* padding-top: 0px; */
   /* position: relative; */
   ::placeholder {
     position: absolute;
     align-items: center;
   }
-  width: 700px;
-  height: 200px;
 `;
 
 const Wrapper = styled.div`

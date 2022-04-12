@@ -7,9 +7,9 @@ import { Link } from "react-router-dom";
 
 import { useHistory } from "react-router-dom";
 
-const FriendsProfile = ({ id }) => {
+const FriendsProfile = ({ id, movie }) => {
   const [friends, setFriends] = useState(false); // keep it falsey
-  // const [status, setStatus] = useState("loading");
+  // const [movieComment, setMovieComment] = useState(null);
 
   let history = useHistory();
   useEffect(() => {
@@ -25,6 +25,18 @@ const FriendsProfile = ({ id }) => {
         console.log(err);
       });
   }, [id]);
+
+  // useEffect(() => {
+  //   // movie comments by userName
+  //   console.log(id);
+  //   fetch(`/user-comment/${movie}`)
+  //     .then((res) => res.json())
+  //     .then((data) => {
+  //       setMovieComment(data.data);
+  //       // setStatus("loaded");
+  //       console.log(data.data);
+  //     });
+  // }, []);
 
   // this is returring one image tag n profile (depends on how many friends they have  - length of friends array)
 

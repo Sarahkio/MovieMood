@@ -469,7 +469,7 @@ const getCommentByUserName = async (req, res) => {
     if (comments) {
       res.status(200).json({ status: 200, data: comments });
     } else {
-      res.status(400).json({ status: 400, message: "err getting comments" });
+      res.status(400).json({ status: 400, message: "no comments" });
     }
   } catch (err) {
     console.log(err.stack);
@@ -487,7 +487,7 @@ const getCommentByMovieId = async (req, res) => {
     await client.connect();
     const db = client.db("movies");
     const query = {
-      movieid: Number(req.params.movieid),
+      movieid: req.params.movieid,
     };
 
     // const users = await db.collection("users").findOne(query);

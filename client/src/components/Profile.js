@@ -4,6 +4,8 @@ import styled from "styled-components";
 import { useParams } from "react-router-dom";
 import FriendsProfile from "./FriendsProfile";
 import SearchUser from "./SearchUser";
+import { NavLink } from "react-router-dom";
+
 // import CircularProgress from "@material-ui/core/CircularProgress";
 // import moment from "moment";
 // import { useHistory } from "react-router-dom";
@@ -17,6 +19,7 @@ const Profile = () => {
   //   const [currentFeed, setCurrentFeed] = useState(null);
   const [status, setStatus] = useState("loading");
   const [message, setMessage] = useState("");
+  const [movieComment, setMovieComment] = useState(null);
 
   // setStatus("loading");
   console.log(friendUserName);
@@ -76,16 +79,29 @@ const Profile = () => {
     fetch(`/user/${friendUserName}`)
       .then((res) => res.json())
       .then((data) => {
-        setCurrentProfile(data.data);
-        setStatus("loaded");
         // setCurrentUser(data.data);
 
-        // if (friendUserName !== "user") {
-        //   setMessage("no results");
-        // }
+        if (data.data) {
+          setCurrentProfile(data.data);
+          setStatus("loaded");
+        } else {
+          setCurrentProfile(null);
+        }
       })
       .catch((err) => {
         setError(err);
+      });
+  }, [friendUserName]);
+
+  useEffect(() => {
+    // movie comments by userName
+    console.log(friendUserName);
+    fetch(`/user-comment/${friendUserName}`)
+      .then((res) => res.json())
+      .then((data) => {
+        setMovieComment(data.data);
+        setStatus("loaded");
+        console.log(data.data);
       });
   }, [friendUserName]);
 
@@ -109,27 +125,30 @@ const Profile = () => {
   //   const formattedTimeStamp = moment(timeStamp).format("MMMM Do YYYY");
   //9:38 AM · Jan 6 2020
   //   let history = useHistory();
+  console.log(currentProfile);
 
   return (
     <>
       {status === "loading" && <div>Loading...</div>}
-      {status === "loaded" && currentProfile && currentUser && (
+      {status === "loaded" && currentUser && (
         <ProfileWrapper>
           <SearchUser />
-          <FirstName>{currentProfile.firstName}</FirstName>
-          <LastName>{currentProfile.lastName}</LastName>
-          <UserName>{currentProfile.userName}</UserName>
-          {currentProfile?.userName !== currentUser?.userName && (
+          {currentProfile !== null ? (
             <>
-              {currentUser.friends.includes(friendUserName) ? (
+              <FirstName>{currentProfile.firstName}</FirstName>
+              <LastName>{currentProfile.lastName}</LastName>
+              <UserName>{currentProfile.userName}</UserName>
+              {currentProfile?.userName !== currentUser?.userName && (
                 <>
-                  <Friend>Friend</Friend>
-                  <Delete onClick={handleUnFollow}>remove friend</Delete>
-                </>
-              ) : (
-                <AddButton onClick={handleFollow}>Add Friend</AddButton>
-              )}
-              {/* {currentUser.friends.includes(!friendUserName) ? (
+                  {currentUser.friends.includes(friendUserName) ? (
+                    <>
+                      <Friend>Friend</Friend>
+                      <Delete onClick={handleUnFollow}>remove friend</Delete>
+                    </>
+                  ) : (
+                    <AddButton onClick={handleFollow}>Add Friend</AddButton>
+                  )}
+                  {/* {currentUser.friends.includes(!friendUserName) ? (
                 <>
                   <AddButton onClick={handleFollow}>Add Friend</AddButton>
                 </>
@@ -139,25 +158,54 @@ const Profile = () => {
                   <Delete onClick={handleUnFollow}>remove friend</Delete>
                 </>
               )} */}
-              {/* <AddButton onClick={handleFollow}>
+                  {/* <AddButton onClick={handleFollow}>
                 {FriendAdded ? "Friend" : "Add Friend"}
               </AddButton> */}
+                </>
+              )}
+              <FriendsWrapperr>
+                <FriendsWrapperTitle>
+                  <ProfileFriends>
+                    {currentProfile.firstName}'s Friends
+                  </ProfileFriends>
+                  <Underline></Underline>
+                </FriendsWrapperTitle>
+                <FriendsWrapperImages>
+                  {currentProfile &&
+                    currentProfile?.friends.map((id) => {
+                      return <FriendsProfile id={id} />;
+                    })}
+                </FriendsWrapperImages>
+              </FriendsWrapperr>
+              <WrapperComments>
+                <Comments>Comments</Comments>
+                <Underline2></Underline2>
+                {status === "loading" && <div>Loading...</div>}
+                {status === "loaded" && currentProfile && (
+                  <WrapperList>
+                    {movieComment?.length ? (
+                      movieComment?.map((movie) => {
+                        return (
+                          <>
+                            <div>{movie.userName}</div>
+                            <Navigation to={`/movie/${movie.movieid}`}>
+                              {movie.movietitle}
+                            </Navigation>
+                            <Commentsmap>{movie.comments}</Commentsmap>
+                            {/* <FriendsProfile movie={movie} /> */}
+                          </>
+                        );
+                      })
+                    ) : (
+                      <div>{currentProfile.userName} has not commented yet</div>
+                    )}
+                  </WrapperList>
+                )}
+              </WrapperComments>
             </>
+          ) : (
+            <div>Profile not found</div>
           )}
-          <FriendsWrapperr>
-            <FriendsWrapperTitle>
-              <ProfileFriends>
-                {currentProfile.firstName}'s Friends
-              </ProfileFriends>
-              <Underline></Underline>
-            </FriendsWrapperTitle>
-            <FriendsWrapperImages>
-              {currentProfile &&
-                currentProfile?.friends.map((id) => {
-                  return <FriendsProfile id={id} />;
-                })}
-            </FriendsWrapperImages>
-          </FriendsWrapperr>
         </ProfileWrapper>
       )}
     </>
@@ -192,5 +240,33 @@ const FriendsWrapperr = styled.div`
 `;
 const FriendsWrapperTitle = styled.div``;
 const ProfileFriends = styled.h1``;
+
+const WrapperComments = styled.div`
+  display: flex;
+  flex-direction: column;
+  justify-content: left;
+  align-items: left;
+`;
+
+const Comments = styled.div`
+  margin-top: 20px;
+`;
+
+const Underline2 = styled.div`
+  width: 200px;
+  height: 2px;
+  margin-top: 10px;
+  background-color: black;
+`;
+
+const Navigation = styled(NavLink)``;
+
+const WrapperList = styled.div`
+  margin-top: 20px;
+`;
+
+const Commentsmap = styled.div`
+  margin-bottom: 10px;
+`;
 
 export default Profile;

@@ -10,6 +10,7 @@ import { useParams } from "react-router-dom";
 
 const FriendsProfile = ({ id }) => {
   const [friends, setFriends] = useState(false); // keep it falsey
+  const [movieComment, setMovieComment] = useState(null);
 
   let history = useHistory();
   useEffect(() => {

@@ -3,6 +3,7 @@ import ReactDOM from "react-dom";
 import App from "./components/App";
 import { GenreProvider } from "./components/GenreContext";
 import { CurrentUserProvider } from "./components/CurrentUserContext";
+
 // import {MovieProvider} from "./components/MovieContext"
 
 ReactDOM.render(
