@@ -3,6 +3,7 @@ import { useParams } from "react-router-dom";
 import { NavLink } from "react-router-dom";
 import styled from "styled-components";
 import { useHistory } from "react-router-dom";
+import Commentbox from "./Commentbox";
 
 const MovieDetails = () => {
   const [movieDetails, setMovieDetails] = useState(null);
@@ -29,33 +30,35 @@ const MovieDetails = () => {
 
   return (
     <>
-      <Wrapper>
-        <CategoriesWrapper>
-          <div>
-            <CategoryWrapper>
-              <Element src={IMG_URI + movieDetails.poster_path}></Element>
-              <ElementId>
-                {movieDetails.genres.map((el) => {
-                  return `genre: ${el.name} `;
-                })}
-              </ElementId>
-              <ElementTitle>{movieDetails.original_title}</ElementTitle>
-              <div>{movieDetails.overview}</div>
-              <ElementVote>{movieDetails.vote_average}</ElementVote>
-              <div>{movieDetails.status}</div>
-              <div>{movieDetails.tagline}</div>
-              <button
-                onClick={(e) => {
-                  e.preventDefault();
-                  history.goBack();
-                }}
-              >
-                Previous Page
-              </button>
-            </CategoryWrapper>
-          </div>
-        </CategoriesWrapper>
-      </Wrapper>
+      {/* <Wrapper> */}
+      <CategoriesWrapper>
+        <div>
+          <CategoryWrapper>
+            <Element src={IMG_URI + movieDetails.poster_path}></Element>
+            <ElementId>
+              {movieDetails.genres.map((el) => {
+                return `genre: ${el.name} `;
+              })}
+            </ElementId>
+            <ElementTitle>{movieDetails.original_title}</ElementTitle>
+            <div>{movieDetails.overview}</div>
+            <ElementVote>{movieDetails.vote_average}</ElementVote>
+            <div>{movieDetails.status}</div>
+            <div>{movieDetails.tagline}</div>
+            <button
+              onClick={(e) => {
+                e.preventDefault();
+                history.goBack();
+              }}
+            >
+              Previous Page
+            </button>
+          </CategoryWrapper>
+        </div>
+        <Commentbox id={id} title={movieDetails.original_title} />
+        {/* limit={300} value="" */}
+      </CategoriesWrapper>
+      {/* </Wrapper> */}
     </>
   );
 };
@@ -64,7 +67,10 @@ export default MovieDetails;
 
 const Wrapper = styled.div``;
 
-const CategoriesWrapper = styled.div``;
+const CategoriesWrapper = styled.div`
+  display: flex;
+  flex-direction: column;
+`;
 
 const CategoryWrapper = styled.div``;
 

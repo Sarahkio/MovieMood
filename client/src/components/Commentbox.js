@@ -2,22 +2,31 @@ import { useCallback, useContext, useState } from "react";
 import { CurrentUserContext } from "./CurrentUserContext";
 import styled from "styled-components";
 
-const TweetBox = ({ rows, cols, value, limit }) => {
-  const { setUpdate, update } = useContext(CurrentUserContext);
-  const [content, setContent] = useState(value.slice(0, limit));
+const Commentbox = ({ rows, cols, value, limit, id, title }) => {
+  const { setUpdate, update, currentUser } = useContext(CurrentUserContext);
+  //   const [content, setContent] = useState(value.slice(0, limit));
+  const [content, setContent] = useState(null);
 
-  const setFormattedContent = useCallback(
-    (text) => {
-      setContent(text.slice(0, limit));
-    },
-    [limit, setContent]
-  );
+  //   console.log(id);
 
-  const handleTweetCreation = () => {
+  //   const setFormattedContent = useCallback(
+  //     (text) => {
+  //       setContent(text.slice(0, limit));
+  //     },
+  //     [limit, setContent]
+  //   );
+
+  const handlePostCreation = () => {
     const requestOptions = {
       method: "POST",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ status: content }),
+      body: JSON.stringify({
+        // status: content,
+        userName: currentUser.userName,
+        comments: content,
+        title: title,
+        id: id,
+      }),
     };
 
     fetch("/comments", requestOptions).then((response) => response.json());
@@ -25,40 +34,41 @@ const TweetBox = ({ rows, cols, value, limit }) => {
     setUpdate(!update);
   };
 
-  let limitContent = 280 - content.length;
+  //   let limitContent = 280 - content.length;
 
   return (
-    <>
+    <Wrapper>
       <Textarea
         rows={rows}
         placeholder="What's Happening?"
         cols={cols}
-        onChange={(event) => setFormattedContent(event.target.value)}
+        onChange={(e) => setContent(e.target.value)}
         value={content}
       />
       <NumButtonWrapper>
         <p
-          style={
-            limitContent < 0
-              ? { color: "red" }
-              : limitContent <= 55
-              ? { color: "yellow" }
-              : null
-          }
+        //   style={
+        //     limitContent < 0
+        //       ? { color: "red" }
+        //       : limitContent <= 55
+        //       ? { color: "yellow" }
+        //       : null
+        //   }
         >
-          {limitContent}
+          {/* {limitContent} */}
         </p>
-        <Button disabled={limitContent < 0} onClick={handleTweetCreation}>
-          MEOW
+        <Button onClick={handlePostCreation}>
+          {/* disabled={limitContent < 0}  */}
+          Submit
         </Button>
       </NumButtonWrapper>
-    </>
+    </Wrapper>
   );
 };
 
 const NumButtonWrapper = styled.div`
   display: flex;
-  justify-content: flex-end;
+  /* justify-content: flex-end; */
   align-items: center;
   gap: 5px;
   margin-top: 5px;
@@ -67,14 +77,20 @@ const NumButtonWrapper = styled.div`
 const Textarea = styled.input`
   position: relative;
   width: 750px;
-  height: 100px;
-  padding-top: 0px;
-  position: relative;
+  height: 50px;
+  /* padding-top: 0px; */
+  /* position: relative; */
   ::placeholder {
     position: absolute;
+    align-items: center;
   }
-  /* width: 700px;
-  height: 200px; */
+  width: 700px;
+  height: 200px;
+`;
+
+const Wrapper = styled.div`
+  display: flex;
+  flex-direction: column;
 `;
 
 const Button = styled.button`
@@ -85,4 +101,4 @@ const Button = styled.button`
   border-radius: 20px;
 `;
 
-export default TweetBox;
+export default Commentbox;
