@@ -1,23 +1,64 @@
 import React from "react";
-import { useContext } from "react";
-import { useState } from "react";
-import { useEffect } from "react";
+
 import styled from "styled-components";
 import { Link } from "react-router-dom";
-import { useHistory } from "react-router-dom";
+import { useContext, useState, useEffect } from "react";
 import { useParams } from "react-router-dom";
-// import { CurrentUserContext } from "./CurrentUserContext";
+import { NavLink } from "react-router-dom";
+import moment from "moment";
 
-const movieComment = ({ movie }) => {
+// // import { CurrentUserContext } from "./CurrentUserContext";
+
+const MovieComment = () => {
+  const { userName: friendUserName } = useParams();
+  const [status, setStatus] = useState("loading");
+  const [movieComment, setMovieComment] = useState(null);
+
+  //9:38 AM · Jan 6 2020
+  useEffect(() => {
+    // movie comments by userName
+    console.log(friendUserName);
+    fetch(`/user-comment/${friendUserName}`)
+      .then((res) => res.json())
+      .then((data) => {
+        setMovieComment(data.data);
+        setStatus("loaded");
+        console.log(data.data);
+      });
+  }, [friendUserName]);
+
   return (
-    <>
-      <Link>{movie.userName}</Link>
-      <div>{movie.movietitle}</div>
-      <div>{movie.comments}</div>
-    </>
+    <WrapperList>
+      {movieComment?.length ? (
+        movieComment?.map((movie) => {
+          let timeStamp = movie.timeOfComments;
+          const formattedTimeStamp = moment(timeStamp).format("MMMM Do YYYY");
+          return (
+            <>
+              <div>{movie.userName}</div>
+              <Navigation to={`/movie/${movie.movieid}`}>
+                {movie.movietitle}
+              </Navigation>
+              <Commentsmap>{movie.comments}</Commentsmap>
+              <div>{formattedTimeStamp}</div>
+            </>
+          );
+        })
+      ) : (
+        <div>not commented yet</div>
+      )}
+    </WrapperList>
   );
 };
 
-const Link = styled(Link)``;
+// const Link = styled(Link)``;
+const Navigation = styled(NavLink)``;
 
-export default movieComment;
+const Commentsmap = styled.div`
+  margin-bottom: 10px;
+`;
+const WrapperList = styled.div`
+  margin-top: 20px;
+`;
+
+export default MovieComment;

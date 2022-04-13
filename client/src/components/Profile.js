@@ -5,6 +5,7 @@ import { useParams } from "react-router-dom";
 import FriendsProfile from "./FriendsProfile";
 import SearchUser from "./SearchUser";
 import { NavLink } from "react-router-dom";
+import MovieComment from "./MovieComment";
 
 // import CircularProgress from "@material-ui/core/CircularProgress";
 // import moment from "moment";
@@ -93,18 +94,6 @@ const Profile = () => {
       });
   }, [friendUserName]);
 
-  useEffect(() => {
-    // movie comments by userName
-    console.log(friendUserName);
-    fetch(`/user-comment/${friendUserName}`)
-      .then((res) => res.json())
-      .then((data) => {
-        setMovieComment(data.data);
-        setStatus("loaded");
-        console.log(data.data);
-      });
-  }, [friendUserName]);
-
   // console.log(currentProfile.friends.includes(currentUser));
   // const FriendAdded = currentProfile.friends.find((friend) => {
   //   return friend;
@@ -181,26 +170,7 @@ const Profile = () => {
                 <Comments>Comments</Comments>
                 <Underline2></Underline2>
                 {status === "loading" && <div>Loading...</div>}
-                {status === "loaded" && currentProfile && (
-                  <WrapperList>
-                    {movieComment?.length ? (
-                      movieComment?.map((movie) => {
-                        return (
-                          <>
-                            <div>{movie.userName}</div>
-                            <Navigation to={`/movie/${movie.movieid}`}>
-                              {movie.movietitle}
-                            </Navigation>
-                            <Commentsmap>{movie.comments}</Commentsmap>
-                            {/* <FriendsProfile movie={movie} /> */}
-                          </>
-                        );
-                      })
-                    ) : (
-                      <div>{currentProfile.userName} has not commented yet</div>
-                    )}
-                  </WrapperList>
-                )}
+                {status === "loaded" && currentProfile && <MovieComment />}
               </WrapperComments>
             </>
           ) : (

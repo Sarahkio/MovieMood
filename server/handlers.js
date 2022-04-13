@@ -18,91 +18,6 @@ const options = {
   useUnifiedTopology: true,
 };
 
-const getGenres = async (req, res) => {
-  const client = new MongoClient(MONGO_URI, options);
-  try {
-    // console.log("starting connection");
-    await client.connect();
-    const db = client.db("movies");
-    const response = await axios.get(
-      `https://api.themoviedb.org/3/genre/movie/list?api_key=${MOVIE_API}`
-    );
-    if (response) {
-      res.status(200).json({ status: 200, data: response.data.genres });
-    } else {
-      res.status(400).json({ status: 400, message: "genres not found" });
-    }
-  } catch (err) {
-    res.status(500).json({ status: 500, message: "unknown error" });
-  } finally {
-    client.close();
-  }
-};
-
-const getGenre = async (req, res) => {
-  const client = new MongoClient(MONGO_URI, options);
-  const page = req.query.page || 1;
-  const name = req.params.name;
-  const names = req.params.names.split(",");
-  try {
-    await client.connect();
-    const db = client.db("movies");
-    let genreList = genres
-      .filter((genre) => {
-        return names.includes(genre.id.toString());
-      })
-      .map((genre) => {
-        return genre.id;
-      })
-      .join(",");
-    // console.log("hello, ", genreList);
-    const response = await axios.get(
-      `https://api.themoviedb.org/3/discover/movie?api_key=${MOVIE_API}&page=${page}&with_genres=${genreList}`
-    );
-    // console.log(response.data.results);
-    if (response) {
-      res.status(200).json({
-        status: 200,
-        data: response.data.results,
-        total_pages: response.data.total_pages,
-      });
-    } else {
-      res.status(400).json({ status: 400, message: "No movies found" });
-    }
-  } catch (err) {
-    console.log(err.stack);
-    res.status(500).json({ status: 500, message: err.stack });
-  } finally {
-    client.close();
-  }
-};
-
-// details
-const getMovie = async (req, res) => {
-  const client = new MongoClient(MONGO_URI, options);
-  const id = req.params.id;
-
-  try {
-    // console.log("starting connection");
-    await client.connect();
-    const db = client.db("movies");
-    const response = await axios.get(
-      `https://api.themoviedb.org/3/movie/${id}?api_key=${MOVIE_API}`
-    );
-    // console.log(response.data);
-    if (response) {
-      res.status(200).json({ status: 200, data: response.data });
-    } else {
-      res.status(400).json({ status: 400, message: "movie details not found" });
-    }
-  } catch (err) {
-    // console.log(err);
-    res.status(500).json({ status: 500, message: "unknown error" });
-  } finally {
-    client.close();
-  }
-};
-
 const signUp = async (req, res) => {
   const client = new MongoClient(MONGO_URI, options);
   const _id = uuidv4();
@@ -119,6 +34,10 @@ const signUp = async (req, res) => {
     email: req.body.email,
     friends: [],
     comments: [],
+    // postLikes: 0,
+    // postDisLikes: 0,
+    commentsLiked: [],
+    commentsDisliked: [],
     // password: req.body.password,
   };
 
@@ -185,6 +104,11 @@ const signIn = async (req, res) => {
           email: user.email,
           friends: user.friends,
           comments: user.comments,
+          commentsLiked: user.commentsLiked,
+          commentsDisliked: user.commentsDisliked,
+          //   postLikes: user.postLikes,
+          //   postDisLikes: user.postDisLikes,
+          //   ratings: user.ratings,
         },
         message: "valid password",
       });
@@ -299,9 +223,8 @@ const getUser = async (req, res) => {
 
 const addFriends = async (req, res) => {
   const client = new MongoClient(MONGO_URI, options);
-  // const userId = req.params.id;
-  //   const userName = req.params.userName;
-  // const query = findUser(res.locals.users, userId);
+  const { friendsUserName } = req.params;
+
   try {
     await client.connect();
     const db = client.db("movies");
@@ -309,53 +232,30 @@ const addFriends = async (req, res) => {
     const query = {
       userName: req.body.userName,
     };
-    // console.log("queryuser", query);
-    // const query2 = {
-    //   userName: req.body.userName,
-    // };
-    // console.log("query2frriends", query2);
 
     const user = await db.collection("users").findOne(query);
 
-    // xxxx.updateOne(
-    //   { username: req.body.username },
-    //   { $push: { friends: YOU } }
-    // );
-    // xxxx.updateOne(
-    //   { username: req.body.username },
-    //   { $push: { friends: currentUser } }
-    // );
-    // const friends = await db.collection("users").findOne(query2);
-    // do i need an include functioin?
-    // // filter out duplicates, use set instead to filter method
-    // const set = new Set(user);
-    // // set is showing the object, we want set to show the array
-    // console.log(set);
-    // console.log("username", user);
-    // console.log("friends", friends);
     const update = {
       $push: {
-        friends: req.params.friendsUserName,
+        friends: friendsUserName,
       },
     };
     console.log("friends", update);
-    // const update2 = {
-    //   $push: {
-    //     friends: req.body.friendsUserName,
-    //   },
-    // };
-    // console.log("username", update2);
-    const updateMyFriends = await db
-      .collection("users")
-      .findOneAndUpdate(query, update, { returnDocument: "after" });
-    // const updateFriends = await db
-    //   .collection("users")
-    //   .updateOne(query2, update2);
-    if (updateMyFriends) {
-      res.status(200).json({ status: 200, data: updateMyFriends.value });
+
+    if (user.friends.includes(friendsUserName)) {
+      res.status(400).json({ status: 400, message: "friend already added" });
     } else {
-      res.status(400).json({ status: 400, message: "err getting friends" });
+      const updateMyFriends = await db
+        .collection("users")
+        .findOneAndUpdate(query, update, { returnDocument: "after" });
+      res.status(200).json({ status: 200, data: updateMyFriends.value });
     }
+
+    // if (updateMyFriends) {
+    //  res.status(200).json({ status: 200, data: updateMyFriends.value });
+    // } else {
+    //   res.status(400).json({ status: 400, message: "err getting friends" });
+    // }
   } catch (err) {
     console.log(err.stack);
     res.status(500).json({ status: 500, message: "unknown error" });
@@ -412,10 +312,13 @@ const postComments = async (req, res) => {
       comments: req.body.comments,
       movietitle: req.body.title,
       movieid: req.body.id,
+      numOfLikes: 0,
+      numOfDislikes: 0,
+      numOfRatings: req.body.ratings,
+      timeOfComments: new Date(),
     };
 
     let comments = await db.collection("comments").insertOne(body);
-    // let users = await db.collection("users").updateOne({ comments: _id });
 
     const query = {
       userName: req.body.userName,
@@ -424,6 +327,9 @@ const postComments = async (req, res) => {
     const update = {
       $push: {
         comments: _id,
+        // postLikes: req.body.likes,
+        // postDisLikes: req.body.dislikes,
+        // ratings: req.body.ratings,
       },
     };
 
@@ -443,6 +349,120 @@ const postComments = async (req, res) => {
   } catch (err) {
     console.log(err.stack);
     res.status(500).json({ status: 500, message: "unknown error" });
+  } finally {
+    client.close();
+  }
+};
+
+const addLikes = async (req, res) => {
+  const client = new MongoClient(MONGO_URI, options);
+  const _id = req.body._id;
+
+  try {
+    await client.connect();
+    const db = client.db("movies");
+    const query = {
+      userName: req.params.userName,
+    };
+
+    const user = await db.collection("users").findOne(query);
+
+    if (user.commentsDisliked.includes(_id)) {
+      const userDisLiked = await db
+        .collection("users")
+        .updateOne(
+          query,
+          { $pull: { commentsDisliked: _id } },
+          { $push: { commentsLiked: _id } }
+        );
+
+      const postDisLikes = await db
+        .collection("comments")
+        .updateOne(
+          { _id: _id },
+          { $inc: { numOfLikes: +1, numOfDislikes: -1 } }
+        );
+      res.status(200).json({ status: 200, message: "success" });
+    } else {
+      const userLiked = await db
+        .collection("users")
+        .updateOne(query, { $push: { commentsLiked: _id } });
+
+      const postLikes = await db
+        .collection("comments")
+        .updateOne({ _id: _id }, { $inc: { numOfLikes: +1 } });
+      res.status(200).json({ status: 200, message: "success" });
+    }
+  } catch (err) {
+    console.log(err.stack);
+    res.status(500).json({ status: 500, message: err.message });
+  } finally {
+    client.close();
+  }
+};
+
+const addDislikes = async (req, res) => {
+  const client = new MongoClient(MONGO_URI, options);
+  const _id = req.body._id;
+
+  try {
+    await client.connect();
+    const db = client.db("movies");
+    const query = {
+      userName: req.params.userName,
+    };
+
+    const user = await db.collection("users").findOne(query);
+
+    if (user.commentsLiked.includes(_id)) {
+      const userLiked = await db
+        .collection("users")
+        .updateOne(
+          query,
+          { $pull: { commentsLiked: _id } },
+          { $push: { commentsDisliked: _id } }
+        );
+
+      const postLikes = await db
+        .collection("comments")
+        .updateOne(
+          { _id: _id },
+          { $inc: { numOfLikes: -1, numOfDislikes: +1 } }
+        );
+      res.status(200).json({ status: 200, message: "success" });
+    } else {
+      const userLiked = await db
+        .collection("users")
+        .updateOne(query, { $push: { commentsDisliked: _id } });
+
+      const postLikes = await db
+        .collection("comments")
+        .updateOne({ _id: _id }, { $inc: { numOfDislikes: +1 } });
+      res.status(200).json({ status: 200, message: "success" });
+    }
+  } catch (err) {
+    console.log(err.stack);
+    res.status(500).json({ status: 500, message: err.message });
+  } finally {
+    client.close();
+  }
+};
+
+const deleteComment = async (req, res) => {
+  const client = new MongoClient(MONGO_URI, options);
+  const { userName } = req.params;
+  const { _id } = req.body;
+  try {
+    await client.connect();
+    const db = client.db("movies");
+
+    await db.collection("comments").deleteOne({ _id: _id });
+    await db
+      .collection("users")
+      .updateOne({ userName }, { $pull: { comments: _id } });
+    res.status(200).json({ status: 200, message: "successfully deleted" });
+  } catch (err) {
+    res.status(500).json({ status: 500, message: err.message });
   } finally {
     client.close();
   }
@@ -481,8 +501,7 @@ const getCommentByUserName = async (req, res) => {
 
 const getCommentByMovieId = async (req, res) => {
   const client = new MongoClient(MONGO_URI, options);
-  // const userId = req.params.id;
-  // const query = findUser(res.locals.users, userId);
+
   try {
     await client.connect();
     const db = client.db("movies");
@@ -490,16 +509,8 @@ const getCommentByMovieId = async (req, res) => {
       movieid: req.params.movieid,
     };
 
-    // const users = await db.collection("users").findOne(query);
-
     const comments = await db.collection("comments").find(query).toArray();
     console.log("this iis comments", comments);
-
-    // const users = await db
-    //   .collection("users")
-    //   .findOne({ userName: { $in: comments.movieid } })
-    //   .toArray();
-    // console.log("this is user", users);
 
     if (comments) {
       res.status(200).json({ status: 200, data: comments });
@@ -515,9 +526,6 @@ const getCommentByMovieId = async (req, res) => {
 };
 
 module.exports = {
-  getGenres,
-  getGenre,
-  getMovie,
   signUp,
   signIn,
   searchByName,
@@ -529,4 +537,7 @@ module.exports = {
   postComments,
   getCommentByUserName,
   getCommentByMovieId,
+  addLikes,
+  addDislikes,
+  deleteComment,
 };
