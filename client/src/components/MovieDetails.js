@@ -5,11 +5,12 @@ import styled from "styled-components";
 import { useHistory } from "react-router-dom";
 import Commentbox from "./Commentbox";
 import { NavLink } from "react-router-dom";
+import MovieDetailsComment from "./MovieDetailsComment";
 
 const MovieDetails = () => {
   const [movieDetails, setMovieDetails] = useState(null);
   // const [movieId, setMovieId] = useState(null);
-  const [movieComment, setMovieComment] = useState(null);
+  const [movieDetailsComment, setMovieDetailsComment] = useState(null);
   const [status, setStatus] = useState("loading");
 
   const { id } = useParams();
@@ -24,20 +25,6 @@ const MovieDetails = () => {
       .then((data) => {
         setMovieDetails(data.data);
         setStatus("loaded");
-        // setMovieId(data.id);
-        // console.log(data.data);
-      });
-  }, []);
-
-  useEffect(() => {
-    // movie comments by id
-    console.log(id);
-    fetch(`/movie-comment/${id}`)
-      .then((res) => res.json())
-      .then((data) => {
-        setMovieComment(data.data);
-        setStatus("loaded");
-        console.log(data.data);
       });
   }, []);
 
@@ -50,7 +37,7 @@ const MovieDetails = () => {
   return (
     <>
       {status === "loading" && <div>Loading...</div>}
-      {status === "loaded" && movieDetails && movieComment && (
+      {status === "loaded" && movieDetails && (
         <Wrapper>
           <CategoriesWrapper>
             <div>
@@ -77,26 +64,19 @@ const MovieDetails = () => {
                 </button>
               </CategoryWrapper>
             </div>
-            <Commentbox id={id} title={movieDetails.original_title} />
+            <Commentbox
+              limit={300}
+              value=""
+              id={id}
+              title={movieDetails.original_title}
+            />
             {/* limit={300} value="" */}
           </CategoriesWrapper>
           <WrapperComments>
             <Comments>Comments</Comments>
             <Underline></Underline>
-            <WrapperList>
-              {movieComment &&
-                movieComment?.map((movie) => {
-                  return (
-                    <>
-                      <Navigation to={`/user/${movie.userName}`}>
-                        {movie.userName}
-                      </Navigation>
-                      <div>{movie.movietitle}</div>
-                      <Commentsmap>{movie.comments}</Commentsmap>
-                    </>
-                  );
-                })}
-            </WrapperList>
+            {status === "loading" && <div>Loading...</div>}
+            {status === "loaded" && movieDetails && <MovieDetailsComment />}
           </WrapperComments>
         </Wrapper>
       )}

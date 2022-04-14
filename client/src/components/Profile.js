@@ -64,12 +64,6 @@ const Profile = () => {
     fetch(`/user/remove-friends/${friendUserName}`, requestOptions)
       .then((response) => {
         return response.json();
-        // console.log(response.data);
-        // setCurrentUser(response.data);
-        // setCurrentUser({
-        //   ...currentUser,
-        //   friends: [...currentUser.friends, friendUserName],
-        // });
       })
       .then((data) => {
         setCurrentUser(data.data);
@@ -94,26 +88,6 @@ const Profile = () => {
       });
   }, [friendUserName]);
 
-  // console.log(currentProfile.friends.includes(currentUser));
-  // const FriendAdded = currentProfile.friends.find((friend) => {
-  //   return friend;
-  // });
-
-  // console.log(FriendAdded);
-
-  // const friendArray = currentProfile.friends.filter(
-  //   (item) => !currentUser.includes(item)
-  // );
-
-  // console.log(friendArray);
-
-  // comments useEffect *****
-
-  //use thiis for small tweets
-  //   let timeStamp = currentProfile.timeStamp;
-  //   const formattedTimeStamp = moment(timeStamp).format("MMMM Do YYYY");
-  //9:38 AM · Jan 6 2020
-  //   let history = useHistory();
   console.log(currentProfile);
 
   return (
@@ -137,19 +111,6 @@ const Profile = () => {
                   ) : (
                     <AddButton onClick={handleFollow}>Add Friend</AddButton>
                   )}
-                  {/* {currentUser.friends.includes(!friendUserName) ? (
-                <>
-                  <AddButton onClick={handleFollow}>Add Friend</AddButton>
-                </>
-              ) : (
-                <>
-                  <Friend>Friend</Friend>
-                  <Delete onClick={handleUnFollow}>remove friend</Delete>
-                </>
-              )} */}
-                  {/* <AddButton onClick={handleFollow}>
-                {FriendAdded ? "Friend" : "Add Friend"}
-              </AddButton> */}
                 </>
               )}
               <FriendsWrapperr>
@@ -174,7 +135,7 @@ const Profile = () => {
               </WrapperComments>
             </>
           ) : (
-            <div>Profile not found</div>
+            <div>Profile not found, case sensitive</div>
           )}
         </ProfileWrapper>
       )}

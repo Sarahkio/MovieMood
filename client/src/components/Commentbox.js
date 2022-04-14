@@ -2,20 +2,20 @@ import { useCallback, useContext, useState, useEffect } from "react";
 import { CurrentUserContext } from "./CurrentUserContext";
 import styled from "styled-components";
 
-const Commentbox = ({ rows, cols, id, title }) => {
+const Commentbox = ({ rows, cols, value, limit, id, title }) => {
   const { setUpdate, update, currentUser } = useContext(CurrentUserContext);
-  //   const [content, setContent] = useState(value.slice(0, limit));
-  const [content, setContent] = useState(null);
+  const [content, setContent] = useState(value.slice(0, limit));
+  //   const [content, setContent] = useState(null);
   const [movieComment, setMovieComment] = useState(null);
 
-  //   console.log(id);
+  // console.log(id);
 
-  //   const setFormattedContent = useCallback(
-  //     (text) => {
-  //       setContent(text.slice(0, limit));
-  //     },
-  //     [limit, setContent]
-  //   );
+  const setFormattedContent = useCallback(
+    (text) => {
+      setContent(text.slice(0, limit));
+    },
+    [limit, setContent]
+  );
 
   const handlePostCreation = () => {
     const requestOptions = {
@@ -46,32 +46,32 @@ const Commentbox = ({ rows, cols, id, title }) => {
       });
   }, []);
 
-  //   let limitContent = 280 - content.length;
+  let limitContent = 280 - content.length;
 
   return (
     <Wrapper>
       <Textarea
         rows={rows}
-        placeholder="What's Happening?"
+        placeholder="Comment and Rate the movie"
         cols={cols}
-        onChange={(e) => setContent(e.target.value)}
+        onChange={(e) => setFormattedContent(e.target.value)}
         value={content}
       />
       <NumButtonWrapper>
         <p
-        //   style={
-        //     limitContent < 0
-        //       ? { color: "red" }
-        //       : limitContent <= 55
-        //       ? { color: "yellow" }
-        //       : null
-        //   }
+          style={
+            limitContent < 0
+              ? { color: "red" }
+              : limitContent <= 55
+              ? { color: "yellow" }
+              : null
+          }
         >
-          {/* {limitContent} */}
+          {limitContent}
         </p>
-        <Button onClick={handlePostCreation}>
+        <Button disabled={limitContent < 0} onClick={handlePostCreation}>
           {/* disabled={limitContent < 0}  */}
-          Submit
+          Send
         </Button>
       </NumButtonWrapper>
     </Wrapper>

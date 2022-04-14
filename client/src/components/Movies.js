@@ -3,11 +3,8 @@ import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import { NavLink } from "react-router-dom";
 import styled from "styled-components";
-// import { GenreContext } from "./GenreContext";
+
 import { useHistory } from "react-router-dom";
-// import { useLocation } from "react-router-dom";
-// import { useContext } from "react";
-// import { GenreContext } from "./GenreContext";
 
 const Home = () => {
   const [movies, setMovies] = useState(null);
@@ -16,23 +13,11 @@ const Home = () => {
   const { searchType, searchParams } = useParams();
   const IMG_URI = "https://image.tmdb.org/t/p/w500";
   const BASE_URI = "https://api.themoviedb.org/3";
-  //   const { search } = useLocation();
-  //   console.log(search.split("=")[1]);
+
   let history = useHistory();
-  // console.log(history.location.search);
+
   const page = Number(history.location.search.split("=")[1]);
-  //   const { page, setPage } = useContext(GenreContext);
-  //   const {
-  //     error,
-  //     setError,
-  //     // movies,
-  //     // setMovies,
-  //     // message,
-  //     // setMessage,
-  //     // totalPages,
-  //     // setTotalPages,
-  //   } = useContext(GenreContext);
-  //   console.log(searchType);
+
   useEffect(() => {
     // movies of the specific genre
     if (searchType === "genre") {
@@ -53,10 +38,9 @@ const Home = () => {
         .then((res) => res.json())
         .then((data) => {
           setMovies(data.data);
-          // console.log(data.data);
+
           setTotalPages(data.total_pages);
           // setTotalPages(20);
-          // history.push()
         });
     }
   }, [page]);
