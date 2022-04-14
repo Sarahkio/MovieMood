@@ -357,42 +357,73 @@ const postComments = async (req, res) => {
 const addLikes = async (req, res) => {
   const client = new MongoClient(MONGO_URI, options);
   const _id = req.body._id;
-
+  const liked = req.body.like; // true or false
+  const disliked = req.body.dislike;
   try {
     await client.connect();
     const db = client.db("movies");
     const query = {
-      userName: req.params.userName,
+      userName: req.body.userName,
     };
-
+    console.log(_id);
     const user = await db.collection("users").findOne(query);
 
-    if (user.commentsDisliked.includes(_id)) {
-      const userDisLiked = await db
-        .collection("users")
-        .updateOne(
-          query,
-          { $pull: { commentsDisliked: _id } },
-          { $push: { commentsLiked: _id } }
-        );
-
-      const postDisLikes = await db
-        .collection("comments")
-        .updateOne(
-          { _id: _id },
-          { $inc: { numOfLikes: +1, numOfDislikes: -1 } }
-        );
-      res.status(200).json({ status: 200, message: "success" });
+    // if (user.commentsDisliked.includes(_id)) {
+    //   const userDisLiked = await db
+    //     .collection("users")
+    //     .updateOne(
+    //       query,
+    //       { $pull: { commentsDisliked: _id } },
+    //       { $push: { commentsLiked: _id } }
+    //     );
+    if (!liked) {
+      console.log("Apple");
+      if (disliked) {
+        console.log("pear");
+        const postDislikes = await db
+          .collection("comments")
+          .updateOne(
+            { _id: _id },
+            { $inc: { numOfDislikes: -1, numOfLikes: +1 } }
+          );
+      } else {
+        console.log("banana");
+        const postLikes = await db
+          .collection("comments")
+          .updateOne({ _id: _id }, { $inc: { numOfLikes: +1 } });
+      }
+      const userLiked = await db.collection("users").updateOne(query, {
+        $push: { commentsLiked: _id },
+        $pull: { commentsDisliked: _id },
+      });
+      return res.status(200).json({ status: 200, message: "success" });
     } else {
-      const userLiked = await db
-        .collection("users")
-        .updateOne(query, { $push: { commentsLiked: _id } });
-
-      const postLikes = await db
+      console.log("orange");
+      const postRemoveLikes = await db
         .collection("comments")
-        .updateOne({ _id: _id }, { $inc: { numOfLikes: +1 } });
-      res.status(200).json({ status: 200, message: "success" });
+        .updateOne({ _id: _id }, { $inc: { numOfLikes: -1 } });
+      const postUsersRemoveLikes = await db
+        .collection("users")
+        .updateOne(query, { $pull: { commentsLiked: _id } });
+      return res.status(200).json({ status: 200, message: "success" });
     }
+    //   const postDisLikes = await db
+    //     .collection("comments")
+    //     .updateOne(
+    //       { _id: _id },
+    //       { $inc: { numOfLikes: +1, numOfDislikes: -1 } }
+    //     );
+    //   res.status(200).json({ status: 200, message: "success" });
+    // } else {
+    //   const userLiked = await db
+    //     .collection("users")
+    //     .updateOne(query, { $push: { commentsLiked: _id } });
+
+    //   const postLikes = await db
+    //     .collection("comments")
+    //     .updateOne({ _id: _id }, { $inc: { numOfLikes: +1 } });
+    //   res.status(200).json({ status: 200, message: "success" });
+    // }
   } catch (err) {
     console.log(err.stack);
     res.status(500).json({ status: 500, message: err.message });
@@ -404,40 +435,51 @@ const addLikes = async (req, res) => {
 const addDislikes = async (req, res) => {
   const client = new MongoClient(MONGO_URI, options);
   const _id = req.body._id;
+  const liked = req.body.like; // true or false
+  const disliked = req.body.dislike;
 
   try {
     await client.connect();
     const db = client.db("movies");
     const query = {
-      userName: req.params.userName,
+      userName: req.body.userName,
     };
 
     const user = await db.collection("users").findOne(query);
 
-    if (user.commentsLiked.includes(_id)) {
-      const userLiked = await db
-        .collection("users")
-        .updateOne(
-          query,
-          { $pull: { commentsLiked: _id } },
-          { $push: { commentsDisliked: _id } }
-        );
-
-      const postLikes = await db
-        .collection("comments")
-        .updateOne(
-          { _id: _id },
-          { $inc: { numOfLikes: -1, numOfDislikes: +1 } }
-        );
+    // if (user.commentsLiked.includes(_id)) {
+    //   const userLiked = await db
+    //     .collection("users")
+    //     .updateOne(
+    //       query,
+    //       { $pull: { commentsLiked: _id } },
+    //       { $push: { commentsDisliked: _id } }
+    //     );
+    if (!disliked) {
+      if (liked) {
+        const postLikes = await db
+          .collection("comments")
+          .updateOne(
+            { _id: _id },
+            { $inc: { numOfDislikes: +1, numOfLikes: -1 } }
+          );
+      } else {
+        const postDislikes = await db
+          .collection("comments")
+          .updateOne({ _id: _id }, { $inc: { numOfDislikes: +1 } });
+      }
+      const userDisliked = await db.collection("users").updateOne(query, {
+        $push: { commentsDisliked: _id },
+        $pull: { commentsLiked: _id },
+      });
       res.status(200).json({ status: 200, message: "success" });
     } else {
-      const userLiked = await db
-        .collection("users")
-        .updateOne(query, { $push: { commentsDisliked: _id } });
-
-      const postLikes = await db
+      const postRemoveDisLikes = await db
         .collection("comments")
-        .updateOne({ _id: _id }, { $inc: { numOfDislikes: +1 } });
+        .updateOne({ _id: _id }, { $inc: { numOfDislikes: -1 } });
+      const postUsersRemoveLikes = await db
+        .collection("users")
+        .updateOne(query, { $pull: { commentsDisliked: _id } });
       res.status(200).json({ status: 200, message: "success" });
     }
   } catch (err) {

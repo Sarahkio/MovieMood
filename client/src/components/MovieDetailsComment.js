@@ -7,43 +7,52 @@ import { useParams } from "react-router-dom";
 import { NavLink } from "react-router-dom";
 import moment from "moment";
 
-// // import { CurrentUserContext } from "./CurrentUserContext";
+import Comment from "./Comment";
+import { CurrentUserContext } from "./CurrentUserContext";
 
 const MovieDetailsComment = () => {
   const [status, setStatus] = useState("loading");
+  const { currentUser, setCurrentUser } = useContext(CurrentUserContext);
   const [movieDetailsComment, setMovieDetailsComment] = useState(null);
-  const { id } = useParams();
+
+  const { id: _id } = useParams();
   //9:38 AM · Jan 6 2020
   useEffect(() => {
     // movie comments by id
-    console.log(id);
-    fetch(`/movie-comment/${id}`)
+    console.log(_id);
+    fetch(`/movie-comment/${_id}`)
       .then((res) => res.json())
       .then((data) => {
         setMovieDetailsComment(data.data);
         setStatus("loaded");
-        console.log(data.data);
       });
-  }, [id]);
+  }, [_id]);
 
   return (
-    <WrapperList>
-      {movieDetailsComment?.length ? (
-        movieDetailsComment?.map((movie) => {
-          return (
-            <>
-              <Navigation to={`/user/${movie.userName}`}>
-                {movie.userName}
-              </Navigation>
-              <div>{movie.movietitle}</div>
-              <Commentsmap>{movie.comments}</Commentsmap>
-            </>
-          );
-        })
-      ) : (
-        <div>not commented yet</div>
+    <>
+      {status === "loading" && <div>Loading...</div>}
+      {status === "loaded" && movieDetailsComment && currentUser && (
+        <WrapperList>
+          {movieDetailsComment?.length ? (
+            movieDetailsComment?.map((comment) => {
+              let timeStamp = comment.timeOfComments;
+              const formattedTimeStamp = moment(timeStamp).format(
+                "h:mm a, MMMM Do YYYY"
+              );
+              return (
+                <Comment
+                  formattedTimeStamp={formattedTimeStamp}
+                  _id={comment._id}
+                  comment={comment}
+                />
+              );
+            })
+          ) : (
+            <div>not commented yet</div>
+          )}
+        </WrapperList>
       )}
-    </WrapperList>
+    </>
   );
 };
 
@@ -55,6 +64,31 @@ const Commentsmap = styled.div`
 `;
 const WrapperList = styled.div`
   margin-top: 20px;
+`;
+
+const WrapperThumb = styled.div`
+  display: flex;
+  margin-top: 5px;
+  align-items: center;
+  gap: 5px;
+`;
+
+const ThumbUp = styled.button`
+  display: flex;
+  font-size: 20px;
+  cursor: pointer;
+  border: none;
+  /* color: gray; */
+  background-color: transparent;
+`;
+
+const ThumbDown = styled.button`
+  display: flex;
+  font-size: 20px;
+  cursor: pointer;
+  border: none;
+  /* color: gray; */
+  background-color: transparent;
 `;
 
 export default MovieDetailsComment;

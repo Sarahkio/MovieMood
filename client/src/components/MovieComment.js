@@ -7,12 +7,13 @@ import { useParams } from "react-router-dom";
 import { NavLink } from "react-router-dom";
 import moment from "moment";
 
-// // import { CurrentUserContext } from "./CurrentUserContext";
+import { CurrentUserContext } from "./CurrentUserContext";
 
 const MovieComment = () => {
   const { userName: friendUserName } = useParams();
   const [status, setStatus] = useState("loading");
   const [movieComment, setMovieComment] = useState(null);
+  const { currentUser, setCurrentUser } = useContext(CurrentUserContext);
 
   //9:38 AM · Jan 6 2020
   useEffect(() => {
@@ -27,27 +28,54 @@ const MovieComment = () => {
       });
   }, [friendUserName]);
 
+  const handleDeleteComment = () => {
+    const requestOptions = {
+      method: "DELETE",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({ _id: currentUser._id }),
+    };
+
+    fetch(`/delete-comment/${friendUserName}`, requestOptions)
+      .then((response) => {
+        return response.json();
+      })
+      .then((data) => {
+        setCurrentUser(data.data);
+      });
+  };
+  console.log(movieComment);
   return (
-    <WrapperList>
-      {movieComment?.length ? (
-        movieComment?.map((movie) => {
-          let timeStamp = movie.timeOfComments;
-          const formattedTimeStamp = moment(timeStamp).format("MMMM Do YYYY");
-          return (
-            <>
-              <div>{movie.userName}</div>
-              <Navigation to={`/movie/${movie.movieid}`}>
-                {movie.movietitle}
-              </Navigation>
-              <Commentsmap>{movie.comments}</Commentsmap>
-              <div>{formattedTimeStamp}</div>
-            </>
-          );
-        })
-      ) : (
-        <div>not commented yet</div>
+    <>
+      {status === "loading" && <div>Loading...</div>}
+      {status === "loaded" && currentUser && (
+        <WrapperList>
+          {movieComment?.length ? (
+            movieComment?.map((movie) => {
+              let timeStamp = movie.timeOfComments;
+              const formattedTimeStamp =
+                moment(timeStamp).format("MMMM Do YYYY");
+              return (
+                <>
+                  <div>{movie.userName}</div>
+                  <Navigation to={`/movie/${movie.movieid}`}>
+                    {movie.movietitle}
+                  </Navigation>
+                  <div>{movie.numOfRatings}</div>
+                  <Commentsmap>{movie.comments}</Commentsmap>
+                  <button onClick={handleDeleteComment}>Delete Comment</button>
+
+                  <div>{formattedTimeStamp}</div>
+                </>
+              );
+            })
+          ) : (
+            <div>not commented yet</div>
+          )}
+        </WrapperList>
       )}
-    </WrapperList>
+    </>
   );
 };
 
@@ -60,5 +88,7 @@ const Commentsmap = styled.div`
 const WrapperList = styled.div`
   margin-top: 20px;
 `;
+
+// const Rating = styled.div``;
 
 export default MovieComment;
