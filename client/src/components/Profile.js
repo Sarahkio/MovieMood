@@ -6,6 +6,7 @@ import FriendsProfile from "./FriendsProfile";
 import SearchUser from "./SearchUser";
 import { NavLink } from "react-router-dom";
 import MovieComment from "./MovieComment";
+import { GoPerson } from "react-icons/go";
 
 // import CircularProgress from "@material-ui/core/CircularProgress";
 // import moment from "moment";
