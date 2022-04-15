@@ -1,9 +1,9 @@
 import styled from "styled-components";
 
 const CategoryList = ({ element }) => {
-  switch (element) {
+  switch (element.name) {
     case "Action":
-      return " 😍";
+      return "😍";
     case "Adventure":
       return "😎";
     case "Animation":
@@ -15,17 +15,17 @@ const CategoryList = ({ element }) => {
     case "Documentary":
       return "🤔";
     case "Drama":
-      return "😂";
+      return "🎭";
     case "Family":
-      return <Gamepad size={50} />;
+      return "👨‍👩‍👦";
     case "Fantasy":
       return "🧛‍♂️";
     case "History":
-      return <Gamepad size={50} />;
+      return "🌎";
     case "Horror":
       return "😱";
     case "Music":
-      return <Gamepad size={50} />;
+      return "🎹";
     case "Mystery":
       return "🧐";
     case "Romance":
@@ -33,15 +33,15 @@ const CategoryList = ({ element }) => {
     case "Science Fiction":
       return "👽";
     case "Tv Movie":
-      return <Gamepad size={50} />;
+      return "🎬";
     case "Thriller":
-      return <Gamepad size={50} />;
+      return "😨";
     case "War":
-      return <Gamepad size={50} />;
+      return "🤯";
     case "Western":
       return "🤠";
     default:
-      return <FaCircle />;
+      return "🎬";
   }
 };
 export default CategoryList;

@@ -2,7 +2,7 @@ import { useContext, useState } from "react";
 import { NavLink } from "react-router-dom";
 import styled from "styled-components";
 import { GenreContext } from "./GenreContext";
-// import CategoryList from "./CategoryList";
+import CategoryList from "./CategoryList";
 
 const Home = () => {
   const { genres, setGenres } = useContext(GenreContext);
@@ -31,14 +31,18 @@ const Home = () => {
             return (
               <div key={index}>
                 <CategoryWrapper>
-                  <InputElement
-                    onChange={(ev) => genreHandle(ev.target.checked, element)}
-                    type="checkbox"
-                  ></InputElement>
-                  {/* <CategoryList element={element} /> */}
-                  <LabelInput style={{ Color: "blue" }}>
-                    {element.name}
-                  </LabelInput>
+                  <CategoryListWrapper>
+                    <CategoryList element={element} />
+                  </CategoryListWrapper>
+                  <WrapperInput>
+                    <InputElement
+                      onChange={(ev) => genreHandle(ev.target.checked, element)}
+                      type="checkbox"
+                    ></InputElement>
+                    <LabelInput style={{ Color: "blue" }}>
+                      {element.name}
+                    </LabelInput>
+                  </WrapperInput>
                 </CategoryWrapper>
               </div>
             );
@@ -78,7 +82,7 @@ const InputElement = styled.input``;
 
 const LabelInput = styled.label`
   font-size: 20px;
-  padding: 10px 20px;
+  padding: 15px;
   margin: 5px;
   color: black;
   /* background-color: #373b69; */
@@ -105,6 +109,12 @@ const Wrapper = styled.div`
   margin: 10px auto;
   /* justify-content: space-around; */
   /* padding-top: 20px; */
+`;
+
+const WrapperInput = styled.div``;
+
+const CategoryListWrapper = styled.div`
+  font-size: 100px;
 `;
 
 const CategoriesWrapper = styled.div`
