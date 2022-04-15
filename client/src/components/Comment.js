@@ -70,6 +70,23 @@ const Comment = ({ formattedTimeStamp, _id, comment }) => {
         setDislike(!dislike);
       });
   };
+
+  const handleDeleteComment = () => {
+    const requestOptions = {
+      method: "DELETE",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({ _id }),
+    };
+
+    fetch(`/delete-comment/${_id}`, requestOptions)
+      .then((response) => {
+        console.log(response);
+        return response.json();
+      })
+      .then((data) => {});
+  };
   console.log(comment);
   return (
     <>
@@ -79,6 +96,11 @@ const Comment = ({ formattedTimeStamp, _id, comment }) => {
       <div>{comment.movietitle}</div>
       <div>{formattedTimeStamp}</div>
       <Commentsmap>{comment.comments}</Commentsmap>
+      {comment.userName === currentUser.userName ? (
+        <button onClick={handleDeleteComment}>Delete Comment</button>
+      ) : (
+        <button disabled>deleteComment</button>
+      )}
       <WrapperThumb>
         <ThumbUp onClick={handleLikeComment}>
           <TiThumbsUp style={like ? { fill: "green" } : { fill: "grey" }} />

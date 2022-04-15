@@ -489,7 +489,7 @@ const addDislikes = async (req, res) => {
     client.close();
   }
 };
-
+// delete comment in comment collection but not in users collection
 const deleteComment = async (req, res) => {
   const client = new MongoClient(MONGO_URI, options);
   const { userName } = req.params;
@@ -497,7 +497,6 @@ const deleteComment = async (req, res) => {
   try {
     await client.connect();
     const db = client.db("movies");
-
     await db.collection("comments").deleteOne({ _id: _id });
     await db
       .collection("users")
