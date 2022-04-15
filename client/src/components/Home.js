@@ -2,6 +2,7 @@ import { useContext, useState } from "react";
 import { NavLink } from "react-router-dom";
 import styled from "styled-components";
 import { GenreContext } from "./GenreContext";
+// import CategoryList from "./CategoryList";
 
 const Home = () => {
   const { genres, setGenres } = useContext(GenreContext);
@@ -24,7 +25,7 @@ const Home = () => {
   return (
     <>
       <Wrapper>
-        <div>What Are You In The Mood To Watch?</div>
+        <Title>What Are You In The Mood To Watch?</Title>
         <CategoriesWrapper>
           {genres.map((element, index) => {
             return (
@@ -34,6 +35,7 @@ const Home = () => {
                     onChange={(ev) => genreHandle(ev.target.checked, element)}
                     type="checkbox"
                   ></InputElement>
+                  {/* <CategoryList element={element} /> */}
                   <LabelInput style={{ Color: "blue" }}>
                     {element.name}
                   </LabelInput>
@@ -87,6 +89,12 @@ const LabelInput = styled.label`
   border-radius: 50px;
   /* display: flex; */
   /* margin-top: 5px; */
+`;
+
+const Title = styled.div`
+  font-weight: bold;
+  font-size: 20px;
+  margin-bottom: 20px;
 `;
 
 const Wrapper = styled.div`

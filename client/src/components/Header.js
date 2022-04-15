@@ -59,6 +59,8 @@ const MainWrapper = styled.div`
   justify-content: space-between;
   width: 100%;
   background-color: #373b69;
+  /* background-color: #7378c5; */
+
   align-items: center;
 `;
 
@@ -75,6 +77,7 @@ const Wrapper = styled.div`
   padding: 20px;
   display: flex;
   justify-content: end;
+  /* background-color: #7378c5; */
   background-color: #373b69;
 `;
 
