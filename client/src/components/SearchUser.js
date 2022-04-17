@@ -13,7 +13,7 @@ const Search = () => {
   };
 
   return (
-    <>
+    <Wrapper>
       <Input
         type="text"
         placeholder="search username"
@@ -25,7 +25,7 @@ const Search = () => {
       <Link ref={search} to={`/user/${searchText}`}>
         Go
       </Link>
-    </>
+    </Wrapper>
   );
 };
 
@@ -48,4 +48,12 @@ const Input = styled.input`
   &::placeholder {
     color: #7378c5;
   }
+`;
+
+const Wrapper = styled.div`
+  display: flex;
+  margin-top: 10px;
+  justify-content: flex-end;
+  align-items: center;
+  gap: 10px;
 `;

@@ -78,7 +78,9 @@ const Home = () => {
 
 export default Home;
 
-const InputElement = styled.input``;
+const InputElement = styled.input`
+  cursor: pointer;
+`;
 
 const LabelInput = styled.label`
   font-size: 20px;
@@ -87,7 +89,7 @@ const LabelInput = styled.label`
   color: black;
   /* background-color: #373b69; */
   display: inline-block;
-  cursor: pointer;
+  /* cursor: pointer; */
   /* height: 220px; */
   /* width: 220px; */
   border-radius: 50px;

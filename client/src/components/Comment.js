@@ -5,7 +5,7 @@ import styled from "styled-components";
 
 import { useContext, useState, useEffect } from "react";
 
-const Comment = ({ formattedTimeStamp, _id, comment }) => {
+const Comment = ({ formattedTimeStamp, _id, comment, commentRating }) => {
   const { currentUser, setCurrentUser } = useContext(CurrentUserContext);
   const [like, setLike] = useState(currentUser.commentsLiked.includes(_id));
   const [dislike, setDislike] = useState(
@@ -89,11 +89,24 @@ const Comment = ({ formattedTimeStamp, _id, comment }) => {
   };
   console.log(comment);
   return (
-    <>
+    <MainWrapper>
       <Navigation to={`/user/${comment.userName}`}>
         {comment.userName}
       </Navigation>
-      <div>{comment.movietitle}</div>
+      <TitleWrap>
+        <div>{comment.movietitle}</div>
+        <Rating
+          style={
+            commentRating >= 8
+              ? { color: "green" }
+              : commentRating >= 5
+              ? { color: "yellow" }
+              : { color: "red" }
+          }
+        >
+          {commentRating}
+        </Rating>
+      </TitleWrap>
       <div>{formattedTimeStamp}</div>
       <Commentsmap>{comment.comments}</Commentsmap>
       {comment.userName === currentUser.userName ? (
@@ -112,16 +125,32 @@ const Comment = ({ formattedTimeStamp, _id, comment }) => {
         </ThumbDown>
         <div>{comment.numOfDislikes}</div>
       </WrapperThumb>
-    </>
+    </MainWrapper>
   );
 };
 
 export default Comment;
 
-const Navigation = styled(NavLink)``;
+const MainWrapper = styled.div`
+  width: 280px;
+  /* border: 2px solid black; */
+`;
+
+const TitleWrap = styled.div`
+  display: flex;
+  align-items: center;
+  gap: 15px;
+`;
+
+const Navigation = styled(NavLink)`
+  font-weight: bold;
+  color: black;
+`;
 
 const Commentsmap = styled.div`
   margin-bottom: 10px;
+  /* border: 2px solid green; */
+  overflow-wrap: break-word;
 `;
 const WrapperList = styled.div`
   margin-top: 20px;
@@ -132,6 +161,13 @@ const WrapperThumb = styled.div`
   margin-top: 5px;
   align-items: center;
   gap: 5px;
+`;
+
+const Rating = styled.div`
+  background-color: lightgray;
+  padding: 0.25rem 0.5rem;
+  border-radius: 3px;
+  font-weight: bold;
 `;
 
 const ThumbUp = styled.button`

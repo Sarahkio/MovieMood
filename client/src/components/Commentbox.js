@@ -148,17 +148,20 @@ const WrapperArrow = styled.div`
   gap: 5px;
 `;
 
-const Textarea = styled.input`
+const Textarea = styled.textarea`
   position: relative;
   width: 500px;
   height: 70px;
-  /* align-items: center; */
+  /* display: flex;
+  flex-direction: column;
+  align-items: flex-start; */
   /* padding-top: 0px; */
   /* position: relative; */
-  ::placeholder {
+  /* ::placeholder {
     position: absolute;
-    align-items: center;
-  }
+    top: 0;
+    left: 0;
+  } */
 `;
 
 const Wrapper = styled.div`

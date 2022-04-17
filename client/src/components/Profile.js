@@ -99,21 +99,30 @@ const Profile = () => {
           <SearchUser />
           {currentProfile !== null ? (
             <>
-              <FirstName>{currentProfile.firstName}</FirstName>
-              <LastName>{currentProfile.lastName}</LastName>
-              <UserName>{currentProfile.userName}</UserName>
-              {currentProfile?.userName !== currentUser?.userName && (
-                <>
-                  {currentUser.friends.includes(friendUserName) ? (
+              <Wrapper>
+                <PersonWrap>
+                  <Person />
+                </PersonWrap>
+                <WrapInfo>
+                  {/* <FirstName>{currentProfile.firstName}</FirstName> */}
+                  {/* <LastName>{currentProfile.lastName}</LastName> */}
+                  <UserName>{currentProfile.userName}</UserName>
+                  {currentProfile?.userName !== currentUser?.userName && (
                     <>
-                      <Friend>Friend</Friend>
-                      <Delete onClick={handleUnFollow}>remove friend</Delete>
+                      {currentUser.friends.includes(friendUserName) ? (
+                        <>
+                          {/* <Friend>Friend</Friend> */}
+                          <Delete onClick={handleUnFollow}>
+                            remove friend
+                          </Delete>
+                        </>
+                      ) : (
+                        <AddButton onClick={handleFollow}>Add Friend</AddButton>
+                      )}
                     </>
-                  ) : (
-                    <AddButton onClick={handleFollow}>Add Friend</AddButton>
                   )}
-                </>
-              )}
+                </WrapInfo>
+              </Wrapper>
               <FriendsWrapperr>
                 <FriendsWrapperTitle>
                   <ProfileFriends>
@@ -128,6 +137,7 @@ const Profile = () => {
                     })}
                 </FriendsWrapperImages>
               </FriendsWrapperr>
+
               <WrapperComments>
                 <Comments>Comments</Comments>
                 <Underline2></Underline2>
@@ -155,19 +165,33 @@ const Underline = styled.div`
   /* margin-top: 20px; */
 `;
 
+const Wrapper = styled.div`
+  display: flex;
+`;
+
 const FirstName = styled.div``;
 const LastName = styled.div``;
 const UserName = styled.div``;
 const FriendsWrapperImages = styled.div`
   display: flex;
 `;
-const AddButton = styled.button``;
+const AddButton = styled.button`
+  margin-top: 10px;
+  height: fit-content;
+  /* padding: 0; */
+  /* border: none;
+  outline: none;
+  background-color: transparent; */
+`;
 const Friend = styled.div``;
-const Delete = styled.button``;
+const Delete = styled.button`
+  margin-top: 10px;
+  /* width: fit-content; */
+`;
 
 const FriendsWrapperr = styled.div`
-  margin-top: 120px;
-  margin-left: 270px;
+  /* margin-top: 120px; */
+  margin-left: 200px;
   position: relative;
 `;
 const FriendsWrapperTitle = styled.div``;
@@ -182,6 +206,26 @@ const WrapperComments = styled.div`
 
 const Comments = styled.div`
   margin-top: 20px;
+`;
+
+const Person = styled(GoPerson)`
+  font-size: 50px;
+  color: gray;
+`;
+
+const PersonWrap = styled.div`
+  background-color: lightgray;
+  padding: 20px;
+  width: fit-content;
+  display: flex;
+`;
+
+const WrapInfo = styled.div`
+  display: flex;
+  flex-direction: column;
+  margin-left: 20px;
+  margin-top: 15px;
+  /* align-items: center; */
 `;
 
 const Underline2 = styled.div`

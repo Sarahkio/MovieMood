@@ -25,22 +25,14 @@ const Header = () => {
         {!currentUser && (
           <>
             <SignUp to="/signUp">Sign Up</SignUp>
-            {/* <SignIn
-              onClick={(ev) => {
-                ev.stopPropagation();
-              }}
-              to={"/signIn"}
-            >
-              Sign In
-            </SignIn> */}
             <SignIn to="/signIn">Sign In</SignIn>
           </>
         )}
         {currentUser && (
           <>
-            <div>
+            <Name>
               {currentUser.firstName} {currentUser.lastName}
-            </div>
+            </Name>
             <Profile to={`/user/${currentUser.userName}`}>Profile</Profile>
             <SignOut onClick={handleLogout}>Sign Out</SignOut>
           </>
@@ -77,6 +69,8 @@ const Wrapper = styled.div`
   padding: 20px;
   display: flex;
   justify-content: end;
+  align-items: center;
+  gap: 5px;
   /* background-color: #7378c5; */
   background-color: #373b69;
 `;
@@ -87,6 +81,7 @@ const SignIn = styled(Link)`
   align-items: center;
   background-color: transparent;
   border: none;
+  cursor: pointer;
 `;
 
 const SignUp = styled(Link)`
@@ -95,6 +90,7 @@ const SignUp = styled(Link)`
   align-items: center;
   background-color: transparent;
   border: none;
+  cursor: pointer;
 `;
 
 const SignOut = styled.button`
@@ -103,9 +99,21 @@ const SignOut = styled.button`
   align-items: center;
   background-color: transparent;
   border: none;
+  cursor: pointer;
 `;
 
-const Profile = styled(Link)``;
+const Profile = styled(Link)`
+  cursor: pointer;
+  color: white;
+  text-decoration: inherit;
+  outline: none;
+  font-size: 15px;
+`;
+
+const Name = styled.div`
+  font-size: 15px;
+  font-weight: bold;
+`;
 
 const Input = styled.input`
   background-color: transparent;

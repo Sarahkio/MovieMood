@@ -27,7 +27,7 @@ const MovieDetailsComment = () => {
         setStatus("loaded");
       });
   }, [_id]);
-
+  console.log(movieDetailsComment);
   return (
     <>
       {status === "loading" && <div>Loading...</div>}
@@ -44,6 +44,7 @@ const MovieDetailsComment = () => {
                   formattedTimeStamp={formattedTimeStamp}
                   _id={comment._id}
                   comment={comment}
+                  commentRating={comment.numOfRatings}
                 />
               );
             })
@@ -64,6 +65,12 @@ const Commentsmap = styled.div`
 `;
 const WrapperList = styled.div`
   margin-top: 20px;
+  /* border: 2px solid red; */
+  height: 800px;
+  display: flex;
+  /* flex-direction: column; */
+  justify-content: space-between;
+  flex-wrap: wrap;
 `;
 
 const WrapperThumb = styled.div`

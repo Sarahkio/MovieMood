@@ -35,78 +35,182 @@ const MovieDetails = () => {
   }
 
   return (
-    <>
+    <MainWrapper>
       {status === "loading" && <div>Loading...</div>}
       {status === "loaded" && movieDetails && (
         <Wrapper>
           <CategoriesWrapper>
-            <div>
-              <CategoryWrapper>
-                <Element src={IMG_URI + movieDetails.poster_path}></Element>
-                <ElementId>
+            <ElementWrap>
+              <Element src={IMG_URI + movieDetails.poster_path}></Element>
+            </ElementWrap>
+            <WrapInfo>
+              <TitleWrap>
+                <ElementTitle>{movieDetails.original_title}</ElementTitle>
+                <ElementVote
+                  style={
+                    movieDetails.vote_average >= 8
+                      ? { color: "green" }
+                      : movieDetails.vote_average >= 5
+                      ? { color: "yellow" }
+                      : { color: "red" }
+                  }
+                >
+                  {movieDetails.vote_average}
+                </ElementVote>
+              </TitleWrap>
+              <ElementId>
+                <div>
+                  <Genre>Genre: </Genre>
                   {movieDetails &&
                     movieDetails?.genres.map((el) => {
+                      return el.name + " ";
+                    })}{" "}
+                </div>
+                {/* {movieDetails &&
+                    movieDetails?.genres.map((el) => {
                       return `genre: ${el.name} `;
-                    })}
-                </ElementId>
-                <ElementTitle>{movieDetails.original_title}</ElementTitle>
-                <div>{movieDetails.overview}</div>
-                <ElementVote>{movieDetails.vote_average}</ElementVote>
-                <div>{movieDetails.status}</div>
-                <div>{movieDetails.tagline}</div>
-                <button
-                  onClick={(e) => {
-                    e.preventDefault();
-                    history.goBack();
-                  }}
-                >
-                  Previous Page
-                </button>
-              </CategoryWrapper>
-            </div>
-            <Commentbox
-              limit={300}
-              value=""
-              id={id}
-              title={movieDetails.original_title}
-            />
-            {/* limit={300} value="" */}
+                    })} */}
+              </ElementId>
+              <OverviewWrap>
+                {" "}
+                <Overview>Overview: </Overview> {movieDetails.overview}
+              </OverviewWrap>
+              <div>
+                <Status>{movieDetails.status}:</Status>{" "}
+                {movieDetails.release_date}
+              </div>
+              <div>
+                <b>Tagline: </b>
+                {movieDetails.tagline}
+              </div>
+              <Button
+                onClick={(e) => {
+                  e.preventDefault();
+                  history.goBack();
+                }}
+              >
+                Previous Page
+              </Button>
+            </WrapInfo>
           </CategoriesWrapper>
+          <Commentbox
+            limit={300}
+            value=""
+            id={id}
+            title={movieDetails.original_title}
+          />
+          {/* limit={300} value="" */}
           <WrapperComments>
-            <Comments>Comments</Comments>
-            <Underline></Underline>
+            <WrapperCommentsUnerline>
+              <Comments>Comments</Comments>
+              <Underline></Underline>
+            </WrapperCommentsUnerline>
             {status === "loading" && <div>Loading...</div>}
             {status === "loaded" && movieDetails && <MovieDetailsComment />}
           </WrapperComments>
         </Wrapper>
       )}
-    </>
+    </MainWrapper>
   );
 };
 
 export default MovieDetails;
 
+const MainWrapper = styled.div`
+  width: 600px;
+  display: flex;
+`;
+
 const Wrapper = styled.div`
-  position: relative;
+  /* position: relative; */
+  /* display: flex; */
 `;
 
 const CategoriesWrapper = styled.div`
   display: flex;
   flex-direction: column;
+  /* border: 2px solid blue; */
 `;
 
 const CategoryWrapper = styled.div``;
 
-const Element = styled.img``;
+const WrappingCategory = styled.div`
+  /* display: flex; */
+  /* flex-direction: column; */
+  /* float: right; */
+  /* border: 2px solid green; */
+`;
 
-const ElementId = styled.div``;
+const Overview = styled.span`
+  font-weight: bold;
+`;
 
-const ElementTitle = styled.div``;
+const OverviewWrap = styled.div`
+  margin-bottom: 10px;
+`;
 
-const ElementVote = styled.div``;
+const Status = styled.span`
+  font-weight: bold;
+`;
+
+const Button = styled.button`
+  border: none;
+  color: white;
+  background-color: hsl(258deg, 100%, 50%);
+  padding: 5px;
+  border-radius: 20px;
+  margin-top: 15px;
+  margin-bottom: 15px;
+  width: fit-content;
+`;
+
+const Element = styled.img`
+  margin-top: 15px;
+  width: 500px;
+  height: 500px;
+`;
+
+const ElementId = styled.div`
+  margin-bottom: 10px;
+`;
+
+const ElementTitle = styled.div`
+  margin-top: 10px;
+  margin-bottom: 10px;
+  font-weight: bold;
+`;
+
+const TitleWrap = styled.div`
+  display: flex;
+  /* gap: 20px; */
+  /* flex-direction: row; */
+  justify-content: space-evenly;
+  align-items: center;
+  /* border: 2px solid yellow; */
+`;
+
+const Genre = styled.span`
+  font-weight: bold;
+`;
+
+const ElementVote = styled.div`
+  background-color: lightgray;
+  padding: 0.25rem 0.5rem;
+  border-radius: 3px;
+  font-weight: bold;
+`;
 
 const Navigation = styled(NavLink)``;
 
+const ElementWrap = styled.div`
+  display: flex;
+`;
+
+const WrapInfo = styled.div`
+  flex: 33.33%;
+`;
+
+const WrapperCommentsUnerline = styled.div``;
 // const userName = styled(Link)`
 //   color: black;
 //   text-decoration: none;
@@ -119,10 +223,14 @@ const WrapperComments = styled.div`
   flex-direction: column;
   justify-content: left;
   align-items: left;
+  /* flex-wrap: wrap; */
+  height: 800px;
 `;
 
 const Comments = styled.div`
   margin-top: 20px;
+  display: flex;
+  align-items: center;
 `;
 
 const Underline = styled.div`
