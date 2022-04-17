@@ -107,12 +107,14 @@ const Comment = ({ formattedTimeStamp, _id, comment, commentRating }) => {
           {commentRating}
         </Rating>
       </TitleWrap>
-      <div>{formattedTimeStamp}</div>
+      <Time>{formattedTimeStamp}</Time>
       <Commentsmap>{comment.comments}</Commentsmap>
       {comment.userName === currentUser.userName ? (
-        <button onClick={handleDeleteComment}>Delete Comment</button>
+        <DeleteButton onClick={handleDeleteComment}>
+          Delete Comment
+        </DeleteButton>
       ) : (
-        <button disabled>deleteComment</button>
+        <DisabledButton disabled>deleteComment</DisabledButton>
       )}
       <WrapperThumb>
         <ThumbUp onClick={handleLikeComment}>
@@ -145,6 +147,7 @@ const TitleWrap = styled.div`
 const Navigation = styled(NavLink)`
   font-weight: bold;
   color: black;
+  cursor: pointer;
 `;
 
 const Commentsmap = styled.div`
@@ -168,6 +171,25 @@ const Rating = styled.div`
   padding: 0.25rem 0.5rem;
   border-radius: 3px;
   font-weight: bold;
+`;
+
+const Time = styled.div`
+  margin-top: 5px;
+  margin-bottom: 5px;
+  font-style: italic;
+`;
+
+const DeleteButton = styled.button`
+  border: none;
+  color: white;
+  background-color: red;
+  padding: 5px;
+  border-radius: 15px;
+  cursor: pointer;
+`;
+
+const DisabledButton = styled.button`
+  display: none;
 `;
 
 const ThumbUp = styled.button`

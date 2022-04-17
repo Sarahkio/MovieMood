@@ -51,8 +51,15 @@ const FriendsProfile = ({ id, movie }) => {
   );
 };
 // friennds must be true, if no friends returns no friends
-const FriendsWrapper = styled(Link)``;
+const FriendsWrapper = styled(Link)`
+  text-decoration: none;
+  color: black;
+  cursor: pointer;
+`;
 
-const FriendsName = styled.div``;
+const FriendsName = styled.div`
+  margin-right: 10px;
+  margin-top: 10px;
+`;
 
 export default FriendsProfile;

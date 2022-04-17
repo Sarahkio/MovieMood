@@ -48,7 +48,7 @@ const SignIn = () => {
           if (data.data) {
             window.localStorage.setItem(
               "user",
-              JSON.stringify(data.data.userName)
+              JSON.stringify(data.data.username)
             );
             setCurrentUser(data.data);
             history.push("/");

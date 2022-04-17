@@ -65,16 +65,28 @@ const MovieComment = () => {
               const formattedTimeStamp =
                 moment(timeStamp).format("MMMM Do YYYY");
               return (
-                <>
-                  <div>{movie.userName}</div>
-                  <Navigation to={`/movie/${movie.movieid}`}>
-                    {movie.movietitle}
-                  </Navigation>
-                  <div>{movie.numOfRatings}</div>
+                <WrapperComments>
+                  {/* <div>{movie.userName}</div> */}
+                  <WrapperTitle>
+                    <Navigation to={`/movie/${movie.movieid}`}>
+                      {movie.movietitle}
+                    </Navigation>
+                    <Rating
+                      style={
+                        movie.numOfRatings >= 8
+                          ? { color: "green" }
+                          : movie.numOfRatings >= 5
+                          ? { color: "yellow" }
+                          : { color: "red" }
+                      }
+                    >
+                      {movie.numOfRatings}
+                    </Rating>
+                  </WrapperTitle>
+                  <Time>{formattedTimeStamp}</Time>
                   <Commentsmap>{movie.comments}</Commentsmap>
-                  <div>{formattedTimeStamp}</div>
                   {/* <button onClick={handleDeleteComment}>Delete Comment</button> */}
-                </>
+                </WrapperComments>
               );
             })
           ) : (
@@ -87,13 +99,54 @@ const MovieComment = () => {
 };
 
 // const Link = styled(Link)``;
-const Navigation = styled(NavLink)``;
+const Navigation = styled(NavLink)`
+  color: black;
+  font-weight: bold;
+  cursor: pointer;
+`;
 
 const Commentsmap = styled.div`
   margin-bottom: 10px;
+  margin-top: 10px;
+  /* border: 2px solid blue; */
 `;
 const WrapperList = styled.div`
   margin-top: 20px;
+  /* border: 2px solid green; */
+  /* justify-content: space-evenly; */
+  display: flex;
+  /* flex-wrap: wrap; */
+  flex-direction: column;
+  /* width: 300px; */
+  width: fit-content;
+  gap: 10px;
+  height: 500px;
+  flex-wrap: wrap;
+`;
+
+const WrapperComments = styled.div`
+  display: flex;
+  flex-direction: column;
+  justify-content: space-evenly;
+  /* border: 2px solid yellow; */
+  width: 380px;
+`;
+
+const WrapperTitle = styled.div`
+  display: flex;
+  align-items: center;
+  gap: 15px;
+`;
+
+const Rating = styled.div`
+  background-color: lightgray;
+  padding: 0.25rem 0.5rem;
+  border-radius: 3px;
+  font-weight: bold;
+`;
+
+const Time = styled.div`
+  font-style: italic;
 `;
 
 // const Rating = styled.div``;

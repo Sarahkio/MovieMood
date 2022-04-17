@@ -6,11 +6,13 @@ import { useHistory } from "react-router-dom";
 import Commentbox from "./Commentbox";
 import { NavLink } from "react-router-dom";
 import MovieDetailsComment from "./MovieDetailsComment";
+import { AiOutlinePicture } from "react-icons/ai";
 
 const MovieDetails = () => {
   const [movieDetails, setMovieDetails] = useState(null);
   // const [movieId, setMovieId] = useState(null);
   const [movieDetailsComment, setMovieDetailsComment] = useState(null);
+  const [movieVideos, setMovieVideos] = useState(null);
   const [status, setStatus] = useState("loading");
 
   const { id } = useParams();
@@ -28,6 +30,20 @@ const MovieDetails = () => {
       });
   }, []);
 
+  useEffect(() => {
+    // movie videos
+    // console.log(id);
+    fetch(`/movies/videos/${id}`)
+      .then((res) => res.json())
+      .then((data) => {
+        if (data.data) {
+          setMovieVideos(data.data.results);
+          setStatus("loaded");
+          console.log(data.data.results);
+        }
+      });
+  }, []);
+
   let history = useHistory();
 
   if (!movieDetails) {
@@ -41,8 +57,21 @@ const MovieDetails = () => {
         <Wrapper>
           <CategoriesWrapper>
             <ElementWrap>
-              <Element src={IMG_URI + movieDetails.poster_path}></Element>
+              {movieDetails.poster_path ? (
+                <Element src={IMG_URI + movieDetails.poster_path}></Element>
+              ) : (
+                <>
+                  <Element
+                    style={{ display: "none" }}
+                    src={IMG_URI + movieDetails.poster_path}
+                  ></Element>
+                  <ElementNot>
+                    <AiOutlinePicture size={600} />
+                  </ElementNot>
+                </>
+              )}
             </ElementWrap>
+
             <WrapInfo>
               <TitleWrap>
                 <ElementTitle>{movieDetails.original_title}</ElementTitle>
@@ -66,15 +95,29 @@ const MovieDetails = () => {
                       return el.name + " ";
                     })}{" "}
                 </div>
-                {/* {movieDetails &&
-                    movieDetails?.genres.map((el) => {
-                      return `genre: ${el.name} `;
-                    })} */}
               </ElementId>
               <OverviewWrap>
                 {" "}
                 <Overview>Overview: </Overview> {movieDetails.overview}
               </OverviewWrap>
+              <VideosWrap>
+                <>
+                  <Trailers>Trailers: </Trailers>
+                  {movieVideos &&
+                    movieVideos?.map((videos) => {
+                      if (videos.type === "Trailer") {
+                        return (
+                          <Video
+                            target="_blank"
+                            href={`https://www.youtube.com/watch?v=${videos.key}`}
+                          >
+                            {videos.name}
+                          </Video>
+                        );
+                      }
+                    })}
+                </>
+              </VideosWrap>
               <div>
                 <Status>{movieDetails.status}:</Status>{" "}
                 {movieDetails.release_date}
@@ -141,6 +184,22 @@ const WrappingCategory = styled.div`
   /* border: 2px solid green; */
 `;
 
+const Trailers = styled.span`
+  font-weight: bold;
+`;
+
+const VideosWrap = styled.div`
+  display: flex;
+  gap: 15px;
+  margin-top: 10px;
+  margin-bottom: 10px;
+`;
+
+const Video = styled.a`
+  color: black;
+  cursor: pointer;
+`;
+
 const Overview = styled.span`
   font-weight: bold;
 `;
@@ -167,7 +226,11 @@ const Button = styled.button`
 const Element = styled.img`
   margin-top: 15px;
   width: 500px;
-  height: 500px;
+  height: 600px;
+`;
+
+const ElementNot = styled.div`
+  margin-top: 15px;
 `;
 
 const ElementId = styled.div`

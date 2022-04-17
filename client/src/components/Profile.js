@@ -146,7 +146,12 @@ const Profile = () => {
               </WrapperComments>
             </>
           ) : (
-            <div>Profile not found, case sensitive</div>
+            <>
+              <WrapperMessage>
+                <Face>🙁</Face>
+                <Title>Profile not found, case sensitive</Title>
+              </WrapperMessage>
+            </>
           )}
         </ProfileWrapper>
       )}
@@ -156,6 +161,25 @@ const Profile = () => {
 const ProfileWrapper = styled.div`
   position: relative;
   width: 800px;
+`;
+
+const WrapperMessage = styled.div`
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  margin-top: 50px;
+`;
+
+const Face = styled.div`
+  font-size: 50px;
+`;
+
+const Title = styled.div`
+  font-weight: bold;
+  font-size: 20px;
 `;
 
 const Underline = styled.div`
@@ -202,6 +226,7 @@ const WrapperComments = styled.div`
   flex-direction: column;
   justify-content: left;
   align-items: left;
+  height: 800px;
 `;
 
 const Comments = styled.div`

@@ -12,18 +12,7 @@ const Search = () => {
   let history = useHistory();
   const search = useRef();
   const fetchSearch = () => {
-    // movies of the specific genre
-    // fetch(`/search/${searchText}?page=${page}`)
-    //   .then((res) => res.json())
-    //   .then((data) => {
-    //     setContent(data.data);
-    //     // console.log(data.data);
-    //     setNumOfPages(data.total_pages);
-    // (`/movies/title/${searchText}?page=1`);
-    // search.current.value();
     history.push(`/movies/title/${searchText}?page=1`);
-    // history.push(`/movies/title/${searchText}${history.location.search}`);
-    //   });
   };
 
   return (

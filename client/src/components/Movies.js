@@ -3,8 +3,10 @@ import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import { NavLink } from "react-router-dom";
 import styled from "styled-components";
+import { AiOutlinePicture } from "react-icons/ai";
 
 import { useHistory } from "react-router-dom";
+// import NoResult from "./NoResult";
 
 const Home = () => {
   const [movies, setMovies] = useState(null);
@@ -13,6 +15,7 @@ const Home = () => {
   const { searchType, searchParams } = useParams();
   const IMG_URI = "https://image.tmdb.org/t/p/w500";
   const BASE_URI = "https://api.themoviedb.org/3";
+  const [status, setStatus] = useState("loading");
 
   let history = useHistory();
 
@@ -27,9 +30,15 @@ const Home = () => {
           if (data.data.length !== 0) {
             setMovies(data.data);
             setTotalPages(data.total_pages);
+            setStatus("loaded");
             // setTotalPages(20);
           } else {
-            setMessage("No Results");
+            // setStatus("loaded");
+            setMessage(
+              <>
+                <Face>🙁</Face> <div>No Result</div>
+              </>
+            );
           }
         });
     } else if (searchType === "title") {
@@ -38,6 +47,7 @@ const Home = () => {
         .then((res) => res.json())
         .then((data) => {
           setMovies(data.data);
+          setStatus("loaded");
 
           setTotalPages(data.total_pages);
           // setTotalPages(20);
@@ -46,7 +56,11 @@ const Home = () => {
   }, [page]);
 
   if (!movies) {
-    return <div>{message}</div>;
+    return (
+      <WrapperMessage>
+        <Title>{message}</Title>
+      </WrapperMessage>
+    );
   }
 
   const nextHandle = () => {
@@ -65,68 +79,74 @@ const Home = () => {
 
   return (
     <>
-      <Wrapper>
-        <CategoriesWrapper>
-          {movies.map((element, index) => {
-            return (
-              <div key={index}>
-                <CategoryWrapper>
-                  <Link to={`/movie/${element.id}`}>
-                    <ElementWrap>
-                      {element.poster_path ? (
-                        <Element src={IMG_URI + element.poster_path}></Element>
-                      ) : (
-                        <>
+      {status === "loading" && <div>Loading...</div>}
+      {status === "loaded" && movies && (
+        <Wrapper>
+          <CategoriesWrapper>
+            {movies.map((element, index) => {
+              return (
+                <div key={index}>
+                  <CategoryWrapper>
+                    <Link to={`/movie/${element.id}`}>
+                      <ElementWrap>
+                        {element.poster_path ? (
                           <Element
-                            style={{ display: "none" }}
                             src={IMG_URI + element.poster_path}
                           ></Element>
-
-                          <ElementNot>Picture not found</ElementNot>
-                        </>
-                      )}
-                    </ElementWrap>
-                    <InfoWrapper>
-                      <ElementTitle>{element.title}</ElementTitle>
-                      <ElementVote
-                        style={
-                          element.vote_average >= 8
-                            ? { color: "green" }
-                            : element.vote_average >= 5
-                            ? { color: "yellow" }
-                            : { color: "red" }
-                        }
-                      >
-                        {element.vote_average}
-                      </ElementVote>
-                    </InfoWrapper>
-                  </Link>
-                </CategoryWrapper>
-              </div>
-            );
-          })}
-        </CategoriesWrapper>
-        <Wrap>
-          {page < 2 ? (
-            <Prev disabled onClick={prevHandle}>
-              Previous Page
-            </Prev>
-          ) : (
-            <Prev onClick={prevHandle}>Previous Page</Prev>
-          )}
-          <Page>{page}</Page>
-          {page < totalPages ? (
-            <Next onClick={nextHandle}>Next Page</Next>
-          ) : (
-            <>
-              <Next disabled onClick={nextHandle}>
-                Next Page
-              </Next>
-              {/* <div>No Results</div> */}
-            </>
-          )}
-        </Wrap>
-      </Wrapper>
+                        ) : (
+                          <>
+                            <Element
+                              style={{ display: "none" }}
+                              src={IMG_URI + element.poster_path}
+                            ></Element>
+                            <ElementNot>
+                              <AiOutlinePicture size={300} />
+                            </ElementNot>
+                          </>
+                        )}
+                      </ElementWrap>
+                      <InfoWrapper>
+                        <ElementTitle>{element.title}</ElementTitle>
+                        <ElementVote
+                          style={
+                            element.vote_average >= 8
+                              ? { color: "green" }
+                              : element.vote_average >= 5
+                              ? { color: "yellow" }
+                              : { color: "red" }
+                          }
+                        >
+                          {element.vote_average}
+                        </ElementVote>
+                      </InfoWrapper>
+                    </Link>
+                  </CategoryWrapper>
+                </div>
+              );
+            })}
+          </CategoriesWrapper>
+          <Wrap>
+            {page < 2 ? (
+              <Prev disabled onClick={prevHandle}>
+                Previous Page
+              </Prev>
+            ) : (
+              <Prev onClick={prevHandle}>Previous Page</Prev>
+            )}
+            <Page>{page}</Page>
+            {page < totalPages ? (
+              <Next onClick={nextHandle}>Next Page</Next>
+            ) : (
+              <>
+                <Next disabled onClick={nextHandle}>
+                  Next Page
+                </Next>
+                {/* <div>No Results</div> */}
+              </>
+            )}
+          </Wrap>
+        </Wrapper>
+      )}
     </>
   );
 };
@@ -208,7 +228,9 @@ const Element = styled.img`
   /* margin: 16px; */
 `;
 
-const ElementNot = styled.div``;
+const ElementNot = styled.div`
+  /* width: 300px; */
+`;
 
 const ElementId = styled.div``;
 
@@ -226,4 +248,23 @@ const Link = styled(NavLink)`
   text-decoration: none;
   font-size: 16px;
   font-weight: bold;
+`;
+
+const WrapperMessage = styled.div`
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  margin-top: 50px;
+`;
+
+const Face = styled.div`
+  font-size: 70px;
+`;
+
+const Title = styled.div`
+  font-weight: bold;
+  font-size: 30px;
 `;
