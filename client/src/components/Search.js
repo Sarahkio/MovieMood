@@ -25,9 +25,9 @@ const Search = () => {
           e.key === "Enter" && fetchSearch();
         }}
       ></Input>
-      <Link ref={search} to={`/movies/title/${searchText}?page=1`}>
+      <StyledLink ref={search} to={`/movies/title/${searchText}?page=1`}>
         Go
-      </Link>
+      </StyledLink>
     </>
   );
 };
@@ -51,4 +51,9 @@ const Input = styled.input`
   &::placeholder {
     color: #7378c5;
   }
+`;
+
+const StyledLink = styled(Link)`
+  color: black;
+  margin-left: 5px;
 `;

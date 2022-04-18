@@ -8,7 +8,9 @@ const SignIn = () => {
   const [disabled, setDisabled] = useState(true);
   const [valid, setValid] = useState(false);
   const [loginError, setLoginError] = useState(null);
-  const { current, setCurrentUser } = useContext(CurrentUserContext);
+  const { currentUser, setCurrentUser } = useContext(CurrentUserContext);
+  const [Passmessage, setPassMessage] = useState(null);
+  const [Usermessage, setUserMessage] = useState(null);
 
   // create a reference for each input to store the values
   const email = useRef();
@@ -46,12 +48,19 @@ const SignIn = () => {
           console.log(data, "data");
 
           if (data.data) {
+            console.log(data.data);
             window.localStorage.setItem(
               "user",
-              JSON.stringify(data.data.username)
+              JSON.stringify(data.data.userName)
             );
             setCurrentUser(data.data);
             history.push("/");
+          } else if (data.status === 400) {
+            setPassMessage("Wrong Password");
+            // window.alert("Wrong Password");
+          } else if (data.status === 404) {
+            setUserMessage("user does not exist");
+            // window.alert("user does not exist");
           } else {
             setLoginError("error");
           }
@@ -96,6 +105,10 @@ const SignIn = () => {
         >
           Sign In
         </LoginBtn>
+        {Passmessage === "Wrong Password" && <Message>Wrong Password</Message>}
+        {Usermessage === "user does not exist" && (
+          <Message>User does not exist</Message>
+        )}
       </SignUpForm>
 
       <StyledInfo>
@@ -104,6 +117,13 @@ const SignIn = () => {
     </Wrapper>
   );
 };
+
+const Message = styled.div`
+  color: red;
+  font-weight: bold;
+  display: flex;
+  margin: 0 auto;
+`;
 
 const Wrapper = styled.div`
   display: flex;

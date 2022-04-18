@@ -202,6 +202,12 @@ const FriendsWrapperImages = styled.div`
 const AddButton = styled.button`
   margin-top: 10px;
   height: fit-content;
+  border: none;
+  color: white;
+  background-color: green;
+  padding: 5px;
+  border-radius: 15px;
+  cursor: pointer;
   /* padding: 0; */
   /* border: none;
   outline: none;
@@ -210,6 +216,12 @@ const AddButton = styled.button`
 const Friend = styled.div``;
 const Delete = styled.button`
   margin-top: 10px;
+  border: none;
+  color: white;
+  background-color: red;
+  padding: 5px;
+  border-radius: 15px;
+  cursor: pointer;
   /* width: fit-content; */
 `;
 

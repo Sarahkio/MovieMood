@@ -70,7 +70,8 @@ const Wrapper = styled.div`
   display: flex;
   justify-content: end;
   align-items: center;
-  gap: 5px;
+  gap: 10px;
+  /* min-width: 400px; */
   /* background-color: #7378c5; */
   background-color: #373b69;
 `;
@@ -99,6 +100,8 @@ const SignOut = styled.button`
   align-items: center;
   background-color: transparent;
   border: none;
+  min-width: 100px;
+
   cursor: pointer;
 `;
 
@@ -113,6 +116,7 @@ const Profile = styled(Link)`
 const Name = styled.div`
   font-size: 15px;
   font-weight: bold;
+  min-width: 100px;
 `;
 
 const Input = styled.input`

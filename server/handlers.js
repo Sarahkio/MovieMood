@@ -120,7 +120,7 @@ const signIn = async (req, res) => {
     }
   } catch (err) {
     console.log(err.stack);
-    res.status(500).json({ status: 500, message: "unknown error" });
+    res.status(404).json({ status: 404, message: "user doesn't exist" });
   } finally {
     client.close();
   }

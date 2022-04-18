@@ -68,9 +68,9 @@ const WrapperList = styled.div`
   /* border: 2px solid red; */
   height: 800px;
   display: flex;
-  /* gap: 10px; */
-  /* flex-direction: column; */
-  justify-content: space-evenly;
+  width: fit-content;
+  gap: 10px;
+  height: 500px;
   flex-wrap: wrap;
 `;
 
