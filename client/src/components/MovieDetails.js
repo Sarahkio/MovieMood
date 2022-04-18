@@ -14,6 +14,7 @@ const MovieDetails = () => {
   const [movieDetailsComment, setMovieDetailsComment] = useState(null);
   const [movieVideos, setMovieVideos] = useState(null);
   const [status, setStatus] = useState("loading");
+  const [movieCredits, setMovieCredits] = useState(null);
 
   const { id } = useParams();
   const BASE_URI = "https://api.themoviedb.org/3";
@@ -40,6 +41,20 @@ const MovieDetails = () => {
           setMovieVideos(data.data.results);
           setStatus("loaded");
           console.log(data.data.results);
+        }
+      });
+  }, []);
+
+  useEffect(() => {
+    // movie videos
+    // console.log(id);
+    fetch(`/movies/credits/${id}`)
+      .then((res) => res.json())
+      .then((data) => {
+        if (data.data) {
+          setMovieCredits(data.data.cast);
+          setStatus("loaded");
+          console.log(data.data.cast);
         }
       });
   }, []);
@@ -100,6 +115,22 @@ const MovieDetails = () => {
                 {" "}
                 <Overview>Overview: </Overview> {movieDetails.overview}
               </OverviewWrap>
+              <CreditsWrap>
+                <>
+                  <Credits>Credits: </Credits>
+                  {movieCredits &&
+                    movieCredits?.map((credits) => {
+                      if (credits.popularity >= 7) {
+                        return (
+                          <WrapperCredit>
+                            <Name>{credits.original_name} </Name>
+                            <Character>{credits.character}</Character>
+                          </WrapperCredit>
+                        );
+                      }
+                    })}
+                </>
+              </CreditsWrap>
               <VideosWrap>
                 <>
                   <Trailers>Trailers: </Trailers>
@@ -160,7 +191,7 @@ const MovieDetails = () => {
 export default MovieDetails;
 
 const MainWrapper = styled.div`
-  width: 600px;
+  width: 670px;
   display: flex;
 `;
 
@@ -188,6 +219,10 @@ const Trailers = styled.span`
   font-weight: bold;
 `;
 
+const Credits = styled.span`
+  font-weight: bold;
+`;
+
 const VideosWrap = styled.div`
   display: flex;
   gap: 15px;
@@ -195,8 +230,27 @@ const VideosWrap = styled.div`
   margin-bottom: 10px;
 `;
 
+const CreditsWrap = styled.div`
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-top: 10px;
+  margin-bottom: 10px;
+`;
+
+const WrapperCredit = styled.div`
+  display: flex;
+  gap: 10px;
+`;
+
+const Name = styled.span``;
+
+const Character = styled.span`
+  font-weight: 300;
+`;
+
 const Video = styled.a`
-  color: black;
+  color: blue;
   cursor: pointer;
 `;
 
@@ -225,8 +279,8 @@ const Button = styled.button`
 
 const Element = styled.img`
   margin-top: 15px;
-  width: 500px;
-  height: 600px;
+  width: 600px;
+  height: 700px;
 `;
 
 const ElementNot = styled.div`
@@ -245,10 +299,11 @@ const ElementTitle = styled.div`
 
 const TitleWrap = styled.div`
   display: flex;
-  /* gap: 20px; */
+  /* gap: 100px; */
   /* flex-direction: row; */
   justify-content: space-evenly;
   align-items: center;
+  /* margin-left: 10px; */
   /* border: 2px solid yellow; */
 `;
 
@@ -257,7 +312,7 @@ const Genre = styled.span`
 `;
 
 const ElementVote = styled.div`
-  background-color: lightgray;
+  background-color: gray;
   padding: 0.25rem 0.5rem;
   border-radius: 3px;
   font-weight: bold;
@@ -267,6 +322,7 @@ const Navigation = styled(NavLink)``;
 
 const ElementWrap = styled.div`
   display: flex;
+  align-items: center;
 `;
 
 const WrapInfo = styled.div`

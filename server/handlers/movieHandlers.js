@@ -128,4 +128,35 @@ const getVideosById = async (req, res) => {
   }
 };
 
-module.exports = { getGenres, getGenre, getMovie, getVideosById };
+const getCreditsById = async (req, res) => {
+  const client = new MongoClient(MONGO_URI, options);
+  const id = req.params.id;
+
+  try {
+    // console.log("starting connection");
+    await client.connect();
+    const db = client.db("movies");
+    const response = await axios.get(
+      `https://api.themoviedb.org/3/movie/${id}/credits?api_key=${MOVIE_API}`
+    );
+    console.log(response);
+    if (response) {
+      res.status(200).json({ status: 200, data: response.data });
+    } else {
+      res.status(400).json({ status: 400, message: "movie details not found" });
+    }
+  } catch (err) {
+    // console.log(err);
+    res.status(500).json({ status: 500, message: "unknown error" });
+  } finally {
+    client.close();
+  }
+};
+
+module.exports = {
+  getGenres,
+  getGenre,
+  getMovie,
+  getVideosById,
+  getCreditsById,
+};
