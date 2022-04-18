@@ -102,6 +102,7 @@ const MovieDetails = () => {
                   {movieDetails.vote_average}
                 </ElementVote>
               </TitleWrap>
+
               <ElementId>
                 <div>
                   <Genre>Genre: </Genre>
@@ -303,7 +304,11 @@ const TitleWrap = styled.div`
   /* flex-direction: row; */
   justify-content: space-evenly;
   align-items: center;
-  /* margin-left: 10px; */
+  /* margin: 16px; */
+  width: 600px;
+
+  background-color: #7378c5;
+  margin-bottom: 10px;
   /* border: 2px solid yellow; */
 `;
 
@@ -312,7 +317,7 @@ const Genre = styled.span`
 `;
 
 const ElementVote = styled.div`
-  background-color: gray;
+  background-color: #373b69;
   padding: 0.25rem 0.5rem;
   border-radius: 3px;
   font-weight: bold;

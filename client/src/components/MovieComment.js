@@ -62,29 +62,50 @@ const MovieComment = () => {
           {movieComment?.length ? (
             movieComment?.map((movie) => {
               let timeStamp = movie.timeOfComments;
-              const formattedTimeStamp =
-                moment(timeStamp).format("MMMM Do YYYY");
+              const formattedTimeStamp = moment(timeStamp).format(
+                "h:mm a, MMMM Do YYYY"
+              );
               return (
                 <WrapperComments>
                   {/* <div>{movie.userName}</div> */}
-                  <WrapperTitle>
-                    <Navigation to={`/movie/${movie.movieid}`}>
-                      {movie.movietitle}
-                    </Navigation>
-                    <Rating
-                      style={
-                        movie.numOfRatings >= 8
-                          ? { color: "green" }
-                          : movie.numOfRatings >= 5
-                          ? { color: "yellow" }
-                          : { color: "red" }
-                      }
-                    >
-                      {movie.numOfRatings}
-                    </Rating>
-                  </WrapperTitle>
-                  <Time>{formattedTimeStamp}</Time>
-                  <Commentsmap>{movie.comments}</Commentsmap>
+                  <Break>
+                    <WrapperTitle>
+                      <Navigation to={`/movie/${movie.movieid}`}>
+                        {movie.movietitle}
+                      </Navigation>
+                      <Rating
+                        style={
+                          movie.numOfRatings >= 8
+                            ? { color: "green" }
+                            : movie.numOfRatings >= 5
+                            ? { color: "yellow" }
+                            : { color: "red" }
+                        }
+                      >
+                        {movie.numOfRatings}
+                      </Rating>
+                    </WrapperTitle>
+                    <Time>{formattedTimeStamp}</Time>
+                    <Commentsmap>{movie.comments}</Commentsmap>
+                    <WrapLikes>
+                      {movie.numOfLikes >= 1 ? (
+                        <span>
+                          <Likes>Likes: </Likes> {movie.numOfLikes}
+                        </span>
+                      ) : null}
+                      {movie.numOfDislikes >= 1 ? (
+                        <span>
+                          <Dislikes>Dislikes: </Dislikes>
+                          {movie.numOfDislikes}
+                        </span>
+                      ) : null}
+                    </WrapLikes>
+                    {/* <WrapUnderline>
+                      <UnderLineHR></UnderLineHR>
+                      <RatingHelp></RatingHelp>
+                      <UnderLineHR></UnderLineHR>
+                    </WrapUnderline> */}
+                  </Break>
                   {/* <button onClick={handleDeleteComment}>Delete Comment</button> */}
                 </WrapperComments>
               );
@@ -97,6 +118,44 @@ const MovieComment = () => {
     </>
   );
 };
+
+const Break = styled.div`
+  /* border: 2px solid red; */
+  display: inline-block;
+  word-break: break-word;
+`;
+
+const UnderLineHR = styled.div`
+  height: 1px;
+  width: 200px;
+  margin-top: 10px;
+  background-color: black;
+`;
+
+const RatingHelp = styled.span``;
+
+const WrapUnderline = styled.div`
+  display: flex;
+  flex-direction: column;
+`;
+
+const WrapLikes = styled.div`
+  display: flex;
+  gap: 10px;
+`;
+
+const Likes = styled.span`
+  font-weight: bold;
+  font-style: italic;
+  color: darkgreen;
+`;
+
+const Dislikes = styled.span`
+  font-weight: bold;
+  font-weight: bold;
+  font-style: italic;
+  color: darkred;
+`;
 
 // const Link = styled(Link)``;
 const Navigation = styled(NavLink)`
@@ -112,15 +171,12 @@ const Commentsmap = styled.div`
 `;
 const WrapperList = styled.div`
   margin-top: 20px;
-  /* border: 2px solid green; */
-  /* justify-content: space-evenly; */
+  /* border: 2px solid blue; */
   display: flex;
-  /* flex-wrap: wrap; */
-  flex-direction: column;
-  /* width: 300px; */
+  /* height: 800px; */
   width: fit-content;
   gap: 10px;
-  height: 500px;
+
   flex-wrap: wrap;
 `;
 
@@ -128,6 +184,7 @@ const WrapperComments = styled.div`
   display: flex;
   flex-direction: column;
   justify-content: space-evenly;
+  flex-wrap: wrap;
   /* border: 2px solid yellow; */
   width: 380px;
 `;

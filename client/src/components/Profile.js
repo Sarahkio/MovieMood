@@ -107,6 +107,7 @@ const Profile = () => {
                   {/* <FirstName>{currentProfile.firstName}</FirstName> */}
                   {/* <LastName>{currentProfile.lastName}</LastName> */}
                   <UserName>{currentProfile.userName}</UserName>
+
                   {currentProfile?.userName !== currentUser?.userName && (
                     <>
                       {currentUser.friends.includes(friendUserName) ? (
@@ -139,8 +140,10 @@ const Profile = () => {
               </FriendsWrapperr>
 
               <WrapperComments>
-                <Comments>Comments</Comments>
-                <Underline2></Underline2>
+                <WrapperCommentsUnderline>
+                  <Comments>Comments</Comments>
+                  <Underline2></Underline2>
+                </WrapperCommentsUnderline>
                 {status === "loading" && <div>Loading...</div>}
                 {status === "loaded" && currentProfile && <MovieComment />}
               </WrapperComments>
@@ -173,6 +176,8 @@ const WrapperMessage = styled.div`
   margin-top: 50px;
 `;
 
+const WrapperCommentsUnderline = styled.div``;
+
 const Face = styled.div`
   font-size: 50px;
 `;
@@ -183,10 +188,10 @@ const Title = styled.div`
 `;
 
 const Underline = styled.div`
-  background-color: var(--primary-color);
-  width: 800px;
   height: 1px;
-  /* margin-top: 20px; */
+  width: 200px;
+  margin-top: 10px;
+  background-color: black;
 `;
 
 const Wrapper = styled.div`
@@ -238,7 +243,9 @@ const WrapperComments = styled.div`
   flex-direction: column;
   justify-content: left;
   align-items: left;
-  height: 800px;
+  height: 900px;
+  /* flex-wrap: wrap; */
+  /* border: 2px solid green; */
 `;
 
 const Comments = styled.div`

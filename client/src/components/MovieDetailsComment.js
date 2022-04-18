@@ -66,11 +66,12 @@ const Commentsmap = styled.div`
 const WrapperList = styled.div`
   margin-top: 20px;
   /* border: 2px solid red; */
-  height: 800px;
+  height: 300px;
   display: flex;
+  /* align-items: center; */
   width: fit-content;
   gap: 10px;
-  height: 500px;
+
   flex-wrap: wrap;
 `;
 
