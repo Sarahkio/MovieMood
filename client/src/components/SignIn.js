@@ -42,7 +42,7 @@ const SignIn = () => {
         body: JSON.stringify(formData),
       };
 
-      fetch(`/signin`, requestOptions)
+      fetch(`/login/signin`, requestOptions)
         .then((res) => res.json())
         .then((data) => {
           console.log(data, "data");
@@ -112,7 +112,7 @@ const SignIn = () => {
       </SignUpForm>
 
       <StyledInfo>
-        New to MovieMood? <LoginLink to="/signup">Create an account.</LoginLink>
+        New to MovieMood? <LoginLink to="/signUp">Create an account.</LoginLink>
       </StyledInfo>
     </Wrapper>
   );

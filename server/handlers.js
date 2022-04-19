@@ -18,114 +18,6 @@ const options = {
   useUnifiedTopology: true,
 };
 
-const signUp = async (req, res) => {
-  const client = new MongoClient(MONGO_URI, options);
-  const _id = uuidv4();
-  const db = client.db("movies");
-  //   const password = req.body.password;
-  //   const confirmPassword = req.body.confirmPassword;
-
-  let body = {
-    _id: req.body._id,
-    firstName: req.body.firstName,
-    lastName: req.body.lastName,
-    // userName: req.body.userName,
-    userName: req.body.userName,
-    email: req.body.email,
-    friends: [],
-    comments: [],
-    // postLikes: 0,
-    // postDisLikes: 0,
-    commentsLiked: [],
-    commentsDisliked: [],
-    // password: req.body.password,
-  };
-
-  //   console.log("this is hashpassowrd", hashPassword);
-  try {
-    await client.connect();
-    const query = { email: req.body.email };
-    const queryUserName = { userName: req.body.userName };
-    const user = await db
-      .collection("users")
-      .findOne({ $or: [query, queryUserName] });
-    let salt = await bcrypt.genSalt(10);
-    let hashPassword = await bcrypt.hash(req.body.password, salt);
-    if (user) {
-      res.status(400).json({ status: 400, message: "users found" });
-    } else {
-      let users = await db
-        .collection("users")
-        .insertOne({ ...body, password: hashPassword });
-      res.status(200).json({ status: 200, users, data: body });
-    }
-  } catch (err) {
-    console.log(err.stack);
-    res.status(500).json({ status: 500, message: "unknown error" });
-  } finally {
-    client.close();
-  }
-};
-
-const signIn = async (req, res) => {
-  //bycrypt.coommparre
-  const client = new MongoClient(MONGO_URI, options);
-  const _id = uuidv4();
-  const db = client.db("movies");
-
-  let body = {
-    _id: req.body._id,
-    firstName: req.body.firstName,
-    lastName: req.body.lastName,
-    email: req.body.email,
-    // password: req.body.password,
-  };
-
-  try {
-    await client.connect();
-    const query = { email: req.body.email };
-    // const query2 = {
-    //   firstName: req.body.firstName,
-    //   lastName: req.body.lastName,
-    // };
-    const user = await db.collection("users").findOne(query);
-    // let salt = await bcrypt.genSalt(10);
-    let hashPassword = await bcrypt.compare(req.body.password, user.password);
-    if (hashPassword) {
-      //   let users = await db
-      //     .collection("users")
-      //     .insertOne({ ...body, password: hashPassword });
-      res.status(200).json({
-        status: 200,
-        data: {
-          firstName: user.firstName,
-          lastName: user.lastName,
-          userName: user.userName,
-          email: user.email,
-          friends: user.friends,
-          comments: user.comments,
-          commentsLiked: user.commentsLiked,
-          commentsDisliked: user.commentsDisliked,
-          //   postLikes: user.postLikes,
-          //   postDisLikes: user.postDisLikes,
-          //   ratings: user.ratings,
-        },
-        message: "valid password",
-      });
-    } else {
-      //   let users = await db
-      //     .collection("users")
-      //     .insertOne({ ...body, password: hashPassword });
-      res.status(400).json({ status: 400, message: "invalid password" });
-    }
-  } catch (err) {
-    console.log(err.stack);
-    res.status(404).json({ status: 404, message: "user doesn't exist" });
-  } finally {
-    client.close();
-  }
-};
-
 const searchByName = async (req, res) => {
   const client = new MongoClient(MONGO_URI, options);
   const movie = req.params.movie;
@@ -540,8 +432,6 @@ const getCommentByMovieId = async (req, res) => {
 };
 
 module.exports = {
-  signUp,
-  signIn,
   searchByName,
   getUsers,
   getUser,

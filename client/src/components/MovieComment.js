@@ -68,13 +68,14 @@ const MovieComment = () => {
                       <WrapLikes>
                         {movie.numOfLikes >= 0 ? (
                           <span>
-                            <Likes>Likes: </Likes> {movie.numOfLikes}
+                            {movie.numOfLikes}
+                            <Likes> Like </Likes>
                           </span>
                         ) : null}
                         {movie.numOfDislikes >= 0 ? (
                           <span>
-                            <Dislikes>Dislikes: </Dislikes>
                             {movie.numOfDislikes}
+                            <Dislikes> Dislike </Dislikes>
                           </span>
                         ) : null}
                       </WrapLikes>
@@ -103,7 +104,8 @@ const Break = styled.div`
 
 const WrapLikes = styled.div`
   display: flex;
-  gap: 10px;
+  gap: 15px;
+  font-weight: bold;
 `;
 
 const IMG = styled.img`

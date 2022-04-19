@@ -9,8 +9,6 @@ var app = express();
 app.use(express.json());
 app.use(morgan("tiny"));
 const {
-  signUp,
-  signIn,
   searchByName,
   getUsers,
   getUser,
@@ -26,13 +24,14 @@ const {
 } = require("./handlers");
 
 const movieRouter = require("./routes/movieRoutes");
+const loginRouter = require("./routes/loginRoutes");
 
 app.use("/assets", express.static(path.join(__dirname, "assets")));
 
 app.use("/movies", movieRouter); // all movie endpoints
 // move this to router to login
-app.post("/signup", signUp);
-app.post("/signin", signIn);
+app.use("/login", loginRouter); // all login endpoints
+
 // router for user data
 app.get("/users", getUsers); // get users
 app.get("/user/:userName", getUser); // get user by id

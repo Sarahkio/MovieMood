@@ -118,6 +118,7 @@ const Name = styled.div`
   font-size: 15px;
   font-weight: bold;
   min-width: 100px;
+  color: white;
 `;
 
 const Input = styled.input`

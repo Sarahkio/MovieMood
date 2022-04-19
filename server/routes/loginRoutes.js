@@ -1,10 +1,11 @@
-// const { Router } = require("express");
+const { Router } = require("express");
 
-// const loginRouter = Router();
+const loginRouter = Router();
 
-// const { signUp } = require("../handlers/loginHandlers");
+const { signUp, signIn } = require("../handlers/loginHandlers");
 
-// // endpoints for the login routes
-// movieRouter.get("/signUp", signUp); // all the genres
+// endpoints for the login routes
+loginRouter.post("/signUp", signUp);
+loginRouter.post("/signin", signIn);
 
-// module.exports = loginRouter;
+module.exports = loginRouter;

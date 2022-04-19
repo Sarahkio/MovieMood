@@ -245,6 +245,8 @@ const UserName = styled.div`
 `;
 const FriendsWrapperImages = styled.div`
   display: flex;
+  flex-wrap: wrap;
+  width: 600px;
 `;
 const AddButton = styled.button`
   margin-top: 10px;

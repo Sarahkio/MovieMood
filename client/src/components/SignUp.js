@@ -57,7 +57,7 @@ const SignUp = () => {
         },
         body: JSON.stringify(formData),
       };
-      fetch(`/signup`, requestOptions)
+      fetch(`/login/signup`, requestOptions)
         .then((res) => res.json())
         .then((data) => {
           console.log(data, "data");
