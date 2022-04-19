@@ -1,20 +1,19 @@
-import React from "react";
-import ReactDOM from "react-dom";
+// import React from "react";
+// import ReactDOM from "react-dom";
 import App from "./components/App";
 import { GenreProvider } from "./components/GenreContext";
 import { CurrentUserProvider } from "./components/CurrentUserContext";
 
+import { createRoot } from "react-dom/client";
 // import {MovieProvider} from "./components/MovieContext"
-
-ReactDOM.render(
-  <React.StrictMode>
-    <CurrentUserProvider>
-      <GenreProvider>
-        <App />
-      </GenreProvider>
-    </CurrentUserProvider>
-  </React.StrictMode>,
-  document.getElementById("root")
+const rootElement = document.getElementById("root");
+const root = createRoot(rootElement);
+root.render(
+  <CurrentUserProvider>
+    <GenreProvider>
+      <App />
+    </GenreProvider>
+  </CurrentUserProvider>
 );
 
 // If you want to start measuring performance in your app, pass a function

@@ -12,12 +12,14 @@ const Search = () => {
   let history = useHistory();
   const search = useRef();
   const fetchSearch = () => {
+    setSearchText("");
     history.push(`/movies/title/${searchText}?page=1`);
   };
 
   return (
     <>
       <Input
+        value={searchText}
         type="text"
         placeholder="search"
         onChange={(e) => setSearchText(e.target.value)}
@@ -25,7 +27,11 @@ const Search = () => {
           e.key === "Enter" && fetchSearch();
         }}
       ></Input>
-      <StyledLink ref={search} to={`/movies/title/${searchText}?page=1`}>
+      <StyledLink
+        onClick={() => setSearchText("")}
+        ref={search}
+        to={`/movies/title/${searchText}?page=1`}
+      >
         Go
       </StyledLink>
     </>
