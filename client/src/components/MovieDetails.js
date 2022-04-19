@@ -28,6 +28,7 @@ const MovieDetails = () => {
       .then((data) => {
         setMovieDetails(data.data);
         setStatus("loaded");
+        // console.log(data.data);
       });
   }, []);
 
@@ -46,7 +47,7 @@ const MovieDetails = () => {
   }, []);
 
   useEffect(() => {
-    // movie videos
+    // movie credits
     // console.log(id);
     fetch(`/movies/credits/${id}`)
       .then((res) => res.json())

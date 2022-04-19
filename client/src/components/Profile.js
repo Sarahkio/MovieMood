@@ -107,7 +107,16 @@ const Profile = () => {
                   {/* <FirstName>{currentProfile.firstName}</FirstName> */}
                   {/* <LastName>{currentProfile.lastName}</LastName> */}
                   <UserName>{currentProfile.userName}</UserName>
-
+                  <CommentsLiked>
+                    <span>
+                      <Liked>Liked: </Liked>
+                      {currentProfile.commentsLiked.length}
+                    </span>
+                    <span>
+                      <Disliked>Disliked: </Disliked>
+                      {currentProfile.commentsDisliked.length}
+                    </span>
+                  </CommentsLiked>
                   {currentProfile?.userName !== currentUser?.userName && (
                     <>
                       {currentUser.friends.includes(friendUserName) ? (
@@ -166,6 +175,12 @@ const ProfileWrapper = styled.div`
   width: 800px;
 `;
 
+const CommentsLiked = styled.div`
+  display: flex;
+  align-items: center;
+  gap: 10px;
+`;
+
 const WrapperMessage = styled.div`
   display: flex;
   flex-direction: column;
@@ -220,7 +235,10 @@ const Wrapper = styled.div`
 
 const FirstName = styled.div``;
 const LastName = styled.div``;
-const UserName = styled.div``;
+const UserName = styled.div`
+  font-weight: bold;
+  margin-bottom: 5px;
+`;
 const FriendsWrapperImages = styled.div`
   display: flex;
 `;

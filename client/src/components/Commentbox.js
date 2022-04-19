@@ -101,7 +101,6 @@ const Commentbox = ({ rows, cols, value, limit, id, title }) => {
             disabled={limitContent < 0 || ratings < 1}
             onClick={handlePostCreation}
           >
-            {/* disabled={limitContent < 0}  */}
             Send
           </Button>
         </NumButtonWrapper>
