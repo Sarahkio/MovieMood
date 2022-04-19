@@ -134,12 +134,14 @@ const Comment = ({ formattedTimeStamp, _id, comment, commentRating }) => {
 export default Comment;
 
 const MainWrapper = styled.div`
-  width: 280px;
+  width: 330px;
+  margin-top: 20px;
   /* border: 2px solid black; */
 `;
 
 const TitleWrap = styled.div`
   display: flex;
+  /* justify-content: space-evenly; */
   align-items: center;
   gap: 15px;
 `;
@@ -171,6 +173,8 @@ const Rating = styled.div`
   padding: 0.25rem 0.5rem;
   border-radius: 3px;
   font-weight: bold;
+  text-align: center;
+  /* margin-right: 10px; */
 `;
 
 const Time = styled.div`

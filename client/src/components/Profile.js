@@ -182,6 +182,26 @@ const Face = styled.div`
   font-size: 50px;
 `;
 
+const WrapLikes = styled.div`
+  display: flex;
+  margin-top: 5px;
+  gap: 10px;
+`;
+
+const Liked = styled.span`
+  font-weight: bold;
+  font-style: italic;
+  color: darkgreen;
+`;
+
+const WrapperLikeComments = styled.div``;
+
+const Disliked = styled.span`
+  font-weight: bold;
+  font-style: italic;
+  color: darkred;
+`;
+
 const Title = styled.div`
   font-weight: bold;
   font-size: 20px;
@@ -212,6 +232,7 @@ const AddButton = styled.button`
   background-color: green;
   padding: 5px;
   border-radius: 15px;
+  width: fit-content;
   cursor: pointer;
   /* padding: 0; */
   /* border: none;
@@ -227,11 +248,11 @@ const Delete = styled.button`
   padding: 5px;
   border-radius: 15px;
   cursor: pointer;
-  /* width: fit-content; */
+  width: fit-content;
 `;
 
 const FriendsWrapperr = styled.div`
-  /* margin-top: 120px; */
+  margin-top: 15px;
   margin-left: 200px;
   position: relative;
 `;
@@ -267,9 +288,9 @@ const PersonWrap = styled.div`
 const WrapInfo = styled.div`
   display: flex;
   flex-direction: column;
-  margin-left: 20px;
-  margin-top: 15px;
-  /* align-items: center; */
+  margin-left: 10px;
+  margin-top: 10px;
+  align-items: center;
 `;
 
 const Underline2 = styled.div`
