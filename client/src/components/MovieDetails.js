@@ -19,6 +19,7 @@ const MovieDetails = () => {
   const { id } = useParams();
   const BASE_URI = "https://api.themoviedb.org/3";
   const IMG_URI = "https://image.tmdb.org/t/p/w500";
+  // const IMG2_URI = "https://image.tmdb.org/";
 
   useEffect(() => {
     // movie details
@@ -122,7 +123,7 @@ const MovieDetails = () => {
                   <Credits>Credits: </Credits>
                   {movieCredits &&
                     movieCredits?.map((credits) => {
-                      if (credits.popularity >= 7) {
+                      if (credits.order <= 7) {
                         return (
                           <WrapperCredit>
                             <Name>{credits.original_name} </Name>
@@ -170,10 +171,11 @@ const MovieDetails = () => {
             </WrapInfo>
           </CategoriesWrapper>
           <Commentbox
-            limit={300}
+            limit={220}
             value=""
             id={id}
             title={movieDetails.original_title}
+            poster={IMG_URI + movieDetails.poster_path}
           />
           {/* limit={300} value="" */}
           <WrapperComments>
@@ -277,6 +279,7 @@ const Button = styled.button`
   margin-top: 15px;
   margin-bottom: 15px;
   width: fit-content;
+  cursor: pointer;
 `;
 
 const Element = styled.img`

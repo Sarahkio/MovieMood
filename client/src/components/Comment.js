@@ -6,7 +6,8 @@ import styled from "styled-components";
 import { useContext, useState, useEffect } from "react";
 
 const Comment = ({ formattedTimeStamp, _id, comment, commentRating }) => {
-  const { currentUser, setCurrentUser } = useContext(CurrentUserContext);
+  const { currentUser, setCurrentUser, update, setUpdate } =
+    useContext(CurrentUserContext);
   const [like, setLike] = useState(currentUser.commentsLiked.includes(_id));
   const [dislike, setDislike] = useState(
     currentUser.commentsDisliked.includes(_id)
@@ -37,7 +38,8 @@ const Comment = ({ formattedTimeStamp, _id, comment, commentRating }) => {
         if (dislike) {
           setDislike(false);
         }
-        setLike(!like); // toggle true and false
+        setLike(!like);
+        setUpdate(!update); // toggle true and false
       });
   };
 
@@ -68,6 +70,7 @@ const Comment = ({ formattedTimeStamp, _id, comment, commentRating }) => {
           setLike(false);
         }
         setDislike(!dislike);
+        setUpdate(!update);
       });
   };
 
@@ -80,12 +83,14 @@ const Comment = ({ formattedTimeStamp, _id, comment, commentRating }) => {
       body: JSON.stringify({ _id }),
     };
 
-    fetch(`/delete-comment/${_id}`, requestOptions)
+    fetch(`/delete-comment/${currentUser.userName}`, requestOptions)
       .then((response) => {
         console.log(response);
         return response.json();
       })
-      .then((data) => {});
+      .then((data) => {
+        setUpdate(!update);
+      });
   };
   console.log(comment);
   return (

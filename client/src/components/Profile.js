@@ -72,6 +72,7 @@ const Profile = () => {
   };
 
   useEffect(() => {
+    setStatus("loading");
     fetch(`/user/${friendUserName}`)
       .then((res) => res.json())
       .then((data) => {
@@ -82,6 +83,7 @@ const Profile = () => {
           setStatus("loaded");
         } else {
           setCurrentProfile(null);
+          setStatus("loaded");
         }
       })
       .catch((err) => {
@@ -117,7 +119,9 @@ const Profile = () => {
                       {currentProfile.commentsDisliked.length}
                     </span>
                   </CommentsLiked>
-                  {currentProfile?.userName !== currentUser?.userName && (
+                  {currentProfile?.userName === currentUser?.userName ? (
+                    <div></div>
+                  ) : (
                     <>
                       {currentUser.friends.includes(friendUserName) ? (
                         <>

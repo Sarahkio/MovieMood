@@ -54,26 +54,6 @@ const Home = () => {
       </Wrapper>
     </>
   );
-
-  // return (
-  //   <>
-  //     <Wrapper>
-  //       <CategoriesWrapper>
-  //         {genres.map((element, index) => {
-  //           return (
-  //             <div key={index}>
-  //               <Link to={`/movies/genre/${element.name}`}>
-  //                 <CategoryWrapper>
-  //                   <Element>{element.name}</Element>
-  //                 </CategoryWrapper>
-  //               </Link>
-  //             </div>
-  //           );
-  //         })}
-  //       </CategoriesWrapper>
-  //     </Wrapper>
-  //   </>
-  // );
 };
 
 export default Home;

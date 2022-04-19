@@ -316,6 +316,7 @@ const postComments = async (req, res) => {
       numOfDislikes: 0,
       numOfRatings: req.body.ratings,
       timeOfComments: new Date(),
+      posterPath: req.body.poster,
     };
 
     let comments = await db.collection("comments").insertOne(body);
@@ -368,14 +369,6 @@ const addLikes = async (req, res) => {
     console.log(_id);
     const user = await db.collection("users").findOne(query);
 
-    // if (user.commentsDisliked.includes(_id)) {
-    //   const userDisLiked = await db
-    //     .collection("users")
-    //     .updateOne(
-    //       query,
-    //       { $pull: { commentsDisliked: _id } },
-    //       { $push: { commentsLiked: _id } }
-    //     );
     if (!liked) {
       console.log("Apple");
       if (disliked) {
@@ -407,23 +400,6 @@ const addLikes = async (req, res) => {
         .updateOne(query, { $pull: { commentsLiked: _id } });
       return res.status(200).json({ status: 200, message: "success" });
     }
-    //   const postDisLikes = await db
-    //     .collection("comments")
-    //     .updateOne(
-    //       { _id: _id },
-    //       { $inc: { numOfLikes: +1, numOfDislikes: -1 } }
-    //     );
-    //   res.status(200).json({ status: 200, message: "success" });
-    // } else {
-    //   const userLiked = await db
-    //     .collection("users")
-    //     .updateOne(query, { $push: { commentsLiked: _id } });
-
-    //   const postLikes = await db
-    //     .collection("comments")
-    //     .updateOne({ _id: _id }, { $inc: { numOfLikes: +1 } });
-    //   res.status(200).json({ status: 200, message: "success" });
-    // }
   } catch (err) {
     console.log(err.stack);
     res.status(500).json({ status: 500, message: err.message });
@@ -447,14 +423,6 @@ const addDislikes = async (req, res) => {
 
     const user = await db.collection("users").findOne(query);
 
-    // if (user.commentsLiked.includes(_id)) {
-    //   const userLiked = await db
-    //     .collection("users")
-    //     .updateOne(
-    //       query,
-    //       { $pull: { commentsLiked: _id } },
-    //       { $push: { commentsDisliked: _id } }
-    //     );
     if (!disliked) {
       if (liked) {
         const postLikes = await db
@@ -500,7 +468,12 @@ const deleteComment = async (req, res) => {
     await db.collection("comments").deleteOne({ _id: _id });
     await db
       .collection("users")
-      .updateOne({ userName }, { $pull: { comments: _id } });
+      .updateOne({ userName: userName }, { $pull: { comments: _id } });
+
+    const users = await db
+      .collection("users")
+      .updateMany({}, { $pull: { commentsLiked: _id, commentsDisliked: _id } });
+    console.log(users);
     res.status(200).json({ status: 200, message: "successfully deleted" });
   } catch (err) {
     res.status(500).json({ status: 500, message: err.message });

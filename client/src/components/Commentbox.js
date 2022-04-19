@@ -3,7 +3,7 @@ import { CurrentUserContext } from "./CurrentUserContext";
 import styled from "styled-components";
 import { TiArrowDownOutline, TiArrowUpOutline } from "react-icons/ti";
 
-const Commentbox = ({ rows, cols, value, limit, id, title }) => {
+const Commentbox = ({ rows, cols, value, limit, id, title, poster }) => {
   const { setUpdate, update, currentUser } = useContext(CurrentUserContext);
   const [content, setContent] = useState(value.slice(0, limit));
   //   const [content, setContent] = useState(null);
@@ -29,14 +29,18 @@ const Commentbox = ({ rows, cols, value, limit, id, title }) => {
         title: title,
         id: id,
         ratings: ratings,
+        poster: poster,
       }),
     };
 
-    fetch("/comments", requestOptions).then((response) => response.json());
-    // setRatings(ratings + 1);
-    // setRatings(ratings - 1);
-    setContent("");
-    setUpdate(!update);
+    fetch("/comments", requestOptions).then((response) => {
+      response.json();
+      // setRatings(ratings + 1);
+      // setRatings(ratings - 1);
+      setContent("");
+      setUpdate(!update);
+      setRatings(0);
+    });
   };
 
   const increaseRating = () => {
@@ -61,9 +65,11 @@ const Commentbox = ({ rows, cols, value, limit, id, title }) => {
         setStatus("loaded");
         console.log(data.data);
       });
-  }, []);
+  }, [update]);
 
-  let limitContent = 280 - content.length;
+  console.log(movieComment);
+
+  let limitContent = 200 - content.length;
 
   return (
     <>
@@ -89,7 +95,7 @@ const Commentbox = ({ rows, cols, value, limit, id, title }) => {
             style={
               limitContent < 0
                 ? { color: "red" }
-                : limitContent <= 55
+                : limitContent <= 40
                 ? { color: "yellow" }
                 : null
             }
@@ -175,6 +181,7 @@ const Button = styled.button`
   background-color: hsl(258deg, 100%, 50%);
   padding: 5px;
   border-radius: 20px;
+  cursor: pointer;
 
   &:disabled {
     opacity: 0.5;

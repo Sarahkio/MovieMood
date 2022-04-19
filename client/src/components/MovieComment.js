@@ -42,39 +42,45 @@ const MovieComment = () => {
               return (
                 <WrapperComments>
                   {/* <div>{movie.userName}</div> */}
-                  <Break>
-                    <WrapperTitle>
-                      <Navigation to={`/movie/${movie.movieid}`}>
-                        {movie.movietitle}
-                      </Navigation>
-                      <Rating
-                        style={
-                          movie.numOfRatings >= 8
-                            ? { color: "green" }
-                            : movie.numOfRatings >= 5
-                            ? { color: "yellow" }
-                            : { color: "red" }
-                        }
-                      >
-                        {movie.numOfRatings}
-                      </Rating>
-                    </WrapperTitle>
-                    <Time>{formattedTimeStamp}</Time>
-                    <Commentsmap>{movie.comments}</Commentsmap>
-                    <WrapLikes>
-                      {movie.numOfLikes >= 1 ? (
-                        <span>
-                          <Likes>Likes: </Likes> {movie.numOfLikes}
-                        </span>
-                      ) : null}
-                      {movie.numOfDislikes >= 1 ? (
-                        <span>
-                          <Dislikes>Dislikes: </Dislikes>
-                          {movie.numOfDislikes}
-                        </span>
-                      ) : null}
-                    </WrapLikes>
-                  </Break>
+                  <ImageWrap>
+                    <IMG src={movie.posterPath}></IMG>
+
+                    {/* <InfoWrapper> */}
+                    <Break>
+                      <WrapperTitle>
+                        <Navigation to={`/movie/${movie.movieid}`}>
+                          {movie.movietitle}
+                        </Navigation>
+                        <Rating
+                          style={
+                            movie.numOfRatings >= 8
+                              ? { color: "green" }
+                              : movie.numOfRatings >= 5
+                              ? { color: "yellow" }
+                              : { color: "red" }
+                          }
+                        >
+                          {movie.numOfRatings}
+                        </Rating>
+                      </WrapperTitle>
+                      <Time>{formattedTimeStamp}</Time>
+                      <Commentsmap>{movie.comments}</Commentsmap>
+                      <WrapLikes>
+                        {movie.numOfLikes >= 0 ? (
+                          <span>
+                            <Likes>Likes: </Likes> {movie.numOfLikes}
+                          </span>
+                        ) : null}
+                        {movie.numOfDislikes >= 0 ? (
+                          <span>
+                            <Dislikes>Dislikes: </Dislikes>
+                            {movie.numOfDislikes}
+                          </span>
+                        ) : null}
+                      </WrapLikes>
+                    </Break>
+                  </ImageWrap>
+                  {/* </InfoWrapper> */}
                   {/* <button onClick={handleDeleteComment}>Delete Comment</button> */}
                 </WrapperComments>
               );
@@ -92,11 +98,31 @@ const Break = styled.div`
   /* border: 2px solid red; */
   display: inline-block;
   word-break: break-word;
+  margin-left: 10px;
 `;
 
 const WrapLikes = styled.div`
   display: flex;
   gap: 10px;
+`;
+
+const IMG = styled.img`
+  width: 70px;
+  height: 100px;
+`;
+
+const InfoWrapper = styled.div`
+  display: flex;
+  flex-direction: column;
+  /* border: 2px solid green; */
+  align-items: center;
+`;
+
+const ImageWrap = styled.div`
+  /* padding: 20px; */
+  /* width: fit-content; */
+  display: flex;
+  align-items: center;
 `;
 
 const Likes = styled.span`
@@ -130,7 +156,7 @@ const WrapperList = styled.div`
   display: flex;
   /* height: 800px; */
   width: fit-content;
-  gap: 10px;
+  gap: 20px;
 
   flex-wrap: wrap;
 `;

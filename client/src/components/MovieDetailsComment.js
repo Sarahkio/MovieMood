@@ -12,7 +12,8 @@ import { CurrentUserContext } from "./CurrentUserContext";
 
 const MovieDetailsComment = () => {
   const [status, setStatus] = useState("loading");
-  const { currentUser, setCurrentUser } = useContext(CurrentUserContext);
+  const { currentUser, setCurrentUser, update } =
+    useContext(CurrentUserContext);
   const [movieDetailsComment, setMovieDetailsComment] = useState(null);
 
   const { id: _id } = useParams();
@@ -26,7 +27,7 @@ const MovieDetailsComment = () => {
         setMovieDetailsComment(data.data);
         setStatus("loaded");
       });
-  }, [_id]);
+  }, [_id, update]);
   console.log(movieDetailsComment);
   return (
     <>

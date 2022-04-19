@@ -24,6 +24,7 @@ const Home = () => {
   useEffect(() => {
     // movies of the specific genre
     if (searchType === "genre") {
+      // setStatus("loading");
       fetch(`/movies/genre/${searchParams}?page=${page}`)
         .then((res) => res.json())
         .then((data) => {
@@ -33,7 +34,7 @@ const Home = () => {
             setStatus("loaded");
             // setTotalPages(20);
           } else {
-            // setStatus("loaded");
+            setStatus("loaded");
             setMessage(
               <>
                 <Face>🙁</Face> <div>No Result</div>
@@ -43,17 +44,26 @@ const Home = () => {
         });
     } else if (searchType === "title") {
       console.log("title search");
+      setStatus("loading");
       fetch(`/search/${searchParams}?page=${page}`)
         .then((res) => res.json())
         .then((data) => {
-          setMovies(data.data);
-          setStatus("loaded");
-
-          setTotalPages(data.total_pages);
-          // setTotalPages(20);
+          if (data.data.length !== 0) {
+            setMovies(data.data);
+            setStatus("loaded");
+            setTotalPages(data.total_pages);
+            // setTotalPages(20);
+          } else {
+            setStatus("loaded");
+            setMessage(
+              <>
+                <Face>🙁</Face> <div>No Result</div>
+              </>
+            );
+          }
         });
     }
-  }, [page]);
+  }, [page, searchParams]);
 
   if (!movies) {
     return (

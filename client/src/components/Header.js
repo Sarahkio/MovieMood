@@ -12,6 +12,7 @@ const Header = () => {
   const handleLogout = () => {
     setCurrentUser(null);
     localStorage.removeItem("user");
+    history.push("/");
   };
 
   return (
