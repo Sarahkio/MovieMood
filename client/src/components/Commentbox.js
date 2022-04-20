@@ -57,7 +57,6 @@ const Commentbox = ({ rows, cols, value, limit, id, title, poster }) => {
 
   useEffect(() => {
     // movie comments
-    // console.log(id);
     fetch(`/movie-comment/${id}`)
       .then((res) => res.json())
       .then((data) => {
@@ -117,15 +116,9 @@ const Commentbox = ({ rows, cols, value, limit, id, title, poster }) => {
 
 const NumButtonWrapper = styled.div`
   display: flex;
-  /* justify-content: flex-end; */
   align-items: center;
   gap: 5px;
   margin-top: 5px;
-`;
-
-const WrapperTextArrow = styled.div`
-  /* display: flex; */
-  /* align-items: center; */
 `;
 
 const ArrowUp = styled.button`
@@ -133,7 +126,6 @@ const ArrowUp = styled.button`
   font-size: 20px;
   cursor: pointer;
   border: none;
-  /* color: gray; */
   background-color: transparent;
 `;
 
@@ -142,7 +134,6 @@ const ArrowDown = styled.button`
   font-size: 20px;
   cursor: pointer;
   border: none;
-  /* color: gray; */
   background-color: transparent;
 `;
 
@@ -158,16 +149,6 @@ const Textarea = styled.textarea`
   width: 500px;
   height: 70px;
   resize: none;
-  /* display: flex;
-  flex-direction: column;
-  align-items: flex-start; */
-  /* padding-top: 0px; */
-  /* position: relative; */
-  /* ::placeholder {
-    position: absolute;
-    top: 0;
-    left: 0;
-  } */
 `;
 
 const Wrapper = styled.div`

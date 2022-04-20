@@ -8,24 +8,12 @@ import { NavLink } from "react-router-dom";
 import MovieComment from "./MovieComment";
 import { GoPerson } from "react-icons/go";
 
-// import CircularProgress from "@material-ui/core/CircularProgress";
-// import moment from "moment";
-// import { useHistory } from "react-router-dom";
-
 const Profile = () => {
   const { currentUser, setError, setCurrentUser } =
     useContext(CurrentUserContext);
   const { userName: friendUserName } = useParams();
   const [currentProfile, setCurrentProfile] = useState({});
-  const [reload, setReload] = useState(false);
-  //   const [currentFeed, setCurrentFeed] = useState(null);
   const [status, setStatus] = useState("loading");
-  const [message, setMessage] = useState("");
-  const [movieComment, setMovieComment] = useState(null);
-
-  // setStatus("loading");
-  console.log(friendUserName);
-  // const [addStatus, setAddStatus] = useState(false);
 
   // add friends *****
   const handleFollow = () => {
@@ -40,12 +28,6 @@ const Profile = () => {
     fetch(`/user/add-friends/${friendUserName}`, requestOptions)
       .then((response) => {
         return response.json();
-        // setCurrentUser({
-        //   ...currentUser,
-        //   friends: [...currentUser.friends, friendUserName],
-        // });
-
-        // setAddStatus(true);
       })
       .then((data) => {
         setCurrentUser(data.data);
@@ -106,8 +88,6 @@ const Profile = () => {
                   <Person />
                 </PersonWrap>
                 <WrapInfo>
-                  {/* <FirstName>{currentProfile.firstName}</FirstName> */}
-                  {/* <LastName>{currentProfile.lastName}</LastName> */}
                   <UserName>{currentProfile.userName}</UserName>
                   <CommentsLiked>
                     <span>
@@ -125,7 +105,6 @@ const Profile = () => {
                     <>
                       {currentUser.friends.includes(friendUserName) ? (
                         <>
-                          {/* <Friend>Friend</Friend> */}
                           <Delete onClick={handleUnFollow}>
                             remove friend
                           </Delete>
@@ -201,19 +180,11 @@ const Face = styled.div`
   font-size: 50px;
 `;
 
-const WrapLikes = styled.div`
-  display: flex;
-  margin-top: 5px;
-  gap: 10px;
-`;
-
 const Liked = styled.span`
   font-weight: bold;
   font-style: italic;
   color: darkgreen;
 `;
-
-const WrapperLikeComments = styled.div``;
 
 const Disliked = styled.span`
   font-weight: bold;
@@ -237,8 +208,6 @@ const Wrapper = styled.div`
   display: flex;
 `;
 
-const FirstName = styled.div``;
-const LastName = styled.div``;
 const UserName = styled.div`
   font-weight: bold;
   margin-bottom: 5px;
@@ -258,12 +227,8 @@ const AddButton = styled.button`
   border-radius: 15px;
   width: fit-content;
   cursor: pointer;
-  /* padding: 0; */
-  /* border: none;
-  outline: none;
-  background-color: transparent; */
 `;
-const Friend = styled.div``;
+
 const Delete = styled.button`
   margin-top: 10px;
   border: none;
@@ -289,8 +254,6 @@ const WrapperComments = styled.div`
   justify-content: left;
   align-items: left;
   height: 900px;
-  /* flex-wrap: wrap; */
-  /* border: 2px solid green; */
 `;
 
 const Comments = styled.div`
@@ -322,16 +285,6 @@ const Underline2 = styled.div`
   height: 2px;
   margin-top: 10px;
   background-color: black;
-`;
-
-const Navigation = styled(NavLink)``;
-
-const WrapperList = styled.div`
-  margin-top: 20px;
-`;
-
-const Commentsmap = styled.div`
-  margin-bottom: 10px;
 `;
 
 export default Profile;

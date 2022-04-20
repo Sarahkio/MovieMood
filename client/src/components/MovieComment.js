@@ -14,7 +14,6 @@ const MovieComment = () => {
   const [status, setStatus] = useState("loading");
   const [movieComment, setMovieComment] = useState(null);
   const { currentUser, setCurrentUser } = useContext(CurrentUserContext);
-  // const [_id, set_id] = useState(currentUser.comments.includes(friendUserName));
   //9:38 AM · Jan 6 2020
   useEffect(() => {
     // movie comments by userName
@@ -41,11 +40,8 @@ const MovieComment = () => {
               );
               return (
                 <WrapperComments>
-                  {/* <div>{movie.userName}</div> */}
                   <ImageWrap>
                     <IMG src={movie.posterPath}></IMG>
-
-                    {/* <InfoWrapper> */}
                     <Break>
                       <WrapperTitle>
                         <Navigation to={`/movie/${movie.movieid}`}>
@@ -81,8 +77,6 @@ const MovieComment = () => {
                       </WrapLikes>
                     </Break>
                   </ImageWrap>
-                  {/* </InfoWrapper> */}
-                  {/* <button onClick={handleDeleteComment}>Delete Comment</button> */}
                 </WrapperComments>
               );
             })
@@ -96,7 +90,6 @@ const MovieComment = () => {
 };
 
 const Break = styled.div`
-  /* border: 2px solid red; */
   display: inline-block;
   word-break: break-word;
   margin-left: 10px;
@@ -111,13 +104,6 @@ const WrapLikes = styled.div`
 const IMG = styled.img`
   width: 70px;
   height: 100px;
-`;
-
-const InfoWrapper = styled.div`
-  display: flex;
-  flex-direction: column;
-  /* border: 2px solid green; */
-  align-items: center;
 `;
 
 const ImageWrap = styled.div`
@@ -140,7 +126,6 @@ const Dislikes = styled.span`
   color: darkred;
 `;
 
-// const Link = styled(Link)``;
 const Navigation = styled(NavLink)`
   color: black;
   font-weight: bold;
@@ -159,7 +144,6 @@ const WrapperList = styled.div`
   /* height: 800px; */
   width: fit-content;
   gap: 20px;
-
   flex-wrap: wrap;
 `;
 
@@ -188,7 +172,5 @@ const Rating = styled.div`
 const Time = styled.div`
   font-style: italic;
 `;
-
-// const Rating = styled.div``;
 
 export default MovieComment;

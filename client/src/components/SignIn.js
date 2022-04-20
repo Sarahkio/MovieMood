@@ -32,7 +32,6 @@ const SignIn = () => {
         email: email.current.value,
         password: password.current.value,
       };
-      console.log(formData);
 
       const requestOptions = {
         method: "POST",
@@ -45,10 +44,9 @@ const SignIn = () => {
       fetch(`/login/signin`, requestOptions)
         .then((res) => res.json())
         .then((data) => {
-          console.log(data, "data");
+          // console.log(data, "data");
 
           if (data.data) {
-            console.log(data.data);
             window.localStorage.setItem(
               "user",
               JSON.stringify(data.data.userName)
@@ -64,10 +62,6 @@ const SignIn = () => {
           } else {
             setLoginError("error");
           }
-          //   console.log(data);
-          //   // Go to homepage
-          //   setCurrentUser(data.data);
-          //   history.push("/");
         })
         .catch((err) => {
           console(err);
@@ -133,11 +127,6 @@ const Wrapper = styled.div`
   padding: 16px;
   width: 100%;
   background-color: #22254b;
-`;
-
-const StyledLogo = styled.div`
-  font-size: 48px;
-  margin-bottom: 16px;
 `;
 
 const Title = styled.h1`

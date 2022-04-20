@@ -30,7 +30,6 @@ const Comment = ({ formattedTimeStamp, _id, comment, commentRating }) => {
 
     fetch(`/like-comment/${_id}`, requestOptions)
       .then((response) => {
-        console.log(response);
         return response.json();
       })
       .then((data) => {
@@ -42,8 +41,6 @@ const Comment = ({ formattedTimeStamp, _id, comment, commentRating }) => {
         setUpdate(!update); // toggle true and false
       });
   };
-
-  console.log(like, dislike);
 
   const handleDislikeComment = () => {
     const requestOptions = {
@@ -61,11 +58,9 @@ const Comment = ({ formattedTimeStamp, _id, comment, commentRating }) => {
 
     fetch(`/dislike-comment/${_id}`, requestOptions)
       .then((response) => {
-        console.log(response);
         return response.json();
       })
       .then((data) => {
-        // setCurrentUser(data.data);
         if (like) {
           setLike(false);
         }
@@ -85,14 +80,12 @@ const Comment = ({ formattedTimeStamp, _id, comment, commentRating }) => {
 
     fetch(`/delete-comment/${currentUser.userName}`, requestOptions)
       .then((response) => {
-        console.log(response);
         return response.json();
       })
       .then((data) => {
         setUpdate(!update);
       });
   };
-  console.log(comment);
   return (
     <MainWrapper>
       <Navigation to={`/user/${comment.userName}`}>
@@ -126,7 +119,6 @@ const Comment = ({ formattedTimeStamp, _id, comment, commentRating }) => {
           <TiThumbsUp style={like ? { fill: "green" } : { fill: "grey" }} />
         </ThumbUp>
         <div>{comment.numOfLikes}</div>
-        {/* <span>5</span> */}
         <ThumbDown onClick={handleDislikeComment}>
           <TiThumbsDown style={dislike ? { fill: "red" } : { fill: "grey" }} />
         </ThumbDown>
@@ -141,12 +133,10 @@ export default Comment;
 const MainWrapper = styled.div`
   width: 330px;
   margin-top: 20px;
-  /* border: 2px solid black; */
 `;
 
 const TitleWrap = styled.div`
   display: flex;
-  /* justify-content: space-evenly; */
   align-items: center;
   gap: 15px;
 `;
@@ -159,11 +149,7 @@ const Navigation = styled(NavLink)`
 
 const Commentsmap = styled.div`
   margin-bottom: 10px;
-  /* border: 2px solid green; */
   overflow-wrap: break-word;
-`;
-const WrapperList = styled.div`
-  margin-top: 20px;
 `;
 
 const WrapperThumb = styled.div`
@@ -179,7 +165,6 @@ const Rating = styled.div`
   border-radius: 3px;
   font-weight: bold;
   text-align: center;
-  /* margin-right: 10px; */
 `;
 
 const Time = styled.div`
@@ -206,7 +191,6 @@ const ThumbUp = styled.button`
   font-size: 20px;
   cursor: pointer;
   border: none;
-  /* color: gray; */
   background-color: transparent;
 `;
 
@@ -215,6 +199,5 @@ const ThumbDown = styled.button`
   font-size: 20px;
   cursor: pointer;
   border: none;
-  /* color: gray; */
   background-color: transparent;
 `;

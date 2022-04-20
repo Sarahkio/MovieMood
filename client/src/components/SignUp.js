@@ -48,7 +48,6 @@ const SignUp = () => {
         email: email.current.value,
         password: password.current.value,
       };
-      console.log(formData);
 
       const requestOptions = {
         method: "POST",
@@ -60,7 +59,7 @@ const SignUp = () => {
       fetch(`/login/signup`, requestOptions)
         .then((res) => res.json())
         .then((data) => {
-          console.log(data, "data");
+          // console.log(data, "data");
           if (data.data) {
             window.localStorage.setItem(
               "user",
@@ -76,7 +75,6 @@ const SignUp = () => {
           console.error(err);
         });
     }
-    // history.push("/");
   };
 
   return (
@@ -127,7 +125,7 @@ const SignUp = () => {
           ref={password}
           onChange={handleChange}
         ></Password>
-        {/* Show/hide eye icon */}
+
         <ConfirmPassword
           type="password"
           name="confirm-password"
@@ -169,11 +167,6 @@ const Wrapper = styled.div`
   width: 100%;
 `;
 
-const StyledLogo = styled.div`
-  font-size: 48px;
-  margin-bottom: 16px;
-`;
-
 const Title = styled.h1`
   font-size: 18px;
   margin-bottom: 24px;
@@ -184,8 +177,6 @@ const SignUpForm = styled.form`
   display: flex;
   flex-direction: column;
   background-color: lightpink;
-
-  /* background-color: orange; */
 
   border: 1px solid grey;
   padding: 16px;

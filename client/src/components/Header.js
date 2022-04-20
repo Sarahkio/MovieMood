@@ -51,7 +51,7 @@ const MainWrapper = styled.div`
   justify-content: space-between;
   width: 100%;
   background-color: #373b69;
-  padding: 5px;
+  /* padding: 5px; */
   align-items: center;
 `;
 

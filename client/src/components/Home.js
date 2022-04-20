@@ -91,7 +91,7 @@ const SeeMovies = styled.div`
 
 const PickGenre = styled.div`
   font-size: 30px;
-  padding: 35px;
+  padding: 40px;
   font-weight: bold;
 `;
 
@@ -115,7 +115,7 @@ const LabelInput = styled.label`
 const Title = styled.div`
   font-weight: bold;
   font-size: 40px;
-  padding: 20px;
+  padding: 15px;
 `;
 
 const TitleWrapper = styled.div`

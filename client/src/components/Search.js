@@ -4,10 +4,7 @@ import styled from "styled-components";
 import { useHistory } from "react-router-dom";
 
 const Search = () => {
-  //   const [page, setPage] = useState(1);
   const [searchText, setSearchText] = useState("");
-  const [content, setContent] = useState();
-  const [numOfPages, setNumOfPages] = useState();
 
   let history = useHistory();
   const search = useRef();

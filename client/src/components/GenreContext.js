@@ -15,7 +15,7 @@ export const GenreProvider = ({ children }) => {
       .then((res) => res.json())
       .then((data) => {
         setGenres(data.data);
-        console.log(data.data);
+        // console.log(data.data);
       })
       .catch((err) => {
         setError(err);

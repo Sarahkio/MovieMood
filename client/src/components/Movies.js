@@ -1,4 +1,3 @@
-// import { useContext } from "react";
 import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import { NavLink } from "react-router-dom";
@@ -6,7 +5,6 @@ import styled from "styled-components";
 import { AiOutlinePicture } from "react-icons/ai";
 
 import { useHistory } from "react-router-dom";
-// import NoResult from "./NoResult";
 
 const Home = () => {
   const [movies, setMovies] = useState(null);
@@ -24,7 +22,6 @@ const Home = () => {
   useEffect(() => {
     // movies of the specific genre
     if (searchType === "genre") {
-      // setStatus("loading");
       fetch(`/movies/genre/${searchParams}?page=${page}`)
         .then((res) => res.json())
         .then((data) => {
@@ -43,7 +40,7 @@ const Home = () => {
           }
         });
     } else if (searchType === "title") {
-      console.log("title search");
+      // console.log("title search");
       setStatus("loading");
       fetch(`/search/${searchParams}?page=${page}`)
         .then((res) => res.json())
@@ -151,7 +148,6 @@ const Home = () => {
                 <Next disabled onClick={nextHandle}>
                   Next Page
                 </Next>
-                {/* <div>No Results</div> */}
               </>
             )}
           </Wrap>
@@ -169,10 +165,8 @@ const Wrap = styled.div`
   display: flex;
   align-items: center;
   justify-content: center;
-  /* margin: 10px 30px; */
   background-color: #373b69;
   width: 100%;
-  /* padding: 20px; */
 `;
 
 const Prev = styled.button`
@@ -238,11 +232,7 @@ const Element = styled.img`
   /* margin: 16px; */
 `;
 
-const ElementNot = styled.div`
-  /* width: 300px; */
-`;
-
-const ElementId = styled.div``;
+const ElementNot = styled.div``;
 
 const ElementTitle = styled.div``;
 

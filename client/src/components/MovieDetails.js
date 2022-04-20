@@ -10,8 +10,6 @@ import { AiOutlinePicture } from "react-icons/ai";
 
 const MovieDetails = () => {
   const [movieDetails, setMovieDetails] = useState(null);
-  // const [movieId, setMovieId] = useState(null);
-  const [movieDetailsComment, setMovieDetailsComment] = useState(null);
   const [movieVideos, setMovieVideos] = useState(null);
   const [status, setStatus] = useState("loading");
   const [movieCredits, setMovieCredits] = useState(null);
@@ -23,7 +21,6 @@ const MovieDetails = () => {
 
   useEffect(() => {
     // movie details
-    // console.log(id);
     fetch(`/movies/${id}`)
       .then((res) => res.json())
       .then((data) => {
@@ -31,35 +28,31 @@ const MovieDetails = () => {
         setStatus("loaded");
         // console.log(data.data);
       });
-  }, []);
+  }, [id]);
 
   useEffect(() => {
     // movie videos
-    // console.log(id);
     fetch(`/movies/videos/${id}`)
       .then((res) => res.json())
       .then((data) => {
         if (data.data) {
           setMovieVideos(data.data.results);
           setStatus("loaded");
-          console.log(data.data.results);
         }
       });
-  }, []);
+  }, [id]);
 
   useEffect(() => {
     // movie credits
-    // console.log(id);
     fetch(`/movies/credits/${id}`)
       .then((res) => res.json())
       .then((data) => {
         if (data.data) {
           setMovieCredits(data.data.cast);
           setStatus("loaded");
-          console.log(data.data.cast);
         }
       });
-  }, []);
+  }, [id]);
 
   let history = useHistory();
 
@@ -199,24 +192,12 @@ const MainWrapper = styled.div`
   display: flex;
 `;
 
-const Wrapper = styled.div`
-  /* position: relative; */
-  /* display: flex; */
-`;
+const Wrapper = styled.div``;
 
 const CategoriesWrapper = styled.div`
   display: flex;
   flex-direction: column;
   /* border: 2px solid blue; */
-`;
-
-const CategoryWrapper = styled.div``;
-
-const WrappingCategory = styled.div`
-  /* display: flex; */
-  /* flex-direction: column; */
-  /* float: right; */
-  /* border: 2px solid green; */
 `;
 
 const Trailers = styled.span`
@@ -327,8 +308,6 @@ const ElementVote = styled.div`
   font-weight: bold;
 `;
 
-const Navigation = styled(NavLink)``;
-
 const ElementWrap = styled.div`
   display: flex;
   align-items: center;
@@ -339,12 +318,6 @@ const WrapInfo = styled.div`
 `;
 
 const WrapperCommentsUnerline = styled.div``;
-// const userName = styled(Link)`
-//   color: black;
-//   text-decoration: none;
-//   font-size: 16px;
-//   font-weight: bold;
-// `;
 
 const WrapperComments = styled.div`
   display: flex;
@@ -366,11 +339,4 @@ const Underline = styled.div`
   height: 2px;
   margin-top: 10px;
   background-color: black;
-`;
-
-const WrapperList = styled.div`
-  margin-top: 20px;
-`;
-const Commentsmap = styled.div`
-  margin-bottom: 10px;
 `;
