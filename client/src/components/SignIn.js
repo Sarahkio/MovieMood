@@ -129,8 +129,10 @@ const Wrapper = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
-  min-height: calc(100vh - 150px);
+  min-height: 100vh;
   padding: 16px;
+  width: 100%;
+  background-color: #22254b;
 `;
 
 const StyledLogo = styled.div`
@@ -141,7 +143,7 @@ const StyledLogo = styled.div`
 const Title = styled.h1`
   font-size: 18px;
   margin-bottom: 24px;
-  color: darkblue;
+  color: white;
 `;
 
 const SignUpForm = styled.form`

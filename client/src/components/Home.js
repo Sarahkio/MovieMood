@@ -3,6 +3,7 @@ import { NavLink } from "react-router-dom";
 import styled from "styled-components";
 import { GenreContext } from "./GenreContext";
 import CategoryList from "./CategoryList";
+import pic from "../images/wallpaper.jpeg";
 
 const Home = () => {
   const { genres, setGenres } = useContext(GenreContext);
@@ -25,7 +26,15 @@ const Home = () => {
   return (
     <>
       <Wrapper>
-        <Title>What Are You In The Mood To Watch?</Title>
+        <TitleWrapper>
+          <Title>What Are You In The Mood To Watch?</Title>
+        </TitleWrapper>
+        <ImageWrapper>
+          <ImageWall src={pic}></ImageWall>
+        </ImageWrapper>
+        <GenresWrapper>
+          <PickGenre>Choose Your Genres Below...</PickGenre>
+        </GenresWrapper>
         <CategoriesWrapper>
           {genres.map((element, index) => {
             return (
@@ -48,7 +57,7 @@ const Home = () => {
             );
           })}
           <Link to={`/movies/genre/${SelectedGenresString}?page=1`}>
-            <div>See Movies</div>
+            <SeeMovies>See Movies</SeeMovies>
           </Link>
         </CategoriesWrapper>
       </Wrapper>
@@ -62,11 +71,44 @@ const InputElement = styled.input`
   cursor: pointer;
 `;
 
+const ImageWall = styled.img`
+  width: 65%;
+  max-height: fit-content;
+`;
+
+const ImageWrapper = styled.div`
+  display: flex;
+  justify-content: center;
+  background-color: black;
+`;
+
+const SeeMovies = styled.div`
+  color: white;
+  background-color: orange;
+  padding: 10px 15px;
+  border-radius: 50px;
+  margin: 5px;
+`;
+
+const PickGenre = styled.div`
+  font-size: 30px;
+  padding: 35px;
+  font-weight: bold;
+`;
+
+const GenresWrapper = styled.div`
+  display: flex;
+  background-color: #7378c5;
+  width: 100%;
+  color: white;
+  justify-content: center;
+`;
+
 const LabelInput = styled.label`
   font-size: 20px;
   padding: 15px;
   margin: 5px;
-  color: black;
+  color: white;
   /* background-color: #373b69; */
   display: inline-block;
   /* cursor: pointer; */
@@ -79,8 +121,19 @@ const LabelInput = styled.label`
 
 const Title = styled.div`
   font-weight: bold;
-  font-size: 20px;
-  margin-bottom: 20px;
+  font-size: 40px;
+  /* margin-bottom: 20px; */
+  padding: 20px;
+`;
+
+const TitleWrapper = styled.div`
+  display: flex;
+  justify-content: center;
+  width: 100%;
+  background-color: orange;
+  /* background-color: #7378c5; */
+
+  align-items: center;
 `;
 
 const Wrapper = styled.div`
@@ -88,8 +141,10 @@ const Wrapper = styled.div`
   align-items: center;
   flex-direction: column;
   justify-content: center;
-  margin: 10px auto;
+  /* margin: 10px auto; */
   width: 1600px;
+  background-color: #373b69;
+
   /* justify-content: space-around; */
   /* padding-top: 20px; */
 `;
@@ -98,6 +153,11 @@ const WrapperInput = styled.div``;
 
 const CategoryListWrapper = styled.div`
   font-size: 100px;
+  color: white;
+  background-color: orange;
+  padding: 10px 15px;
+  border-radius: 50%;
+  margin: 5px;
 `;
 
 const CategoriesWrapper = styled.div`

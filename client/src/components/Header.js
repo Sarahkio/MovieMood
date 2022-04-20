@@ -53,12 +53,12 @@ const MainWrapper = styled.div`
   width: 100%;
   background-color: #373b69;
   /* background-color: #7378c5; */
-
+  padding: 5px;
   align-items: center;
 `;
 
 const Title = styled.div`
-  font-size: 40px;
+  font-size: 50px;
   color: #fff;
 `;
 
