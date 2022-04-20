@@ -4,10 +4,12 @@ import styled from "styled-components";
 import { GenreContext } from "./GenreContext";
 import CategoryList from "./CategoryList";
 import pic from "../images/wallpaper.jpeg";
+import { useRef } from "react";
 
 const Home = () => {
   const { genres, setGenres } = useContext(GenreContext);
   const [selectedGenres, setSelectedGenres] = useState([]);
+  const ref = useRef(null);
 
   const genreHandle = (checked, genre) => {
     if (checked) {
@@ -16,6 +18,10 @@ const Home = () => {
     } else {
       setSelectedGenres(selectedGenres.filter((g) => g.id !== genre.id));
     }
+  };
+
+  const Category = () => {
+    ref.current.scrollIntoView({ behavior: "smooth" });
   };
 
   let SelectedGenresString = selectedGenres.map((genre) => genre.id).join(",");
@@ -32,9 +38,9 @@ const Home = () => {
           <ImageWall src={pic}></ImageWall>
         </ImageWrapper>
         <GenresWrapper>
-          <PickGenre>Choose Your Genres Below...</PickGenre>
+          <PickGenre onClick={Category}>Choose Your Genres Below...</PickGenre>
         </GenresWrapper>
-        <CategoriesWrapper>
+        <CategoriesWrapper ref={ref}>
           {genres.map((element, index) => {
             return (
               <div key={index}>
@@ -89,10 +95,14 @@ const SeeMovies = styled.div`
   margin: 5px;
 `;
 
-const PickGenre = styled.div`
+const PickGenre = styled.button`
   font-size: 30px;
   padding: 40px;
   font-weight: bold;
+  background-color: transparent;
+  outline: none;
+  text-decoration: none;
+  border: none;
 `;
 
 const GenresWrapper = styled.div`
