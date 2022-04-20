@@ -1,5 +1,3 @@
-import styled from "styled-components";
-
 const CategoryList = ({ element }) => {
   switch (element.name) {
     case "Action":

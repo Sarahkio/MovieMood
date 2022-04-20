@@ -5,7 +5,6 @@ import { GenreProvider } from "./components/GenreContext";
 import { CurrentUserProvider } from "./components/CurrentUserContext";
 
 import { createRoot } from "react-dom/client";
-// import {MovieProvider} from "./components/MovieContext"
 const rootElement = document.getElementById("root");
 const root = createRoot(rootElement);
 root.render(

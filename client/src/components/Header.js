@@ -40,7 +40,6 @@ const Header = () => {
         )}
         <Div>
           <Search />
-          {/* <Input type="text" placeholder="search"></Input> */}
         </Div>
       </Wrapper>
     </MainWrapper>
@@ -52,7 +51,6 @@ const MainWrapper = styled.div`
   justify-content: space-between;
   width: 100%;
   background-color: #373b69;
-  /* background-color: #7378c5; */
   padding: 5px;
   align-items: center;
 `;
@@ -72,8 +70,6 @@ const Wrapper = styled.div`
   justify-content: end;
   align-items: center;
   gap: 10px;
-  /* min-width: 400px; */
-  /* background-color: #7378c5; */
   background-color: #373b69;
 `;
 

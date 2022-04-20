@@ -14,10 +14,8 @@ const batchImport = async () => {
     await client.connect();
     const db = client.db("movies");
     const genres = await db.collection("genres").insertMany();
-    console.log(genres);
   } catch (err) {
     console.log(err.stack);
-    console.log("failed");
   } finally {
     client.close();
   }

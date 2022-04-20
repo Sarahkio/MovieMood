@@ -17,7 +17,6 @@ export const CurrentUserProvider = ({ children }) => {
       fetch(`/user/${userObj}`)
         .then((res) => res.json())
         .then((data) => {
-          // setUsers(data.data);
           setCurrentUser(data.data);
           setStatus("loaded");
         })

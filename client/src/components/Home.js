@@ -17,7 +17,6 @@ const Home = () => {
       setSelectedGenres(selectedGenres.filter((g) => g.id !== genre.id));
     }
   };
-  console.log(selectedGenres);
 
   let SelectedGenresString = selectedGenres.map((genre) => genre.id).join(",");
   if (!genres) {
@@ -109,20 +108,13 @@ const LabelInput = styled.label`
   padding: 15px;
   margin: 5px;
   color: white;
-  /* background-color: #373b69; */
   display: inline-block;
-  /* cursor: pointer; */
-  /* height: 220px; */
-  /* width: 220px; */
   border-radius: 50px;
-  /* display: flex; */
-  /* margin-top: 5px; */
 `;
 
 const Title = styled.div`
   font-weight: bold;
   font-size: 40px;
-  /* margin-bottom: 20px; */
   padding: 20px;
 `;
 
@@ -131,8 +123,6 @@ const TitleWrapper = styled.div`
   justify-content: center;
   width: 100%;
   background-color: orange;
-  /* background-color: #7378c5; */
-
   align-items: center;
 `;
 
@@ -141,12 +131,8 @@ const Wrapper = styled.div`
   align-items: center;
   flex-direction: column;
   justify-content: center;
-  /* margin: 10px auto; */
-  width: 1600px;
+  width: 100%;
   background-color: #373b69;
-
-  /* justify-content: space-around; */
-  /* padding-top: 20px; */
 `;
 
 const WrapperInput = styled.div``;
@@ -166,11 +152,7 @@ const CategoriesWrapper = styled.div`
   justify-content: center;
   align-items: center;
   margin: 10px auto;
-  /* gap: 10px; */
   width: 80%;
-  /* max-width: 750px; */
-  /* height: 220px; */
-  /* margin-bottom: 50px; */
 `;
 
 const CategoryWrapper = styled.div`
@@ -189,11 +171,7 @@ const Element = styled.div`
   background-color: #373b69;
   display: inline-block;
   cursor: pointer;
-  /* height: 220px; */
-  /* width: 220px; */
   border-radius: 50px;
-  /* display: flex; */
-  /* margin-top: 5px; */
 `;
 
 const Link = styled(NavLink)`

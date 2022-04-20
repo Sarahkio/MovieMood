@@ -24,13 +24,11 @@ const searchByName = async (req, res) => {
   const page = req.query.page || 1;
 
   try {
-    // console.log("starting connection");
     await client.connect();
     const db = client.db("movies");
     const response = await axios.get(
       `https://api.themoviedb.org/3/search/movie?api_key=${MOVIE_API}&query=${movie}&page=${page}`
     );
-    console.log(response.data.results);
     if (response) {
       res.status(200).json({ status: 200, data: response.data.results });
     } else {
@@ -55,7 +53,6 @@ const searchByFriendsUserName = async (req, res) => {
       friendsUserName: req.params.userName,
     };
     const friendsUsername = await db.collection("users").findOne(query);
-    console.log(friendsUsername);
     if (friendsUsername) {
       res.status(200).json({ status: 200, data: friendsUsername });
     } else {
@@ -91,8 +88,6 @@ const getUsers = async (req, res) => {
 
 const getUser = async (req, res) => {
   const client = new MongoClient(MONGO_URI, options);
-  // const userId = req.params.id;
-  // const query = findUser(res.locals.users, userId);
   try {
     await client.connect();
     const db = client.db("movies");
@@ -132,7 +127,6 @@ const addFriends = async (req, res) => {
         friends: friendsUserName,
       },
     };
-    console.log("friends", update);
 
     if (user.friends.includes(friendsUserName)) {
       res.status(400).json({ status: 400, message: "friend already added" });
@@ -142,12 +136,6 @@ const addFriends = async (req, res) => {
         .findOneAndUpdate(query, update, { returnDocument: "after" });
       res.status(200).json({ status: 200, data: updateMyFriends.value });
     }
-
-    // if (updateMyFriends) {
-    //  res.status(200).json({ status: 200, data: updateMyFriends.value });
-    // } else {
-    //   res.status(400).json({ status: 400, message: "err getting friends" });
-    // }
   } catch (err) {
     console.log(err.stack);
     res.status(500).json({ status: 500, message: "unknown error" });
@@ -220,9 +208,6 @@ const postComments = async (req, res) => {
     const update = {
       $push: {
         comments: _id,
-        // postLikes: req.body.likes,
-        // postDisLikes: req.body.dislikes,
-        // ratings: req.body.ratings,
       },
     };
 
@@ -258,13 +243,10 @@ const addLikes = async (req, res) => {
     const query = {
       userName: req.body.userName,
     };
-    console.log(_id);
     const user = await db.collection("users").findOne(query);
 
     if (!liked) {
-      console.log("Apple");
       if (disliked) {
-        console.log("pear");
         const postDislikes = await db
           .collection("comments")
           .updateOne(
@@ -272,7 +254,6 @@ const addLikes = async (req, res) => {
             { $inc: { numOfDislikes: -1, numOfLikes: +1 } }
           );
       } else {
-        console.log("banana");
         const postLikes = await db
           .collection("comments")
           .updateOne({ _id: _id }, { $inc: { numOfLikes: +1 } });
@@ -283,7 +264,6 @@ const addLikes = async (req, res) => {
       });
       return res.status(200).json({ status: 200, message: "success" });
     } else {
-      console.log("orange");
       const postRemoveLikes = await db
         .collection("comments")
         .updateOne({ _id: _id }, { $inc: { numOfLikes: -1 } });
@@ -365,7 +345,7 @@ const deleteComment = async (req, res) => {
     const users = await db
       .collection("users")
       .updateMany({}, { $pull: { commentsLiked: _id, commentsDisliked: _id } });
-    console.log(users);
+
     res.status(200).json({ status: 200, message: "successfully deleted" });
   } catch (err) {
     res.status(500).json({ status: 500, message: err.message });
@@ -390,7 +370,6 @@ const getCommentByUserName = async (req, res) => {
       .collection("comments")
       .find({ _id: { $in: users.comments } })
       .toArray();
-    console.log("this is usercoomments", comments);
 
     if (comments) {
       res.status(200).json({ status: 200, data: comments });
@@ -416,7 +395,6 @@ const getCommentByMovieId = async (req, res) => {
     };
 
     const comments = await db.collection("comments").find(query).toArray();
-    console.log("this iis comments", comments);
 
     if (comments) {
       res.status(200).json({ status: 200, data: comments });

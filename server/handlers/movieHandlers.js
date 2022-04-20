@@ -55,7 +55,6 @@ const getGenre = async (req, res) => {
         return genre.id;
       })
       .join(",");
-    // console.log("hello, ", genreList);
     const response = await axios.get(
       `https://api.themoviedb.org/3/discover/movie?api_key=${MOVIE_API}&page=${page}&with_genres=${genreList}`
     );
@@ -114,7 +113,6 @@ const getVideosById = async (req, res) => {
     const response = await axios.get(
       `https://api.themoviedb.org/3/movie/${id}/videos?api_key=${MOVIE_API}`
     );
-    console.log(response);
     if (response) {
       res.status(200).json({ status: 200, data: response.data });
     } else {
@@ -139,7 +137,7 @@ const getCreditsById = async (req, res) => {
     const response = await axios.get(
       `https://api.themoviedb.org/3/movie/${id}/credits?api_key=${MOVIE_API}`
     );
-    console.log(response);
+
     if (response) {
       res.status(200).json({ status: 200, data: response.data });
     } else {
