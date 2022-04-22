@@ -80,6 +80,7 @@ const SignIn = styled(Link)`
   background-color: transparent;
   border: none;
   cursor: pointer;
+  min-width: 10px;
 `;
 
 const SignUp = styled(Link)`
@@ -89,6 +90,7 @@ const SignUp = styled(Link)`
   background-color: transparent;
   border: none;
   cursor: pointer;
+  min-width: 10px;
 `;
 
 const SignOut = styled.button`

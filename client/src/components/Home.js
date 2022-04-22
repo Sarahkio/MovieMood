@@ -34,6 +34,12 @@ const Home = () => {
         <TitleWrapper>
           <Title>What Are You In The Mood To Watch?</Title>
         </TitleWrapper>
+        <BlogWrapper>
+          <VideoBlog>Video Blog: </VideoBlog>
+          <Blog target="_blank" href={"https://videotimewasters.com"}>
+            videotimewasters.com
+          </Blog>
+        </BlogWrapper>
         <ImageWrapper>
           <ImageWall src={pic}></ImageWall>
         </ImageWrapper>
@@ -72,6 +78,33 @@ const Home = () => {
 
 export default Home;
 
+const BlogWrapper = styled.div`
+  display: flex;
+  position: absolute;
+  /* background-color: black; */
+  /* justify-content: end; */
+  min-width: 100px;
+  /* min-height: 100px; */
+  /* padding-right: 50px; */
+  /* padding-top: 10px; */
+  /* padding-bottom: 10px; */
+  flex-shrink: 2;
+  gap: 10px;
+  top: 20%;
+  right: 3%;
+  z-index: 2;
+`;
+
+const Blog = styled.a`
+  color: white;
+  cursor: pointer;
+`;
+
+const VideoBlog = styled.div`
+  font-weight: bold;
+  color: white;
+`;
+
 const InputElement = styled.input`
   cursor: pointer;
 `;
@@ -85,6 +118,7 @@ const ImageWrapper = styled.div`
   display: flex;
   justify-content: center;
   background-color: black;
+  position: relative;
 `;
 
 const SeeMovies = styled.div`
@@ -138,7 +172,7 @@ const TitleWrapper = styled.div`
 
 const Wrapper = styled.div`
   display: flex;
-  align-items: center;
+  /* align-items: center; */
   flex-direction: column;
   justify-content: center;
   width: 100%;
