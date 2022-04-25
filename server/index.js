@@ -50,4 +50,6 @@ app.delete("/delete-comment/:userName", deleteComment);
 app.get("/search/:movie", searchByName); // get/search movie
 app.get("/search/user/:friendsUserName", searchByFriendsUserName); // search friend username
 
-app.listen(PORT, () => console.info(`Listening on port ${PORT}`));
+// app.listen(PORT, () => console.info(`Listening on port ${PORT}`));
+
+app.listen(process.env.PORT || 8000, () => console.log("🌎 Listening on 8000"));
