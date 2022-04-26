@@ -52,4 +52,15 @@ app.get("/search/user/:friendsUserName", searchByFriendsUserName); // search fri
 
 // app.listen(PORT, () => console.info(`Listening on port ${PORT}`));
 
+// The section below is to serve React on heroku server
+if (process.env.NODE_ENV === "production") {
+  // Serve any static files
+  app.use(express.static(path.resolve(__dirname, "../client/build")));
+
+  // Handle React routing, return all requests to React app
+  app.get("*", function (req, res) {
+    res.sendFile(path.resolve(__dirname, "../client/build", "index.html"));
+  });
+}
+
 app.listen(process.env.PORT || 8000, () => console.log("🌎 Listening on 8000"));
