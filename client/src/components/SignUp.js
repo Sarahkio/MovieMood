@@ -9,6 +9,7 @@ const SignUp = () => {
   const [valid, setValid] = useState(false);
   const [loginError, setLoginError] = useState(null);
   const { currentUser, setCurrentUser } = useContext(CurrentUserContext);
+  const BASE_URI = "https://moovie-mood.herokuapp.com/";
 
   // create a reference for each input to store the values
   const firstName = useRef();

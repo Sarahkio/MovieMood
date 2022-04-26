@@ -7,6 +7,8 @@ import { CurrentUserContext } from "./CurrentUserContext";
 
 const Header = () => {
   let history = useHistory();
+  const BASE_URI = "https://moovie-mood.herokuapp.com/";
+
   const { currentUser, setCurrentUser } = useContext(CurrentUserContext);
   // let userObj = JSON.parse(localStorage.getItem("user"));
   const handleLogout = () => {

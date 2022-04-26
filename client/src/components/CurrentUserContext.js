@@ -12,6 +12,7 @@ export const CurrentUserProvider = ({ children }) => {
 
   useEffect(() => {
     const userObj = JSON.parse(localStorage.getItem("user"));
+    const BASE_URI = "https://moovie-mood.herokuapp.com/";
 
     if (userObj) {
       fetch(`/user/${userObj}`)

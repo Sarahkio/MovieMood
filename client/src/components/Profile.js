@@ -14,6 +14,7 @@ const Profile = () => {
   const { userName: friendUserName } = useParams();
   const [currentProfile, setCurrentProfile] = useState({});
   const [status, setStatus] = useState("loading");
+  const BASE_URI = "https://moovie-mood.herokuapp.com/";
 
   // add friends *****
   const handleFollow = () => {

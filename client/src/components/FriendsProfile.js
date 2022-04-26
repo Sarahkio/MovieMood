@@ -9,6 +9,7 @@ import { useHistory } from "react-router-dom";
 
 const FriendsProfile = ({ id }) => {
   const [friends, setFriends] = useState(false); // keep it falsey
+  const BASE_URI = "https://moovie-mood.herokuapp.com/";
 
   let history = useHistory();
   useEffect(() => {

@@ -10,6 +10,7 @@ const Home = () => {
   const { genres, setGenres } = useContext(GenreContext);
   const [selectedGenres, setSelectedGenres] = useState([]);
   const ref = useRef(null);
+  const BASE_URI = "https://moovie-mood.herokuapp.com/";
 
   const genreHandle = (checked, genre) => {
     if (checked) {
@@ -67,7 +68,9 @@ const Home = () => {
               </div>
             );
           })}
-          <Link to={`/movies/genre/${SelectedGenresString}?page=1`}>
+          <Link
+            to={`https://moovie-mood.herokuapp.com/movies/genre/${SelectedGenresString}?page=1`}
+          >
             <SeeMovies>See Movies</SeeMovies>
           </Link>
         </CategoriesWrapper>

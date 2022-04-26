@@ -6,6 +6,7 @@ import styled from "styled-components";
 import { useContext, useState, useEffect } from "react";
 
 const Comment = ({ formattedTimeStamp, _id, comment, commentRating }) => {
+  const BASE_URI = "https://moovie-mood.herokuapp.com/";
   const { currentUser, setCurrentUser, update, setUpdate } =
     useContext(CurrentUserContext);
   const [like, setLike] = useState(currentUser.commentsLiked.includes(_id));

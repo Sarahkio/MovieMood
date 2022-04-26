@@ -15,8 +15,10 @@ const MovieDetails = () => {
   const [movieCredits, setMovieCredits] = useState(null);
 
   const { id } = useParams();
-  const BASE_URI = "https://api.themoviedb.org/3";
+  const BASE_URI = "https://moovie-mood.herokuapp.com/";
+
   const IMG_URI = "https://image.tmdb.org/t/p/w500";
+
   // const IMG2_URI = "https://image.tmdb.org/";
 
   useEffect(() => {

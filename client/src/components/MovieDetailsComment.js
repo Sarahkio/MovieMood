@@ -15,6 +15,7 @@ const MovieDetailsComment = () => {
   const { currentUser, setCurrentUser, update } =
     useContext(CurrentUserContext);
   const [movieDetailsComment, setMovieDetailsComment] = useState(null);
+  const BASE_URI = "https://moovie-mood.herokuapp.com/";
 
   const { id: _id } = useParams();
   //9:38 AM · Jan 6 2020

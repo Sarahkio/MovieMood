@@ -14,6 +14,8 @@ const MovieComment = () => {
   const [status, setStatus] = useState("loading");
   const [movieComment, setMovieComment] = useState(null);
   const { currentUser, setCurrentUser } = useContext(CurrentUserContext);
+  const BASE_URI = "https://moovie-mood.herokuapp.com/";
+
   //9:38 AM · Jan 6 2020
   useEffect(() => {
     // movie comments by userName

@@ -10,6 +10,7 @@ const Commentbox = ({ rows, cols, value, limit, id, title, poster }) => {
   const [movieComment, setMovieComment] = useState(null);
   const [ratings, setRatings] = useState(0);
   const [status, setStatus] = useState("loading");
+  const BASE_URI = "https://moovie-mood.herokuapp.com/";
 
   const setFormattedContent = useCallback(
     (text) => {

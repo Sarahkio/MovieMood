@@ -12,7 +12,7 @@ const Home = () => {
   const [totalPages, setTotalPages] = useState(null);
   const { searchType, searchParams } = useParams();
   const IMG_URI = "https://image.tmdb.org/t/p/w500";
-  const BASE_URI = "https://api.themoviedb.org/3";
+  const BASE_URI = "https://moovie-mood.herokuapp.com/";
   const [status, setStatus] = useState("loading");
 
   let history = useHistory();

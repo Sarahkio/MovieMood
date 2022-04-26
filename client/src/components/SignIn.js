@@ -11,6 +11,7 @@ const SignIn = () => {
   const { currentUser, setCurrentUser } = useContext(CurrentUserContext);
   const [Passmessage, setPassMessage] = useState(null);
   const [Usermessage, setUserMessage] = useState(null);
+  const BASE_URI = "https://moovie-mood.herokuapp.com/";
 
   // create a reference for each input to store the values
   const email = useRef();

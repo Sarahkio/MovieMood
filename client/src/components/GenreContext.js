@@ -8,6 +8,7 @@ export const GenreProvider = ({ children }) => {
   const [page, setPage] = useState(1);
 
   const [error, setError] = useState("");
+  const BASE_URI = "https://moovie-mood.herokuapp.com/";
 
   useEffect(() => {
     // all the genres
