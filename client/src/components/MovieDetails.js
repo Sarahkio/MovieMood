@@ -23,7 +23,7 @@ const MovieDetails = () => {
 
   useEffect(() => {
     // movie details
-    fetch(`/movies/${id}`)
+    fetch(`https://moovie-mood.herokuapp.com/movies/${id}`)
       .then((res) => res.json())
       .then((data) => {
         setMovieDetails(data.data);
@@ -34,7 +34,7 @@ const MovieDetails = () => {
 
   useEffect(() => {
     // movie videos
-    fetch(`/movies/videos/${id}`)
+    fetch(`https://moovie-mood.herokuapp.com/movies/videos/${id}`)
       .then((res) => res.json())
       .then((data) => {
         if (data.data) {
@@ -46,7 +46,7 @@ const MovieDetails = () => {
 
   useEffect(() => {
     // movie credits
-    fetch(`/movies/credits/${id}`)
+    fetch(`https://moovie-mood.herokuapp.com/movies/credits/${id}`)
       .then((res) => res.json())
       .then((data) => {
         if (data.data) {

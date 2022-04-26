@@ -22,7 +22,9 @@ const Home = () => {
   useEffect(() => {
     // movies of the specific genre
     if (searchType === "genre") {
-      fetch(`/movies/genre/${searchParams}?page=${page}`)
+      fetch(
+        `https://moovie-mood.herokuapp.com/movies/genre/${searchParams}?page=${page}`
+      )
         .then((res) => res.json())
         .then((data) => {
           if (data.data.length !== 0) {
@@ -42,7 +44,9 @@ const Home = () => {
     } else if (searchType === "title") {
       // console.log("title search");
       setStatus("loading");
-      fetch(`/search/${searchParams}?page=${page}`)
+      fetch(
+        `https://moovie-mood.herokuapp.com/search/${searchParams}?page=${page}`
+      )
         .then((res) => res.json())
         .then((data) => {
           if (data.data.length !== 0) {
@@ -72,12 +76,20 @@ const Home = () => {
 
   const nextHandle = () => {
     // setPage(page + 1);
-    history.push(`/movies/genre/${searchParams}?page=${Number(page) + 1}`);
+    history.push(
+      `https://moovie-mood.herokuapp.com/movies/genre/${searchParams}?page=${
+        Number(page) + 1
+      }`
+    );
   };
 
   const prevHandle = () => {
     // setPage(page - 1);
-    history.push(`/movies/genre/${searchParams}?page=${Number(page) - 1}`);
+    history.push(
+      `https://moovie-mood.herokuapp.com/movies/genre/${searchParams}?page=${
+        Number(page) - 1
+      }`
+    );
   };
 
   if (!movies) {
