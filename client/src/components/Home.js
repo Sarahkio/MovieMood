@@ -9,6 +9,7 @@ import { useRef } from "react";
 const Home = () => {
   const { genres, setGenres } = useContext(GenreContext);
   const [selectedGenres, setSelectedGenres] = useState([]);
+
   const ref = useRef(null);
   const BASE_URI = "https://moovie-mood.herokuapp.com/";
 
@@ -52,16 +53,16 @@ const Home = () => {
             return (
               <div key={index}>
                 <CategoryWrapper>
-                  <CategoryListWrapper>
+                  <CategoryListWrapper htmlFor={index}>
                     <CategoryList element={element} />
                   </CategoryListWrapper>
                   <WrapperInput>
                     <InputElement
                       onChange={(ev) => genreHandle(ev.target.checked, element)}
                       type="checkbox"
-                      id="emoji"
+                      id={index}
                     ></InputElement>
-                    <LabelInput htmmlFor="emoji" style={{ Color: "blue" }}>
+                    <LabelInput htmlFor={index} style={{ Color: "blue" }}>
                       {element.name}
                     </LabelInput>
                   </WrapperInput>
@@ -183,7 +184,7 @@ const Wrapper = styled.div`
 
 const WrapperInput = styled.div``;
 
-const CategoryListWrapper = styled.div`
+const CategoryListWrapper = styled.label`
   font-size: 100px;
   color: white;
   background-color: orange;
