@@ -140,6 +140,7 @@ const PickGenre = styled.button`
   outline: none;
   text-decoration: none;
   border: none;
+  color: white;
 `;
 
 const GenresWrapper = styled.div`
