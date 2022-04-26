@@ -59,8 +59,9 @@ const Home = () => {
                     <InputElement
                       onChange={(ev) => genreHandle(ev.target.checked, element)}
                       type="checkbox"
+                      id="emoji"
                     ></InputElement>
-                    <LabelInput style={{ Color: "blue" }}>
+                    <LabelInput htmmlFor="emoji" style={{ Color: "blue" }}>
                       {element.name}
                     </LabelInput>
                   </WrapperInput>
