@@ -68,9 +68,7 @@ const Home = () => {
               </div>
             );
           })}
-          <Link
-            to={`https://moovie-mood.herokuapp.com/movies/genre/${SelectedGenresString}?page=1`}
-          >
+          <Link to={`/movies/genre/${SelectedGenresString}?page=1`}>
             <SeeMovies>See Movies</SeeMovies>
           </Link>
         </CategoriesWrapper>
