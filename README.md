@@ -1,4 +1,4 @@
-# Sarahkio
+# MoovieMood
 
 Movie website similar to metacritic and IMDB, but it's "mooviemood" with the ability to choose multiple genres and see the movies. The idea is to provide users logged in to comment and rate movies they liked or disliked and follow friends giving them a thumbs up or down on their posts.
 
