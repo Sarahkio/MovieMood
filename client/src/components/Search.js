@@ -15,16 +15,19 @@ const Search = () => {
   };
 
   return (
-    <>
-      <Input
-        value={searchText}
-        type="text"
-        placeholder="search"
-        onChange={(e) => setSearchText(e.target.value)}
-        onKeyDown={(e) => {
-          e.key === "Enter" && fetchSearch();
-        }}
-      ></Input>
+    <Wrapper>
+      <Wrap>
+        <Input
+          value={searchText}
+          type="text"
+          placeholder="search"
+          onChange={(e) => setSearchText(e.target.value)}
+          onKeyDown={(e) => {
+            e.key === "Enter" && fetchSearch();
+          }}
+        ></Input>
+        <Click>click to search movies 😊</Click>
+      </Wrap>
       <StyledLink
         onClick={() => setSearchText("")}
         ref={search}
@@ -32,11 +35,28 @@ const Search = () => {
       >
         Go
       </StyledLink>
-    </>
+    </Wrapper>
   );
 };
 
 export default Search;
+
+const Wrapper = styled.div`
+  display: flex;
+  align-items: center;
+`;
+
+const Wrap = styled.div`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+`;
+
+const Click = styled.span`
+  color: white;
+  /* margin-top: 5px; */
+  font-size: 13px;
+`;
 
 const Input = styled.input`
   background-color: transparent;

@@ -86,8 +86,8 @@ const BlogWrapper = styled.div`
   position: absolute;
   /* background-color: black; */
   /* justify-content: end; */
-  min-width: 100px;
-  /* min-height: 100px; */
+  width: 300px;
+  /* height: 300px; */
   /* padding-right: 50px; */
   /* padding-top: 10px; */
   /* padding-bottom: 10px; */
@@ -122,6 +122,8 @@ const ImageWrapper = styled.div`
   justify-content: center;
   background-color: black;
   position: relative;
+  width: 100%;
+  max-height: fit-content;
 `;
 
 const SeeMovies = styled.div`
@@ -192,6 +194,7 @@ const CategoryListWrapper = styled.label`
   padding: 10px 15px;
   border-radius: 50%;
   margin: 5px;
+  cursor: pointer;
 `;
 
 const CategoriesWrapper = styled.div`

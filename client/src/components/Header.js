@@ -21,7 +21,10 @@ const Header = () => {
     <MainWrapper>
       <TitleWrap>
         <Link to="/">
-          <Title>MovieMood</Title>
+          <Title>
+            M<Moo>🐮</Moo>
+            <Moo>🐮</Moo>vieMood
+          </Title>
         </Link>
       </TitleWrap>
       <Wrapper>
@@ -55,6 +58,12 @@ const MainWrapper = styled.div`
   background-color: #373b69;
   /* padding: 5px; */
   align-items: center;
+`;
+
+const Moo = styled.span`
+  font-size: 30px;
+  background-color: white;
+  border-radius: 70px;
 `;
 
 const Title = styled.div`
@@ -140,6 +149,10 @@ const Input = styled.input`
   }
 `;
 
-const Div = styled.div``;
+const Div = styled.div`
+  display: flex;
+  /* flex-direction: row; */
+  align-items: center;
+`;
 
 export default Header;
